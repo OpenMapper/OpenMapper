@@ -37,5 +37,6 @@
 .project
 
 # build stuff
-/build
-
+build/*
+bin/*
+lib/*

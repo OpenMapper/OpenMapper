@@ -1,46 +1,91 @@
-cmake_minimum_required (VERSION 2.8)
-project (openmapper)
+cmake_minimum_required (VERSION 3.1)
 
-if("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" LESS 3.1)
-	# Use C++11 : cmake <=3.1
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-else()
-	# Use C++11 : cmake >= 3.1
-	set(CMAKE_CXX_STANDARD 11)
-	set(CMAKE_CXX_STANDARD_REQUIRED ON)
-endif()
+################################
+# OpenMapper
+################################
 
-include_directories(include)
+PROJECT(OpenMapper)
+SET(OM_WRAPPER_LIB "OpenMapper")
+SET(OM_WRAPPER_APP "OpenMapperApp")
 
-##############
-# External Library
-##############
+SET(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-enable_testing()
+SET(BUILD_TESTS TRUE CACHE BOOL "Build engine tests")
 
-add_subdirectory(thirdparty/googletest)
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
-# TODO(gocarlos) add here the SLAM engine
-# add_subdirectory(thirdparty/engine/ORB_SLAM2)
-# include_directories(${ORB_SLAM2_SOURCE_DIR}/include ${ORB_SLAM2_SOURCE_DIR})
+################################
+# File Globbing
+################################
 
-##############
-# Library
-##############
+FILE(GLOB_RECURSE OM_LIB_HEADERS "${CMAKE_CURRENT_LIST_DIR}/include/wrapper.h")
+# FILE(GLOB_RECURSE OM_LIB_HEADERS "${CMAKE_CURRENT_LIST_DIR}/include/*.h")
+FILE(GLOB_RECURSE OM_LIB_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/wrapper.cc")
+# FILE(GLOB_RECURSE OM_LIB_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/*.cc")
 
-add_library(wrapper_lib src/wrapper.cc)
+SET(OM_LIB_RESOURCES ${OM_LIB_SOURCES} ${OM_LIB_HEADERS})
 
-##############
-# Executables
-##############
+SET(OM_APP_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/src/app/main.cc")
 
-add_executable (main src/main.cc)
-target_link_libraries(main wrapper_lib)
+################################
+# Target Definitions
+################################
 
-##############
-# Unit Tests
-##############
+ADD_LIBRARY(${OM_WRAPPER_LIB} STATIC ${OM_LIB_RESOURCES})
 
-add_executable(pose_test gtest/pose_test.cc)
-target_link_libraries(pose_test gtest gtest_main wrapper_lib)
+ADD_EXECUTABLE(${OM_WRAPPER_APP} ${OM_APP_RESOURCES})
+
+TARGET_INCLUDE_DIRECTORIES(${OM_WRAPPER_LIB} PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include")
+TARGET_INCLUDE_DIRECTORIES(${OM_WRAPPER_APP} PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include")
+
+SET_TARGET_PROPERTIES(${OM_WRAPPER_APP} PROPERTIES
+    DEBUG_POSTFIX "_d"
+    RUNTIME_OUTPUT_DIRECTORY ../bin/
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ../bin/
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ../bin/
+    RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ../bin/)
+
+SET_TARGET_PROPERTIES(${OM_WRAPPER_LIB} PROPERTIES
+  DEBUG_POSTFIX "_d"
+  LIBRARY_OUTPUT_DIRECTORY ../lib/
+  LIBRARY_OUTPUT_DIRECTORY_DEBUG ../lib/
+  LIBRARY_OUTPUT_DIRECTORY_RELEASE ../lib/
+  LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ../lib/
+  ARCHIVE_OUTPUT_DIRECTORY ../lib/
+  ARCHIVE_OUTPUT_DIRECTORY_DEBUG ../lib/
+  ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO ../lib/
+  ARCHIVE_OUTPUT_DIRECTORY_RELEASE ../lib/)
+
+
+################################
+# Dependencies
+################################
+
+
+# TODO(nidegen): Uncomment this as soon as needed. Temporarily commented
+# # OpenCV
+# FIND_PACKAGE(OpenCV 3.2.0 REQUIRED)
+# SET(OpenCV_DEBUG_LIBRARIES ${OpenCV_LIBRARIES})
+# # OpenGL
+# FIND_PACKAGE(OpenGL REQUIRED)
+# FIND_LIBRARY(OpenGL_LIBRARIES OpenGL)
+
+# TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
+#   debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
+#   debug ${OpenCV_DEBUG_LIBRARIES} optimized ${OpenCV_LIBRARIES})
+
+TARGET_LINK_LIBRARIES(${OM_WRAPPER_APP}
+  # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
+  # debug ${OpenCV_DEBUG_LIBRARIES} optimized ${OpenCV_LIBRARIES}
+debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB})
+
+
+IF(BUILD_TESTS)
+  INCLUDE("${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt")
+ENDIF(BUILD_TESTS)
+
+# # Uncomment to display all CMAKE variables:
+# GET_CMAKE_PROPERTY(VARIABLE_NAMES VARIABLES)
+# FOREACH (VARIABLE_NAME ${VARIABLE_NAMES})
+#    MESSAGE(STATUS "${VARIABLE_NAME}=${${VARIABLE_NAME}}")
+# ENDFOREACH()

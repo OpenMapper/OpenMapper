@@ -76,6 +76,15 @@ TARGET_LINK_LIBRARIES(${OM_WRAPPER_APP}
   # debug ${OpenCV_DEBUG_LIBRARIES} optimized ${OpenCV_LIBRARIES}
 debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB})
 
+# Build ORB_SLAM2 and its dependencies. 
+INCLUDE("${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/DBoW2/CMakeLists.txt")
+INCLUDE("${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/CMakeLists.txt")
+INCLUDE("${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/CMakeLists.txt")
+
+# Uncompress the vocabulary.
+execute_process (
+     COMMAND tar "${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBvoc.txt.tar.gz"
+)
 
 IF(BUILD_TESTS)
   INCLUDE("${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt")

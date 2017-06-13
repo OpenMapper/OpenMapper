@@ -1,9 +1,5 @@
-//============================================================================
-// Name        : wrapper.h
-// Author      : Carlos Gomes
-// Copyright   : Copyright OpenMapper
-// Description : Main class of the wrapper.
-//============================================================================
+// (c) 2017 OpenMapper
+
 
 
 #ifndef WRAPPER_H_

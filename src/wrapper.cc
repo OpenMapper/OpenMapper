@@ -1,9 +1,4 @@
-//============================================================================
-// Name        : wrapper.cc
-// Author      : Carlos Gomes
-// Copyright   : Copyright OpenMapper
-// Description : Main class of the wrapper.
-//============================================================================
+// (c) 2017 OpenMapper
 
 #include "../include/wrapper.h"
 

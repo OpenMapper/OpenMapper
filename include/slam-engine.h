@@ -1,3 +1,5 @@
+// (c) 2017 OpenMapper
+
 #include "frame.h"
 #include "pose.h"
 

@@ -1,9 +1,4 @@
-//============================================================================
-// Name        : pose_test.cc
-// Author      : Carlos Gomes
-// Copyright   : Copyright OpenMapper
-// Description : Unit test for testing the pose results
-//============================================================================
+// (c) 2017 OpenMapper
 
 #include "gtest/gtest.h"
 

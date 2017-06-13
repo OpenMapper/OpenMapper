@@ -1,7 +1,6 @@
 //============================================================================
-// Name        : main.cpp
+// Name        : main.cc
 // Author      : Carlos Gomes
-// Version     :
 // Copyright   : Copyright OpenMapper
 // Description : Sample code to handle with the wrapper library
 //============================================================================
@@ -9,7 +8,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../include/Wrapper.hpp"
+#include "../include/wrapper.h"
 
 int main(int argc, char** argv) {
 	std::cout << "Hello World!" << std::endl;

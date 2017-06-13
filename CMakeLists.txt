@@ -16,11 +16,10 @@ include_directories(include)
 # External Library
 ##############
 
-# enable_testing()
+enable_testing()
 
-# TODO(gocarlos) add here the gtest 
-# add_subdirectory(lib/googletest-1.8.0)
-# include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+add_subdirectory(thirdparty/googletest-1.8.0)
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 # TODO(gocarlos) add here the SLAM engine
 # add_subdirectory(thirdparty/engine/ORB_SLAM2)
@@ -30,18 +29,21 @@ include_directories(include)
 # Library
 ##############
 
-add_library(wrapper_lib src/Wrapper.cpp)
+add_library(wrapper_lib src/wrapper.cc)
 
 ##############
 # Executables
 ##############
 
-add_executable (main src/main.cpp)
+add_executable (main src/main.cc)
 target_link_libraries(main wrapper_lib)
 
 ##############
 # Unit Tests
 ##############
 
-# add_executable(test_pose gtest/test_pose.cpp)
-# target_link_libraries(test_pose gtest gtest_main)
+add_executable(pose_test gtest/pose_test.cc)
+target_link_libraries(pose_test gtest gtest_main wrapper_lib)
+
+
+

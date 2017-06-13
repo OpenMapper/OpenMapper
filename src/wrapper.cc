@@ -1,11 +1,11 @@
-/*
- * Wrapper.cpp
- *
- *  Created on: Jun 13, 2017
- *      Author: gocarlos
- */
+//============================================================================
+// Name        : wrapper.cc
+// Author      : Carlos Gomes
+// Copyright   : Copyright OpenMapper
+// Description : Main class of the wrapper.
+//============================================================================
 
-#include "../include/Wrapper.hpp"
+#include "../include/wrapper.h"
 
 namespace openmapper_wrapper {
 
@@ -30,4 +30,4 @@ void Wrapper::GetPose(std::vector<double> &pos, std::vector<double> &rot) {
 }
 
 }
-/* namespace openmapper_wrapper */
+ // namespace openmapper_wrapper

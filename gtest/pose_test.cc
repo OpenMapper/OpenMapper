@@ -1,7 +1,6 @@
 //============================================================================
-// Name        : test_pose.cpp
+// Name        : pose_test.cc
 // Author      : Carlos Gomes
-// Version     :
 // Copyright   : Copyright OpenMapper
 // Description : Unit test for testing the pose results
 //============================================================================
@@ -11,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "../include/Wrapper.hpp"
+#include "../include/wrapper.h"
 
 namespace openmapper_wrapper {
 

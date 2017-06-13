@@ -18,7 +18,7 @@ include_directories(include)
 
 enable_testing()
 
-add_subdirectory(thirdparty/googletest-1.8.0)
+add_subdirectory(thirdparty/googletest)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 # TODO(gocarlos) add here the SLAM engine
@@ -44,6 +44,3 @@ target_link_libraries(main wrapper_lib)
 
 add_executable(pose_test gtest/pose_test.cc)
 target_link_libraries(pose_test gtest gtest_main wrapper_lib)
-
-
-

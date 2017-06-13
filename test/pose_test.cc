@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "../include/wrapper.h"
+#include "wrapper.h"
 
 namespace openmapper_wrapper {
 
@@ -27,11 +27,6 @@ TEST(GetInitialPose, test_with_static_data) {
 	}
 	double maximal_error = 0.1;
 	EXPECT_LT(pose_error, maximal_error);
-}
-
-int main(int argc, char** argv) {
-	testing::InitGoogleTest(&argc, argv);
-	return RUN_ALL_TESTS();
 }
 
 }  // namespace openmapper_wrapper

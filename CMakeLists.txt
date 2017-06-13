@@ -60,23 +60,20 @@ SET_TARGET_PROPERTIES(${OM_WRAPPER_LIB} PROPERTIES
 # Dependencies
 ################################
 
-  # OpenCV
-  FIND_PACKAGE(OpenCV 3.2.0 REQUIRED)
-  SET(OpenCV_DEBUG_LIBRARIES ${OpenCV_LIBRARIES})
-  # OpenGL
-  FIND_PACKAGE(OpenGL REQUIRED)
-  FIND_LIBRARY(OpenGL_LIBRARIES OpenGL)
-  # Frameworks
-  INCLUDE_DIRECTORIES (/System/Library/Frameworks)
+# # OpenCV
+# FIND_PACKAGE(OpenCV 3.2.0 REQUIRED)
+# SET(OpenCV_DEBUG_LIBRARIES ${OpenCV_LIBRARIES})
+# # OpenGL
+# FIND_PACKAGE(OpenGL REQUIRED)
+# FIND_LIBRARY(OpenGL_LIBRARIES OpenGL)
 
-
-TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
-  debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
-  debug ${OpenCV_DEBUG_LIBRARIES} optimized ${OpenCV_LIBRARIES})
+# TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
+#   debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
+#   debug ${OpenCV_DEBUG_LIBRARIES} optimized ${OpenCV_LIBRARIES})
 
 TARGET_LINK_LIBRARIES(${OM_WRAPPER_APP}
-  debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
-  debug ${OpenCV_DEBUG_LIBRARIES} optimized ${OpenCV_LIBRARIES}
+  # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
+  # debug ${OpenCV_DEBUG_LIBRARIES} optimized ${OpenCV_LIBRARIES}
 debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB})
 
 

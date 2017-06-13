@@ -8,16 +8,12 @@
 #include <iostream>
 #include <vector>
 
-#include "../include/wrapper.h"
+#include "wrapper.h"
 
 int main(int argc, char** argv) {
-	std::cout << "Hello World!" << std::endl;
+  std::cout << "Hello World!" << std::endl;
 
-	// Create instances of the classes providing the required methods.
-	openmapper_wrapper::Wrapper wrapper;
-
-
-
-
-	return 0;
+  // Create instances of the classes providing the required methods.
+  openmapper_wrapper::Wrapper wrapper;
+  return 0;
 }

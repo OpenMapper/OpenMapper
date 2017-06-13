@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd build
-./test_pose	% unit test
+./pose_test	% unit test

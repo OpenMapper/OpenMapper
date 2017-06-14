@@ -1,4 +1,9 @@
-// (c) 2017 OpenMapper
+//============================================================================
+// Name        : main.cc
+// Author      : Carlos Gomes
+// Copyright   : Copyright OpenMapper
+// Description : Sample code to handle with the wrapper library
+//============================================================================
 
 #include <iostream>
 #include <vector>

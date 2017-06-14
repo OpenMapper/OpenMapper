@@ -8,7 +8,8 @@ PROJECT(OpenMapper)
 SET(OM_WRAPPER_LIB "OpenMapper")
 SET(OM_WRAPPER_APP "OpenMapperApp")
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+SET(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 SET(BUILD_TESTS TRUE CACHE BOOL "Build engine tests")
 
@@ -60,6 +61,8 @@ SET_TARGET_PROPERTIES(${OM_WRAPPER_LIB} PROPERTIES
 # Dependencies
 ################################
 
+
+# TODO(nidegen): Uncomment this as soon as needed. Temporarily commented
 # # OpenCV
 # FIND_PACKAGE(OpenCV 3.2.0 REQUIRED)
 # SET(OpenCV_DEBUG_LIBRARIES ${OpenCV_LIBRARIES})

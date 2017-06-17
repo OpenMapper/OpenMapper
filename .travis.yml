@@ -17,21 +17,10 @@ addons:
       - python-dev
       - python-numpy
       - libeigen3-dev
-      - libglew-dev # for Pangolin
 before_script:
   # install openCV
   - git clone https://github.com/opencv/opencv.git
   - cd opencv
-  - mkdir build
-  - cd build
-  - cmake ..
-  - make -j4
-  - sudo make -j4 install
-  - cd ../..
-  
-  # install Pangolin
-  - git clone https://github.com/stevenlovegrove/Pangolin.git
-  - cd Pangolin
   - mkdir build
   - cd build
   - cmake ..

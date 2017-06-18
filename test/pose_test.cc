@@ -16,9 +16,9 @@ std::vector<double> rot;
 
 TEST(GetInitialPose, test_with_static_data) {
 
-	Wrapper wrapper;
+	Wrapper wrapper(flags);
 
-	wrapper.StartSLAM(flags);
+	wrapper.StartSLAM(Wrapper::VideoSource::kCamera);
 	wrapper.GetPose(pos, rot);
 
 	double pose_error = 0.0;

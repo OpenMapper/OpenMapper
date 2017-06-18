@@ -11,6 +11,9 @@ SET(OM_WRAPPER_APP "OpenMapperApp")
 SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -w")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
+
 SET(BUILD_TESTS TRUE CACHE BOOL "Build engine tests")
 
 
@@ -18,10 +21,12 @@ SET(BUILD_TESTS TRUE CACHE BOOL "Build engine tests")
 # File Globbing
 ################################
 
+SET(ORB_SLAM2_PATH ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2)
+add_subdirectory(${ORB_SLAM2_PATH})
+
+
 FILE(GLOB_RECURSE OM_LIB_HEADERS "${CMAKE_CURRENT_LIST_DIR}/include/wrapper.h")
-# FILE(GLOB_RECURSE OM_LIB_HEADERS "${CMAKE_CURRENT_LIST_DIR}/include/*.h")
 FILE(GLOB_RECURSE OM_LIB_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/wrapper.cc")
-# FILE(GLOB_RECURSE OM_LIB_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/*.cc")
 
 SET(OM_LIB_RESOURCES ${OM_LIB_SOURCES} ${OM_LIB_HEADERS})
 
@@ -30,10 +35,6 @@ SET(OM_APP_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/src/app/main.cc")
 ################################
 # Target Definitions
 ################################
-
-INCLUDE_DIRECTORIES(
-${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/include
-)
 
 ADD_LIBRARY(${OM_WRAPPER_LIB} STATIC ${OM_LIB_RESOURCES})
 
@@ -65,28 +66,42 @@ SET_TARGET_PROPERTIES(${OM_WRAPPER_LIB} PROPERTIES
 # Dependencies
 ################################
 
-
-# TODO(nidegen): Uncomment this as soon as needed. Temporarily commented
-# # OpenCV
-# FIND_PACKAGE(OpenCV 3.2.0 REQUIRED)
-# SET(OpenCV_DEBUG_LIBRARIES ${OpenCV_LIBRARIES})
-# # OpenGL
-# FIND_PACKAGE(OpenGL REQUIRED)
+FIND_PACKAGE(OpenCV 3.2.0 REQUIRED)
+FIND_PACKAGE(Eigen3 3.1.0 REQUIRED)
+FIND_PACKAGE(OpenGL REQUIRED)
 # FIND_LIBRARY(OpenGL_LIBRARIES OpenGL)
+# SET(OpenCV_DEBUG_LIBRARIES ${OpenCV_LIBRARIES})
 
-# TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
-#   debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
-#   debug ${OpenCV_DEBUG_LIBRARIES} optimized ${OpenCV_LIBRARIES})
+INCLUDE_DIRECTORIES(
+	${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/include
+	${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/
+	
+	${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/DBoW2/DBoW2
+	
+	${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/core
+	${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/solvers
+	${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/stuff
+	${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/types	
+    ${EIGEN3_INCLUDE_DIR}
+)
 
+TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
+# 	debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
+   	debug ${OpenCV_DEBUG_LIBRARIES} optimized ${OpenCV_LIBRARIES}
+   	${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/lib/libORB_SLAM2.so
+)
 
 # LINK_DIRECTORIES(${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/lib/)
 # TARGET_LINK_LIBRARIES(GLBall mylib)
 
 TARGET_LINK_LIBRARIES(${OM_WRAPPER_APP}
-  # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
-  # debug ${OpenCV_DEBUG_LIBRARIES} optimized ${OpenCV_LIBRARIES}
-${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/lib/libORB_SLAM2.so
-debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB})
+	# debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
+	debug ${OpenCV_DEBUG_LIBRARIES} optimized ${OpenCV_LIBRARIES}
+ 	${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/lib/libORB_SLAM2.so
+	# debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB} 
+	# debug ${ORB_SLAM2} optimized ${ORB_SLAM2}
+	${OM_WRAPPER_LIB}  ${ORB_SLAM2}
+)
 
 IF(BUILD_TESTS)
   INCLUDE("${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt")

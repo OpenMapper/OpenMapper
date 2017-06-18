@@ -32,6 +32,8 @@ SET(OM_LIB_RESOURCES ${OM_LIB_SOURCES} ${OM_LIB_HEADERS})
 
 SET(OM_APP_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/src/app/main.cc")
 
+LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
+
 ################################
 # Target Definitions
 ################################

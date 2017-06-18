@@ -24,8 +24,8 @@ before_script:
   - mkdir build
   - cd build
   - cmake ..
-  - make -j4
-  - sudo make -j4 install
+  - make -j
+  - sudo make -j install
   - cd ../..
 
 script:

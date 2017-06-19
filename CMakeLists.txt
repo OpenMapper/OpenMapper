@@ -63,7 +63,6 @@ SET_TARGET_PROPERTIES(${OM_WRAPPER_LIB} PROPERTIES
 # Dependencies
 ################################
 
-FIND_PACKAGE(THREADS REQUIRED)
 FIND_PACKAGE(OpenCV 3.0.0 REQUIRED)
 FIND_PACKAGE(Eigen3 3.1.0 REQUIRED)
 FIND_PACKAGE(OpenGL REQUIRED)
@@ -90,7 +89,6 @@ TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
   debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
   debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
   debug ${G2O_LIB} debug ${G2O_LIB}
-  pthread
 )
 
 TARGET_LINK_LIBRARIES(${OM_WRAPPER_APP}
@@ -100,7 +98,6 @@ TARGET_LINK_LIBRARIES(${OM_WRAPPER_APP}
   debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
   debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
   debug ${G2O_LIB} debug ${G2O_LIB}
-  pthread
 )
 
 IF(BUILD_TESTS)

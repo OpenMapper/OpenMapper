@@ -63,7 +63,7 @@ SET_TARGET_PROPERTIES(${OM_WRAPPER_LIB} PROPERTIES
 # Dependencies
 ################################
 
-FIND_PACKAGE(OpenCV 3.1.0 REQUIRED)
+FIND_PACKAGE(OpenCV 3.0.0 REQUIRED)
 FIND_PACKAGE(Eigen3 3.1.0 REQUIRED)
 FIND_PACKAGE(OpenGL REQUIRED)
 # FIND_LIBRARY(OpenGL_LIBRARIES OpenGL)
@@ -85,20 +85,23 @@ INCLUDE_DIRECTORIES(
 
 TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
 # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
-  debug ${OpenCV_DEBUG_LIBRARIES} optimized ${OpenCV_LIBRARIES}
-  ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/lib/libORB_SLAM2.so
+  debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
+  debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
+  debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
+  debug ${G2O_LIB} debug ${G2O_LIB}
 )
-
 
 TARGET_LINK_LIBRARIES(${OM_WRAPPER_APP}
   # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
-  debug ${OpenCV_DEBUG_LIBRARIES} optimized ${OpenCV_LIBRARIES}
-  debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB} 
+  debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
+  debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB}
   debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
+  debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
+  debug ${G2O_LIB} debug ${G2O_LIB}
 )
 
 IF(BUILD_TESTS)
-  INCLUDE("${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt")
+  # INCLUDE("${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt")
 ENDIF(BUILD_TESTS)
 
 # # Uncomment to display all CMAKE variables:

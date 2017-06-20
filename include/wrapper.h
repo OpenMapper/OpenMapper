@@ -1,10 +1,4 @@
-//============================================================================
-// Name        : wrapper.h
-// Author      : Carlos Gomes
-// Copyright   : Copyright OpenMapper
-// Description : Main class of the wrapper.
-//============================================================================
-
+// (c) 2017 OpenMapper
 
 #ifndef WRAPPER_H_
 #define WRAPPER_H_
@@ -12,14 +6,24 @@
 #include <vector>
 #include <string>
 
+#include <System.h>
+
 namespace openmapper_wrapper {
 
 class Wrapper {
 public:
+
+	// Input sensor
+	enum VideoSource {
+		kCamera = 0, kFile = 1
+	};
+
+	ORB_SLAM2::System slam_engine;
+
 	//
 	// Constructor
 	//
-	Wrapper();
+	Wrapper(const std::vector<std::string> &flags);
 
 	//
 	// Destructor
@@ -30,9 +34,15 @@ public:
 	// When called, starts the engine in order to track the camera.
 	// @param flags is a vector of strings containing the flags,
 	// those flags are the settings for tracking
-	// TODO(gocarlos) specify the correct flags, pending as engine is not integrated yet.
+	// flags[0] = path_to_vocabulary
+	// flags[1] = path_to_settings (camera dependent, *.yaml file)
 	//
-	void StartSLAM(const std::vector<std::string> &flags);
+	int StartSLAM(const VideoSource source);
+
+	//
+	// When called, stops the SLAM engine.
+	//
+	void StopSLAM();
 
 	//
 	// When called, returns the pose of the camera in the inertial frame.

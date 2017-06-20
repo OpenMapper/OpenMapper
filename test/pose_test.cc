@@ -1,9 +1,4 @@
-//============================================================================
-// Name        : pose_test.cc
-// Author      : Carlos Gomes
-// Copyright   : Copyright OpenMapper
-// Description : Unit test for testing the pose results
-//============================================================================
+// (c) 2017 OpenMapper
 
 #include "gtest/gtest.h"
 
@@ -21,17 +16,27 @@ std::vector<double> rot;
 
 TEST(GetInitialPose, test_with_static_data) {
 
-	Wrapper wrapper;
+	// TODO(gocarlos): add some test data which can be executed on travis.
+  std::string path_to_vocabulary;
+  path_to_vocabulary =
+      "../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBvoc.txt";
+  std::string path_to_settings;
+  path_to_settings =
+      "../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/webcam.yaml";
 
-	wrapper.StartSLAM(flags);
-	wrapper.GetPose(pos, rot);
+  flags.push_back(path_to_vocabulary);
+  flags.push_back(path_to_settings);
+  Wrapper wrapper(flags);
 
-	double pose_error = 0.0;
-	for (auto v : pos) {
-		pose_error += v;
-	}
-	double maximal_error = 0.1;
-	EXPECT_LT(pose_error, maximal_error);
+  // wrapper.StartSLAM(Wrapper::VideoSource::kCamera);
+  wrapper.GetPose(pos, rot);
+
+  double pose_error = 0.0;
+  for (auto v : pos) {
+    pose_error += v;
+  }
+  double maximal_error = 0.1;
+  EXPECT_LT(pose_error, maximal_error);
 }
 
 }  // namespace openmapper_wrapper

@@ -79,7 +79,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/core
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/solvers
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/stuff
-  ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/types  
+  ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/types
   ${EIGEN3_INCLUDE_DIR}
 )
 
@@ -101,7 +101,7 @@ TARGET_LINK_LIBRARIES(${OM_WRAPPER_APP}
 )
 
 IF(BUILD_TESTS)
-  # INCLUDE("${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt")
+  INCLUDE("${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt")
 ENDIF(BUILD_TESTS)
 
 # # Uncomment to display all CMAKE variables:

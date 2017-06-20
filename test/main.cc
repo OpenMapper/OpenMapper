@@ -1,3 +1,5 @@
+// (c) 2017 OpenMapper
+
 #include "gtest/gtest.h"
 
 int main(int argc, char **argv) {

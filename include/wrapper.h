@@ -13,12 +13,29 @@ namespace openmapper_wrapper {
 class Wrapper {
 public:
 
+	//
 	// Input sensor
+	//
 	enum VideoSource {
 		kCamera = 0, kFile = 1
 	};
 
+	//
+	// Main instance of the SLAM engine used.
+	//
 	ORB_SLAM2::System slam_engine;
+
+	// TODO(gocarlos): define camera_pos and camera_rot.
+	//
+	//
+	//
+	std::vector<double> camera_pos;
+
+	//
+	//
+	//
+	std::vector<double> camera_rot;
+
 
 	//
 	// Constructor
@@ -36,8 +53,9 @@ public:
 	// those flags are the settings for tracking
 	// flags[0] = path_to_vocabulary
 	// flags[1] = path_to_settings (camera dependent, *.yaml file)
+	// @param input_file is the string corresponding to the path to the video file.
 	//
-	int StartSLAM(const VideoSource source);
+	int StartSLAM(const VideoSource source, const std::string input_file);
 
 	//
 	// When called, stops the SLAM engine.

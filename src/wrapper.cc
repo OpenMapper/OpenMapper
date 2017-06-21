@@ -5,7 +5,10 @@
 namespace openmapper_wrapper {
 
 Wrapper::Wrapper(const std::vector<std::string>& flags) :
-		slam_engine(flags[0], flags[1], ORB_SLAM2::System::MONOCULAR, true) {
+		slam_engine(flags[0], flags[1], ORB_SLAM2::System::MONOCULAR, false) {
+
+	std::cout << "Flags: " <<"\n"<< flags[0] << "\n" << flags[1] << std::endl;
+
 }
 
 Wrapper::~Wrapper() {
@@ -14,81 +17,54 @@ Wrapper::~Wrapper() {
 int Wrapper::StartSLAM(const VideoSource source, const std::string input_file) {
 	cv::Mat image;
 	cv::Mat cam_transformation;
+	cv::VideoCapture cap;
 	assert(input_file == "");
 
 	time_t start_time_seconds = time(NULL);
 
 	if (source == kCamera) {
-		cv::VideoCapture cap(0);
-		// Open the default camera.
-		if (!cap.isOpened()) {
-			// Check if we succeeded.
-			std::cerr << "Camera input is broken!" << std::endl;
-			return -1;
-		}
+		cap.open(0);
+	} else if (source == kFile) {
+		cap.open(input_file);
 
-		while (true) {
-			// Get a new frame from camera.
-			cap >> image;
-
-			time_t seconds = time(NULL);
-			double tframe = seconds;
-
-			if (image.empty()) {
-				// TODO(gocarlos): check here if the stream is finished or could not read.
-				std::cerr << std::endl
-						<< "Failed to another load image, eventually finished?"
-						<< std::endl;
-				return 1;
-			}
-
-			// Pass the image to the SLAM system.
-			cam_transformation = slam_engine.TrackMonocular(image, tframe);
-			std::cout << "Camera transformation: \n" << cam_transformation
-					<< std::endl;
-			double num_seconds = seconds - start_time_seconds;
-
-		}
 	}
 
-	if (source == kFile) {
-		cv::VideoCapture cap(input_file);
-		if (!cap.isOpened()) {
-			// Check if we succeeded.
-			std::cerr << "Movie input is broken!" << std::endl;
-			return -1;
+	// Open the default camera.
+	if (!cap.isOpened()) {
+		// Check if we succeeded.
+		std::cerr << "Camera input is broken!" << std::endl;
+		return -1;
+	}
+
+	while (true) {
+		// Get a new frame from camera.
+		cap >> image;
+
+		auto now = std::chrono::system_clock::now();
+		auto ms =
+				std::chrono::time_point_cast<std::chrono::milliseconds>(now).time_since_epoch().count();
+
+		double tframe = ms * 1000;
+
+		if (image.empty()) {
+			// TODO(gocarlos): check here if the stream is finished or could not read.
+			std::cout << "Failed to load another image, eventually finished..."
+					<< std::endl;
+			return 0;
 		}
-		while (true) {
-			// Get a new frame from camera.
-			cap >> image;
 
-			time_t current_time_seconds = time(NULL);
-			double tframe = current_time_seconds;
+		// Pass the image to the SLAM system.
+		cam_transformation = slam_engine.TrackMonocular(image, tframe);
 
-			if (image.empty()) {
-				// TODO(gocarlos): check here if the stream is finished or could not read.
-				std::cerr << std::endl
-						<< "Failed to another load image, eventually finished?"
-						<< std::endl;
-				break;
-			}
+		std::cout << "Camera transformation at time " << std::setprecision(20)
+				<< tframe << "\n" << cam_transformation.rows << " "
+				<< cam_transformation.cols << "\n" << cam_transformation
+				<< std::endl;
+		camera_pos.resize(3);
 
-			// Pass the image to the SLAM system.
-			cam_transformation = slam_engine.TrackMonocular(image, tframe);
-			std::cout << "Camera transformation at time "
-					<< current_time_seconds << "\n" << cam_transformation
-					<< "\n" << cam_transformation.rows << std::endl << "\n"
-					<< cam_transformation.cols << std::endl;
-			camera_pos.resize(3);
 //			camera_pos[0] = cam_transformation.at<double>(0,3);
 //			camera_pos[1] = cam_transformation.at<double>(1,3);
 //			camera_pos[2] = cam_transformation.at<double>(2,3);
-
-			if (current_time_seconds - start_time_seconds > 30) {
-				break;
-			}
-
-		}
 	}
 
 	return 0;

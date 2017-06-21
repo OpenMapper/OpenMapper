@@ -9,7 +9,7 @@
 std::string path_to_vocabulary =
 		"../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBvoc.txt";
 std::string path_to_settings =
-		"../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/webcam.yaml";
+		"../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/iphone.yaml";
 std::string input_settings = "../test/test_data/test_video.mov";
 
 #endif // TEST_CONFIG_H_

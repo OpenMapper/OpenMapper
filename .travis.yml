@@ -17,6 +17,7 @@ addons:
       - python-dev
       - python-numpy
       - libeigen3-dev
+      - freeglut3-dev # OpenGL
 before_script:
   # install openCV
   - git clone https://github.com/opencv/opencv.git
@@ -38,4 +39,3 @@ script:
   # Run your build commands next
   - ./build.sh
   - ./test.sh
-

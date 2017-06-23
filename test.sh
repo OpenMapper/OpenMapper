@@ -12,12 +12,12 @@ tar -xf ORBvoc.txt.tar.gz
 cd $root_dir
 
 
-# # Download the test data from the web. 
-# cd test
-# wget $address_test_data
-# mv test_data.tar.gz?raw=1 test_data.tar.gz
-# tar -xf test_data.tar.gz
-# cd ..
+# Download the test data from the web. 
+cd test
+wget $address_test_data
+mv test_data.tar.gz?raw=1 test_data.tar.gz
+tar -xf test_data.tar.gz
+cd ..
 
 # Run the tests.
 cd bin

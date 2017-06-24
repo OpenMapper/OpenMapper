@@ -65,9 +65,33 @@ INCLUDE_DIRECTORIES(
 # Define OpenMapper Library
 ################################
 IF(BUILD_IOS_FW)
-  ADD_LIBRARY(${OM_WRAPPER_LIB} STATIC ${OM_LIB_RESOURCES})
+  INCLUDE(cmake_modules/ios_10_3_config.cmake)
+  INCLUDE(cmake_modules/xcode_framework_config.cmake)
+  
+  ADD_LIBRARY(${OM_WRAPPER_LIB} SHARED ${OM_LIB_RESOURCES})
+  # Configure build targets for iOS
+  CONFIGURE_FOR_IOS_10_3(${OM_WRAPPER_LIB})
+  CONFIGURE_FOR_IOS_10_3(${ORB_SLAM2_LIB})
+  CONFIGURE_FOR_IOS_10_3(${DBOW2_LIB})
+  CONFIGURE_FOR_IOS_10_3(${G2O_LIB})
+  
+  TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
+  # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
+    debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
+    debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
+    debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
+    debug ${G2O_LIB} debug ${G2O_LIB}
+  )
 ELSE(BUILD_IOS_FW)
-  sdf
+  ADD_LIBRARY(${OM_WRAPPER_LIB} STATIC ${OM_LIB_RESOURCES})
+    
+  TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
+  # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
+    debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
+    debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
+    debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
+    debug ${G2O_LIB} debug ${G2O_LIB}
+  )
 ENDIF(BUILD_IOS_FW)
 SET_TARGET_PROPERTIES(${OM_WRAPPER_LIB} PROPERTIES
   DEBUG_POSTFIX "_d"
@@ -78,15 +102,8 @@ SET_TARGET_PROPERTIES(${OM_WRAPPER_LIB} PROPERTIES
   ARCHIVE_OUTPUT_DIRECTORY ../lib/
   ARCHIVE_OUTPUT_DIRECTORY_DEBUG ../lib/
   ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO ../lib/
-  ARCHIVE_OUTPUT_DIRECTORY_RELEASE ../lib/)
-  
-TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
-# debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
-  debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
-  debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
-  debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
-  debug ${G2O_LIB} debug ${G2O_LIB}
-)
+  ARCHIVE_OUTPUT_DIRECTORY_RELEASE ../lib/
+)  
 
 ################################
 # Define OpenMapper App

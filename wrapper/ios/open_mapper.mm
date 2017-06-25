@@ -10,21 +10,21 @@
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
-#include "open_mapper/wrapper.h"
+#include "wrapper.h"
 
 
 struct OpenMapperOpaqueMembers {
-  oepnmapper_wrapper::Wrapper open_mapper;
+  openmapper_wrapper::Wrapper open_mapper;
 };
 
-@implementation VMEngine
+@implementation OpenMapper
 
 int counter = 0;
 
 -(id) init {
   self = [super init];
   if (self) {
-    openmapper_members_ = new OpenMapperOpaqueMembers;
+//    openmapper_members_ = new OpenMapperOpaqueMembers();
   }
   return self;
 }

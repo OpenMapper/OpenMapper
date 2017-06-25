@@ -31,7 +31,7 @@ IF(BUILD_IOS_FW)
 ENDIF(BUILD_IOS_FW)
 SET(OM_APP_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/src/app/main.cc")
 
-LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
+# LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 
 INCLUDE_DIRECTORIES(PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include")
 
@@ -75,12 +75,22 @@ IF(BUILD_IOS_FW)
   CONFIGURE_FOR_IOS_10_3(${DBOW2_LIB})
   CONFIGURE_FOR_IOS_10_3(${G2O_LIB})
   
+  CONFIGURE_FOR_XCODE_FW(${OM_WRAPPER_LIB} "${CMAKE_CURRENT_LIST_DIR}/wrapper/ios/open_mapper.h")
+  
   TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
-  # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
-    debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
     debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
     debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
     debug ${G2O_LIB} debug ${G2O_LIB}
+    "-framework Accelerate"
+    "-framework AVFoundation"
+    "-framework AVKit"
+    "-framework CoreGraphics"
+    "-framework CoreMedia"
+    "-framework CoreVideo"
+    "-framework GLKit"
+    "-framework opencv2"
+    "-framework OpenGLES"
+    "-framework UIKit"
   )
 ELSE(BUILD_IOS_FW)
   ADD_LIBRARY(${OM_WRAPPER_LIB} STATIC ${OM_LIB_RESOURCES})

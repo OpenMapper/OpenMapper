@@ -67,16 +67,16 @@ INCLUDE_DIRECTORIES(
 IF(BUILD_IOS_FW)
   INCLUDE(cmake_modules/ios_10_3_config.cmake)
   INCLUDE(cmake_modules/xcode_framework_config.cmake)
-  
+
   ADD_LIBRARY(${OM_WRAPPER_LIB} SHARED ${OM_LIB_RESOURCES})
   # Configure build targets for iOS
   CONFIGURE_FOR_IOS_10_3(${OM_WRAPPER_LIB})
   CONFIGURE_FOR_IOS_10_3(${ORB_SLAM2_LIB})
   CONFIGURE_FOR_IOS_10_3(${DBOW2_LIB})
   CONFIGURE_FOR_IOS_10_3(${G2O_LIB})
-  
+
   CONFIGURE_FOR_XCODE_FW(${OM_WRAPPER_LIB} "${CMAKE_CURRENT_LIST_DIR}/wrapper/ios/open_mapper.h")
-  
+
   TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
     debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
     debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
@@ -94,7 +94,7 @@ IF(BUILD_IOS_FW)
   )
 ELSE(BUILD_IOS_FW)
   ADD_LIBRARY(${OM_WRAPPER_LIB} STATIC ${OM_LIB_RESOURCES})
-    
+
   TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
   # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
     debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
@@ -113,7 +113,7 @@ SET_TARGET_PROPERTIES(${OM_WRAPPER_LIB} PROPERTIES
   ARCHIVE_OUTPUT_DIRECTORY_DEBUG ../lib/
   ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO ../lib/
   ARCHIVE_OUTPUT_DIRECTORY_RELEASE ../lib/
-)  
+)
 
 ################################
 # Define OpenMapper App
@@ -135,7 +135,7 @@ IF(BUILD_APP)
     debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB}
     debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
     debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
-    debug ${G2O_LIB} debug ${G2O_LIB}
+    debug ${G2O_LIB} optimized ${G2O_LIB}
   )
 ENDIF(BUILD_APP)
 

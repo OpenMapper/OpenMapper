@@ -1,0 +1,21 @@
+<package format="2">
+  <name>OpenMapper</name>
+  <version>0.0.1</version>
+
+  <description>
+    description...
+  </description>
+
+  <author email="todo@todo.ch">todo todo</author>
+  <maintainer email="todo@todo.ch">todo todo</maintainer>
+  <url type="repository">todo</url>
+  <license>todo</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>catkin_simple</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+
+</package>

@@ -1,16 +1,14 @@
 // (c) 2017 OpenMapper
 
-
+#include <algorithm>
+#include <chrono>
+#include <fstream>
 #include <iostream>
 #include <vector>
 
 #include "wrapper.h"
 
 #include <System.h>
-#include <algorithm>
-#include <chrono>
-#include <fstream>
-#include <iostream>
 
 #include <opencv2/core/core.hpp>
 
@@ -21,10 +19,21 @@
 int main(int argc, char** argv) {
   std::cout << "Hello World!" << std::endl;
 
+  std::string path_to_vocabulary =
+      "../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBvoc.txt";
+  std::string path_to_settings =
+      "../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/webcam.yaml";
+
   if (argc != 3) {
     cerr << endl
          << "Usage: ./mono_main path_to_vocabulary path_to_settings " << endl;
-    return 1;
+    path_to_vocabulary =
+        "../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBvoc.txt";
+    path_to_settings =
+        "../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/webcam.yaml";
+  } else {
+    path_to_vocabulary = argv[1];
+    path_to_settings = argv[2];
   }
 
   cv::VideoCapture cap(0);  // open the default camera
@@ -38,7 +47,8 @@ int main(int argc, char** argv) {
 
   // Create SLAM system. It initializes all system threads and gets ready to
   // process frames.
-  ORB_SLAM2::System SLAM(argv[1], argv[2], ORB_SLAM2::System::MONOCULAR, true);
+  ORB_SLAM2::System SLAM(path_to_vocabulary, path_to_settings,
+                         ORB_SLAM2::System::MONOCULAR, false);
 
   cout << endl << "-------" << endl;
   cout << "Start processing sequence ..." << endl;

@@ -111,7 +111,7 @@ ELSE(BUILD_IOS_FW)
     debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
     debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
     debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
-    debug ${G2O_LIB} debug ${G2O_LIB}
+    debug ${G2O_LIB} optimized ${G2O_LIB}
   )
 ENDIF(BUILD_IOS_FW)
 SET_TARGET_PROPERTIES(${OM_WRAPPER_LIB} PROPERTIES

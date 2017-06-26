@@ -32,7 +32,7 @@ TEST(GetInitialPose, test_with_static_data) {
   sqrt(distance);
 
   std::cout << "The distance is: " << distance << std::endl;
-  wrapper.StopSLAM();
+  //wrapper.StopSLAM();
 
   double maximal_distance = 0.1;
   EXPECT_LE(distance, maximal_distance);

@@ -30,8 +30,6 @@ SET(BUILD_TESTS TRUE CACHE BOOL "Build OpenMapper tests")
 SET(BUILD_APP FALSE CACHE BOOL "Build OpenMapper App")
 SET(BUILD_IOS_FW FALSE CACHE BOOL "Build OpenMapper Lib as iOS Framework")
 
-SET(BUILD_TESTS TRUE CACHE BOOL "Build engine tests")
-
 ################################
 # Define Sources and Headers
 ################################

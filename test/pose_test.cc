@@ -21,14 +21,18 @@ TEST(GetInitialPose, test_with_static_data) {
 
   wrapper.StartSLAM(Wrapper::VideoSource::kFile, static_video);
   wrapper.GetPose(pos, rot);
+  wrapper.StopSLAM();
 
+  // Get the distance traveled by the camera between startpoint and endpoint.
   double distance = 0.0;
   for (auto v : pos) {
     distance += std::pow(v, 2);
     std::cout << "v: " << v << std::endl;
   }
   sqrt(distance);
+
   std::cout << "The distance is: " << distance << std::endl;
+
   double maximal_distance = 0.1;
   EXPECT_LE(distance, maximal_distance);
 }
@@ -44,13 +48,16 @@ TEST(GetInitialPose, test_with_dynamic_data) {
 
 	wrapper.StartSLAM(Wrapper::VideoSource::kFile, dynamic_video);
 	wrapper.GetPose(pos, rot);
+	wrapper.StopSLAM();
 
+	// Get the distance traveled by the camera between startpoint and endpoint.
 	double distance = 0.0;
 	for (auto v : pos) {
 		distance += std::pow(v,2);
 		std::cout<<"v: "<<v<<std::endl;
 	}
 	sqrt(distance);
+
 	std::cout <<"The distance is: "<<distance<<std::endl;
 
 	double minimal_distance = 0.1;

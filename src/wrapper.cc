@@ -23,17 +23,15 @@ Wrapper::~Wrapper() {}
 int Wrapper::StartSLAM(const VideoSource source, const std::string input_file) {
   cv::VideoCapture cap;
   assert(input_file == "");
-  //  cv::namedWindow("MyWindow", CV_WINDOW_AUTOSIZE); //create a window with
-  //  the name "MyWindow"
   time_t start_time_seconds = time(NULL);
 
   if (source == kCamera) {
+	// Open the default camera.
     cap.open(0);
   } else if (source == kFile) {
     cap.open(input_file);
   }
 
-  // Open the default camera.
   if (!cap.isOpened()) {
     // Check if we succeeded.
     std::cerr << "Camera input is broken!" << std::endl;
@@ -43,6 +41,7 @@ int Wrapper::StartSLAM(const VideoSource source, const std::string input_file) {
   assert(fps <= 1);
 
   double start_time_stap;
+  double time_to_wait;
   GetCurrTimeSec(start_time_stap);
   double curr_time_stamp = start_time_stap;
   while (true) {
@@ -70,13 +69,13 @@ int Wrapper::StartSLAM(const VideoSource source, const std::string input_file) {
 
     // Wait for the next frame or take the new one of we take longer then 1/fps
     // to track the image.
-    double time_to_wait = std::max(1.0 / fps - time_diff, 0.0);
+    time_to_wait = std::max(1.0 / fps - time_diff, 0.0);
 
     if (curr_cam_transformation.rows > 1) {
       is_tracking = true;
-      std::cout << "Camera transformation at time " << std::setprecision(20)
-                << curr_frame_time_stamp << "\n"
-                << curr_cam_transformation << std::endl;
+//      std::cout << "Camera transformation at time " << std::setprecision(20)
+//                << curr_frame_time_stamp << "\n"
+//                << curr_cam_transformation << std::endl;
       cam_pose.camera_pos[0] = curr_cam_transformation.at<float>(0, 3);
       cam_pose.camera_pos[1] = curr_cam_transformation.at<float>(1, 3);
       cam_pose.camera_pos[2] = curr_cam_transformation.at<float>(2, 3);

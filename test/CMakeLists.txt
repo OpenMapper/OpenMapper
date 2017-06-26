@@ -6,12 +6,12 @@
 # Here gtest is only built if there is not target called gtest_main, which means catkin is not providing already this target. 
 # Similiar problem: https://stackoverflow.com/questions/42550873/compile-gtest-from-source-with-catkin
 # See documentation for policy CMP0002.
-IF(TARGET NOT ${gtest_main})
+IF(NOT TARGET ${gtest_main})
   ADD_SUBDIRECTORY(${CMAKE_CURRENT_LIST_DIR}/../thirdparty/googletest/googletest gtest_build)
 	ENABLE_TESTING()
 	INCLUDE_DIRECTORIES(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})	
 # ELSEIF(TARGET gtest_main)
-ENDIF(TARGET NOT ${gtest_main})
+ENDIF(NOT TARGET ${gtest_main})
 
 ################################
 # OpenMapper Tests

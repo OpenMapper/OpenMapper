@@ -18,7 +18,7 @@ IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE Release)
 ENDIF()
 
-# Optimize the code with the compiler if the target device has a x86 processor. 
+# Optimize the code with the compiler if the target device has a x86 processor.
 IF(CMAKE_SYSTEM_PROCESSOR MATCHES "amd64.*|x86_64.*|AMD64.*|i686.*|i386.*|x86.*")
   MESSAGE("Current System is x86.")
   SET(X86 TRUE)
@@ -31,19 +31,22 @@ SET(BUILD_APP FALSE CACHE BOOL "Build OpenMapper App")
 SET(BUILD_IOS_FW FALSE CACHE BOOL "Build OpenMapper iOS Framework")
 SET(BUILD_ROS_BINDING FALSE CACHE BOOL "Build OpenMapper ROS Nodes")
 
+SET(THREADS_PREFER_PTHREAD_FLAG ON)
+
 SET(BUILD_TESTS TRUE CACHE BOOL "Build engine tests")
 
 ################################
 # Define Sources and Headers
 ################################
 
-FILE(GLOB_RECURSE OM_LIB_HEADERS "${CMAKE_CURRENT_LIST_DIR}/include/wrapper.h")
-FILE(GLOB_RECURSE OM_LIB_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/wrapper.cc")
+FILE(GLOB_RECURSE OM_LIB_HEADERS "${CMAKE_CURRENT_LIST_DIR}/include/*.h")
+FILE(GLOB OM_LIB_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/*.cc")
 
 IF(BUILD_IOS_FW)
   SET(OM_LIB_SOURCES ${OM_LIB_SOURCES} "${CMAKE_CURRENT_LIST_DIR}/wrapper/ios/open_mapper.mm"
                                          "${CMAKE_CURRENT_LIST_DIR}/wrapper/ios/open_mapper.h")
 ENDIF(BUILD_IOS_FW)
+
 SET(OM_APP_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/src/app/main.cc")
 
 LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
@@ -58,6 +61,8 @@ INCLUDE_DIRECTORIES(PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include")
 FIND_PACKAGE(OpenCV 3.0.0 REQUIRED)
 FIND_PACKAGE(Eigen3 3.1.0 REQUIRED)
 FIND_PACKAGE(OpenGL REQUIRED)
+FIND_PACKAGE(Threads REQUIRED)
+
 # FIND_LIBRARY(OpenGL_LIBRARIES OpenGL)
 # SET(OpenCV_DEBUG_LIBRARIES ${OpenCV_LIBRARIES})
 INCLUDE_DIRECTORIES("/usr/local/include")
@@ -94,7 +99,7 @@ IF(BUILD_IOS_FW)
   TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
     debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
     debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
-    debug ${G2O_LIB} debug ${G2O_LIB}
+    debug ${G2O_LIB} optimized ${G2O_LIB}
     "-framework Accelerate"
     "-framework AVFoundation"
     "-framework AVKit"
@@ -111,10 +116,11 @@ ELSE(BUILD_IOS_FW)
 
   TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
   # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
+    Threads::Threads
     debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
-    debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
     debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
-    debug ${G2O_LIB} debug ${G2O_LIB}
+    debug ${G2O_LIB} optimized ${G2O_LIB}
+    debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
   )
 ENDIF(BUILD_IOS_FW)
 SET_TARGET_PROPERTIES(${OM_WRAPPER_LIB} PROPERTIES

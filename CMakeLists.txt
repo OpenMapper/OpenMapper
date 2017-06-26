@@ -14,9 +14,23 @@ SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -w")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
 
+IF(NOT CMAKE_BUILD_TYPE)
+  SET(CMAKE_BUILD_TYPE Release)
+ENDIF()
+
+# Optimize the code with the compiler if the target device has a x86 processor. 
+IF(CMAKE_SYSTEM_PROCESSOR MATCHES "amd64.*|x86_64.*|AMD64.*|i686.*|i386.*|x86.*")
+  MESSAGE("Current System is x86.")
+  SET(X86 TRUE)
+  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=native")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+ENDIF()
+
 SET(BUILD_TESTS TRUE CACHE BOOL "Build OpenMapper tests")
 SET(BUILD_APP FALSE CACHE BOOL "Build OpenMapper App")
 SET(BUILD_IOS_FW FALSE CACHE BOOL "Build OpenMapper Lib as iOS Framework")
+
+SET(BUILD_TESTS TRUE CACHE BOOL "Build engine tests")
 
 ################################
 # Define Sources and Headers

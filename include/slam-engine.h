@@ -5,7 +5,8 @@
 
 class SlamEngine {
  public:
-  void processFrame(const Frame &frame, Pose* pose);
+  void processFrame(const Frame& frame, Pose* pose);
+
  private:
   Pose last_pose;
 }

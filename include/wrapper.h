@@ -18,7 +18,7 @@ namespace openmapper_wrapper {
 
 class Wrapper {
  public:
-  bool is_tracking;
+  bool has_tracked;
 
   //
   // OpenCV Matrix containint the current image.
@@ -95,7 +95,8 @@ class Wrapper {
   // @param pos is a vector with the absolute position x, y, z
   // @param rot is a vector with the absolute rotation as quaternion x, y, z, w
   //
-  void GetPose(std::vector<double>& pos, std::vector<double>& rot);
+  void GetPose(std::shared_ptr<std::vector<double>> pos,
+               std::shared_ptr<std::vector<double>> rot);
 
   //
   // When called prints some information about the status of the current

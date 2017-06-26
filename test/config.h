@@ -5,7 +5,8 @@
 
 #include <string>
 
-// TODO(gocarlos): add some test data which can be executed on travis.
+// TODO(gocarlos): the path to the files should be the full path, when debugging
+// with dbg the relative path does not work.
 std::string path_to_vocabulary =
     "../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBvoc.txt";
 std::string path_to_settings =

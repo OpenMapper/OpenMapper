@@ -37,7 +37,7 @@ before_script:
       - sudo rosdep init
       - rosdep update
       - source /opt/ros/indigo/setup.bash
-      - sudo apt-get install ros-indigo-opencv3
+      - sudo apt-get install ros-indigo-opencv3 ros-indigo-eigen-conversions
 
 script:
 

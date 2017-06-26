@@ -26,7 +26,7 @@ FILE(GLOB_RECURSE OM_LIB_HEADERS "${CMAKE_CURRENT_LIST_DIR}/include/wrapper.h")
 FILE(GLOB_RECURSE OM_LIB_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/wrapper.cc")
 
 IF(BUILD_IOS_FW)
-  SET(OM_LIB_RESOURCES ${OM_LIB_SOURCES} "${CMAKE_CURRENT_LIST_DIR}/wrapper/ios/open_mapper.mm"
+  SET(OM_LIB_SOURCES ${OM_LIB_SOURCES} "${CMAKE_CURRENT_LIST_DIR}/wrapper/ios/open_mapper.mm"
                                          "${CMAKE_CURRENT_LIST_DIR}/wrapper/ios/open_mapper.h")
 ENDIF(BUILD_IOS_FW)
 SET(OM_APP_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/src/app/main.cc")
@@ -60,7 +60,6 @@ INCLUDE_DIRECTORIES(
   ${EIGEN3_INCLUDE_DIR}
 )
 
-
 ################################
 # Define OpenMapper Library
 ################################
@@ -68,7 +67,7 @@ IF(BUILD_IOS_FW)
   INCLUDE(cmake_modules/ios_10_3_config.cmake)
   INCLUDE(cmake_modules/xcode_framework_config.cmake)
 
-  ADD_LIBRARY(${OM_WRAPPER_LIB} SHARED ${OM_LIB_RESOURCES})
+  ADD_LIBRARY(${OM_WRAPPER_LIB} SHARED ${OM_LIB_SOURCES})
   # Configure build targets for iOS
   CONFIGURE_FOR_IOS_10_3(${OM_WRAPPER_LIB})
   CONFIGURE_FOR_IOS_10_3(${ORB_SLAM2_LIB})
@@ -93,7 +92,7 @@ IF(BUILD_IOS_FW)
     "-framework UIKit"
   )
 ELSE(BUILD_IOS_FW)
-  ADD_LIBRARY(${OM_WRAPPER_LIB} STATIC ${OM_LIB_RESOURCES})
+  ADD_LIBRARY(${OM_WRAPPER_LIB} STATIC ${OM_LIB_SOURCES})
 
   TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
   # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}

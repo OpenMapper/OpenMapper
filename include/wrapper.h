@@ -18,6 +18,7 @@ namespace openmapper_wrapper {
 
 class Wrapper {
  public:
+  // TODO(gocarlos): get this state from  FrameDrawer::eTrackingState mState;
   bool has_tracked;
 
   //

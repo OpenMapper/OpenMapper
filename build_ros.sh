@@ -8,5 +8,5 @@ export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:$root_dir
 rm -rf build/
 mkdir build
 cd build
-cmake .. -DBUILD_ROS_BINDING=TRUE -DBUILD_TESTS=FALSE -DBUILD_APP=TRUE
+cmake .. -DBUILD_ROS_BINDING=TRUE -DBUILD_TESTS=TRUE -DBUILD_APP=TRUE
 make -j

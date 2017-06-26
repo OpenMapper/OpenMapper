@@ -8,9 +8,11 @@ PROJECT(OpenMapper)
 SET(OM_WRAPPER_LIB "OpenMapper")
 SET(OM_WRAPPER_APP "OpenMapperApp")
 
+# Request C++11 standard from compiler. 
 SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Suppress warnings from the compiler. 
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -w")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
 
@@ -31,7 +33,12 @@ SET(BUILD_APP FALSE CACHE BOOL "Build OpenMapper App")
 SET(BUILD_IOS_FW FALSE CACHE BOOL "Build OpenMapper iOS Framework")
 SET(BUILD_ROS_BINDING FALSE CACHE BOOL "Build OpenMapper ROS Nodes")
 
+#####################################
+## ROS catkin specific configuration 
+#####################################
 IF(BUILD_ROS_BINDING)
+	
+	SET(OM_WRAPPER_ROS_NODE "OpenMapperAppROSNode")
 	FIND_PACKAGE(catkin REQUIRED COMPONENTS
 	  roscpp
 	  rospy
@@ -39,17 +46,20 @@ IF(BUILD_ROS_BINDING)
 	  cv_bridge
 	)
 
-	catkin_package(
-	#  INCLUDE_DIRS include
-	#  LIBRARIES opencv
-	  CATKIN_DEPENDS roscpp std_msgs sensor_msgs cv_bridge opencv image_transport pthread
-	#   DEPENDS system_lib
+	catkin_package(CATKIN_DEPENDS 
+	  roscpp 
+	  std_msgs 
+	  sensor_msgs 
+	  cv_bridge 
+	  opencv 
+	  image_transport 
+	  pthread
 	)
+
+	SET(THREADS_PREFER_PTHREAD_FLAG ON)
+	INCLUDE_DIRECTORIES(${catkin_INCLUDE_DIRS})
+	
 ENDIF(BUILD_ROS_BINDING)
-
-SET(THREADS_PREFER_PTHREAD_FLAG ON)
-
-SET(BUILD_TESTS TRUE CACHE BOOL "Build engine tests")
 
 ################################
 # Define Sources and Headers
@@ -68,7 +78,6 @@ SET(OM_APP_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/src/app/main.cc")
 LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 
 INCLUDE_DIRECTORIES(PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include")
-
 
 ################################
 # Define Dependencies
@@ -94,13 +103,12 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/stuff
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/types
   ${EIGEN3_INCLUDE_DIR}
-  ${catkin_INCLUDE_DIRS}
-
 )
 
 ################################
 # Define OpenMapper Library
 ################################
+
 IF(BUILD_IOS_FW)
   INCLUDE(cmake_modules/ios_10_3_config.cmake)
   INCLUDE(cmake_modules/xcode_framework_config.cmake)
@@ -140,7 +148,16 @@ ELSE(BUILD_IOS_FW)
     debug ${G2O_LIB} optimized ${G2O_LIB}
     debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
   )
+	
+	# Link catkin libraries if building with ROS support. 
+	IF(BUILD_ROS_BINDING)
+  	TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
+    	debug ${catkin_LIBRARIES} optimized ${catkin_LIBRARIES} # ROS stuff
+  	)
+	ENDIF(BUILD_ROS_BINDING)
+
 ENDIF(BUILD_IOS_FW)
+
 SET_TARGET_PROPERTIES(${OM_WRAPPER_LIB} PROPERTIES
   DEBUG_POSTFIX "_d"
   LIBRARY_OUTPUT_DIRECTORY ../lib/
@@ -169,18 +186,39 @@ IF(BUILD_APP)
 
   TARGET_LINK_LIBRARIES(${OM_WRAPPER_APP}
     # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
-    debug ${catkin_LIBRARIES} optimized ${catkin_LIBRARIES} # ROS stuff
 #     debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
-    debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB}
-    debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
     debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
     debug ${G2O_LIB} optimized ${G2O_LIB}
-
+    debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB}
+    debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
   )
 ENDIF(BUILD_APP)
 
 IF(BUILD_ROS_BINDING)
-#   INCLUDE("${CMAKE_CURRENT_LIST_DIR}/src/ros/CMakeLists.txt")
+	ADD_EXECUTABLE(${OM_WRAPPER_ROS_NODE}
+		src/ros/main_node.cc
+	)
+	
+	SET_TARGET_PROPERTIES(${OM_WRAPPER_ROS_NODE} PROPERTIES
+	  DEBUG_POSTFIX "_d"
+	  LIBRARY_OUTPUT_DIRECTORY ../lib/
+	  LIBRARY_OUTPUT_DIRECTORY_DEBUG ../lib/
+	  LIBRARY_OUTPUT_DIRECTORY_RELEASE ../lib/
+	  LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ../lib/
+	  ARCHIVE_OUTPUT_DIRECTORY ../lib/
+	  ARCHIVE_OUTPUT_DIRECTORY_DEBUG ../lib/
+	  ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO ../lib/
+	  ARCHIVE_OUTPUT_DIRECTORY_RELEASE ../lib/
+	)
+
+	TARGET_LINK_LIBRARIES(${OM_WRAPPER_ROS_NODE}
+		debug ${catkin_LIBRARIES} optimized ${catkin_LIBRARIES} # ROS stuff
+		debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
+    debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
+    debug ${G2O_LIB} optimized ${G2O_LIB}
+    debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}		
+    debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB}
+	)
 ENDIF(BUILD_ROS_BINDING)
 
 ################################

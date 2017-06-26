@@ -2,7 +2,7 @@
 
 root_dir=$(pwd)
 
-export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:$root_dir/src/app/ros
+export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:$root_dir
 
 # build the wrapper library
 rm -rf build/

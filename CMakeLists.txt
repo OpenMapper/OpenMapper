@@ -31,6 +31,22 @@ SET(BUILD_APP FALSE CACHE BOOL "Build OpenMapper App")
 SET(BUILD_IOS_FW FALSE CACHE BOOL "Build OpenMapper iOS Framework")
 SET(BUILD_ROS_BINDING FALSE CACHE BOOL "Build OpenMapper ROS Nodes")
 
+IF(BUILD_ROS_BINDING)
+	FIND_PACKAGE(catkin REQUIRED COMPONENTS
+	  roscpp
+	  rospy
+	  std_msgs
+	  cv_bridge
+	)
+
+	catkin_package(
+	#  INCLUDE_DIRS include
+	#  LIBRARIES opencv
+	  CATKIN_DEPENDS roscpp std_msgs sensor_msgs cv_bridge opencv image_transport pthread
+	#   DEPENDS system_lib
+	)
+ENDIF(BUILD_ROS_BINDING)
+
 SET(THREADS_PREFER_PTHREAD_FLAG ON)
 
 SET(BUILD_TESTS TRUE CACHE BOOL "Build engine tests")
@@ -78,6 +94,8 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/stuff
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/types
   ${EIGEN3_INCLUDE_DIR}
+  ${catkin_INCLUDE_DIRS}
+
 )
 
 ################################
@@ -151,16 +169,18 @@ IF(BUILD_APP)
 
   TARGET_LINK_LIBRARIES(${OM_WRAPPER_APP}
     # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
-    debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
+    debug ${catkin_LIBRARIES} optimized ${catkin_LIBRARIES} # ROS stuff
+#     debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
     debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB}
     debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
     debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
     debug ${G2O_LIB} optimized ${G2O_LIB}
+
   )
 ENDIF(BUILD_APP)
 
 IF(BUILD_ROS_BINDING)
-  INCLUDE("${CMAKE_CURRENT_LIST_DIR}/src/ros/CMakeLists.txt")
+#   INCLUDE("${CMAKE_CURRENT_LIST_DIR}/src/ros/CMakeLists.txt")
 ENDIF(BUILD_ROS_BINDING)
 
 ################################

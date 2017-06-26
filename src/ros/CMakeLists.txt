@@ -77,23 +77,23 @@ target_link_libraries(${PROJECT_NAME}_node
   debug ${catkin_LIBRARIES} optimized ${catkin_LIBRARIES} # ROS stuff
 )
 
-message(STATUS "    ")
-message(STATUS "    ")
-message(STATUS "    ")
-
-message(STATUS "OpenCV library status:")
-message(STATUS "    version: ${OpenCV_VERSION}")
-message(STATUS "    libraries: ${OpenCV_LIBRARIES}")
-message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
-message(STATUS "    ")
-message(STATUS "    ")
-message(STATUS "    ")
-
-message(STATUS "OpenCV library status:")
-message(STATUS "    {PROJECT_NAME}_EXPORTED_TARGETS} : ${${PROJECT_NAME}_EXPORTED_TARGETS}")
-message(STATUS "    catkin_EXPORTED_TARGETS: ${catkin_EXPORTED_TARGETS}")
-message(STATUS "    OM_WRAPPER_LIB: ${OM_WRAPPER_LIB}")
-
-message(STATUS "    ")
-message(STATUS "    ")
-message(STATUS "    ")
+# message(STATUS "    ")
+# message(STATUS "    ")
+# message(STATUS "    ")
+# 
+# message(STATUS "OpenCV library status:")
+# message(STATUS "    version: ${OpenCV_VERSION}")
+# message(STATUS "    libraries: ${OpenCV_LIBRARIES}")
+# message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
+# message(STATUS "    ")
+# message(STATUS "    ")
+# message(STATUS "    ")
+# 
+# message(STATUS "OpenCV library status:")
+# message(STATUS "    {PROJECT_NAME}_EXPORTED_TARGETS} : ${${PROJECT_NAME}_EXPORTED_TARGETS}")
+# message(STATUS "    catkin_EXPORTED_TARGETS: ${catkin_EXPORTED_TARGETS}")
+# message(STATUS "    OM_WRAPPER_LIB: ${OM_WRAPPER_LIB}")
+# 
+# message(STATUS "    ")
+# message(STATUS "    ")
+# message(STATUS "    ")

@@ -1,8 +1,11 @@
+# CONFIGURE_FOR_XCODE_FW will configure the BUILD_TARGET so that, when generating an
+# Xcode project, the BUILD_TARGET will be compiled as bundled library with headers, bins and optionally
+# some resources as a .framework bundle
 FUNCTION(CONFIGURE_FOR_XCODE_FW BUILD_TARGET PUBLIC_HEADERS)
   SET_TARGET_PROPERTIES(${BUILD_TARGET} PROPERTIES
     FRAMEWORK TRUE
     FRAMEWORK_VERSION C
-    MACOSX_FRAMEWORK_IDENTIFIER com.kapanu.${BUILD_TARGET}
+    MACOSX_FRAMEWORK_IDENTIFIER com.openmapper.${BUILD_TARGET}
     # MACOSX_FRAMEWORK_INFO_PLIST Info.plist
     PUBLIC_HEADER "${PUBLIC_HEADERS}"
     # XCODE_ATTRIBUTE_GCC_PREFIX_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/Prefix.pch"

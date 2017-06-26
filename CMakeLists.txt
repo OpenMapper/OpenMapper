@@ -16,7 +16,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
 
 SET(BUILD_TESTS TRUE CACHE BOOL "Build OpenMapper tests")
 SET(BUILD_APP FALSE CACHE BOOL "Build OpenMapper App")
-SET(BUILD_IOS_FW FALSE CACHE BOOL "Build OpenMapper iOS Framework")
+SET(BUILD_IOS_FW FALSE CACHE BOOL "Build OpenMapper Lib as iOS Framework")
 
 ################################
 # Define Sources and Headers
@@ -31,7 +31,7 @@ IF(BUILD_IOS_FW)
 ENDIF(BUILD_IOS_FW)
 SET(OM_APP_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/src/app/main.cc")
 
-# LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
+LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 
 INCLUDE_DIRECTORIES(PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include")
 

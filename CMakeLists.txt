@@ -17,6 +17,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
 SET(BUILD_TESTS TRUE CACHE BOOL "Build OpenMapper tests")
 SET(BUILD_APP FALSE CACHE BOOL "Build OpenMapper App")
 SET(BUILD_IOS_FW FALSE CACHE BOOL "Build OpenMapper iOS Framework")
+SET(BUILD_ROS_BINDING FALSE CACHE BOOL "Build OpenMapper ROS Nodes")
 
 ################################
 # Define Sources and Headers
@@ -138,6 +139,14 @@ IF(BUILD_APP)
     debug ${G2O_LIB} optimized ${G2O_LIB}
   )
 ENDIF(BUILD_APP)
+
+
+IF(BUILD_ROS_BINDING)
+  INCLUDE("${CMAKE_CURRENT_LIST_DIR}/src/ros/CMakeLists.txt")
+ENDIF(BUILD_ROS_BINDING)
+
+
+
 
 ################################
 # OpenMapper Unit Tests

@@ -23,7 +23,7 @@ TEST(GetInitialPose, test_with_static_data) {
   sleep(1);
   wrapper.GetPose(pos, rot);
 
-  // Get the distance traveled by the camera between startpoint and endpoint.
+  // Get the distance traveled by the camera between start point and end point.
   double distance = 0.0;
   for (auto v : *pos) {
     distance += std::pow(v, 2);

@@ -38,6 +38,8 @@ class InputSource {
   bool isIsInputModeSet() const { return is_input_mode_set_; }
 
   void setInput(VideoSource source, std::string device) {
+    assert(device != "");
+    std::cout << "Input device is set to: " << device << std::endl;
     is_input_mode_set_ = true;
     source_ = source;
 
@@ -62,10 +64,14 @@ class InputSource {
   InputSource::VideoSource getInput() { return source_; }
 
   void StreamVideo() {
+    assert(is_input_mode_set_ && "Input mode must be set!");
     cv::VideoCapture cap;
     if (getInput() == InputSource::kCamera) {
+      assert(camera_device_number_ != "");
       cap.open(std::stoi(camera_device_number_));
     } else if (getInput() == InputSource::kFile) {
+      assert(path_to_file_ != "" && "Path to movie file must not be empty!");
+      std::cout << "Path to file ist: " << path_to_file_ << std::endl;
       cap.open(path_to_file_);
     }
 
@@ -76,10 +82,11 @@ class InputSource {
     }
 
     fps_ = cap.get(CV_CAP_PROP_FPS);
-    assert(fps_ <= 1);
+    assert(fps_ >= 1);
 
     while (true) {
       cap >> current_image_;
+
       current_image_time_sec_ = cap.get(CV_CAP_PROP_POS_MSEC) / 1000.0;
       auto t = std::chrono::duration<double>(1.0 / fps_);
       this_thread::sleep_for(t);

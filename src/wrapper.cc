@@ -34,7 +34,7 @@ void Wrapper::Initialize() {
 Wrapper::~Wrapper() {}
 
 int Wrapper::StartSLAM() {
-  assert(!input_source_.isIsInputModeSet());
+  assert(input_source_.isIsInputModeSet());
 
   double start_time_stap;
   Common::GetCurrTimeSec(start_time_stap);
@@ -45,8 +45,7 @@ int Wrapper::StartSLAM() {
     double curr_frame_time_stamp = input_source_.getCurrentImageTimeSec();
     double time_diff = curr_time_stamp - curr_frame_time_stamp;
 
-    cv::Mat curr_image;
-    curr_image = input_source_.getCurrentImage();
+    cv::Mat curr_image = input_source_.getCurrentImage();
 
     if (curr_image.empty()) {
       std::cout << std::endl
@@ -55,6 +54,11 @@ int Wrapper::StartSLAM() {
                 << std::endl;
 
       break;
+    } else {
+      std::cout << "Camera transformation at time " << std::setprecision(20)
+                << curr_frame_time_stamp << "\n"
+                << curr_image.rows << "\n"
+                << curr_image.cols << std::endl;
     }
 
     // Pass the image to the SLAM system.

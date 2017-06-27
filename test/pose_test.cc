@@ -18,7 +18,8 @@ TEST(GetInitialPose, test_with_static_data) {
   flags.push_back(path_to_vocabulary);
   flags.push_back(path_to_settings);
   Wrapper wrapper(flags);
-
+  wrapper.input_source_.setInput(openmapper_wrapper::InputSource::kFile,
+                                 dynamic_video);
   wrapper.StartSLAM();
   sleep(1);
   wrapper.GetPose(pos, rot);

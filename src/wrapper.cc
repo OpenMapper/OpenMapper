@@ -23,8 +23,6 @@ Wrapper::Wrapper(const std::vector<std::string>& flags)
 }
 
 void Wrapper::Initialize() {
-  curr_frame_time_stamp = 0.0;
-
   std::cout << "\n"
             << "Flags: "
             << "\n"
@@ -39,11 +37,16 @@ int Wrapper::StartSLAM() {
   assert(!input_source_.isIsInputModeSet());
 
   double start_time_stap;
-  double time_to_wait;
   Common::GetCurrTimeSec(start_time_stap);
   double curr_time_stamp = start_time_stap;
+  std::thread image_getter(std::bind(&InputSource::StreamVideo, input_source_));
+
   while (true) {
+    double curr_frame_time_stamp = input_source_.getCurrentImageTimeSec();
     double time_diff = curr_time_stamp - curr_frame_time_stamp;
+
+    cv::Mat curr_image;
+    curr_image = input_source_.getCurrentImage();
 
     if (curr_image.empty()) {
       std::cout << std::endl
@@ -55,7 +58,7 @@ int Wrapper::StartSLAM() {
     }
 
     // Pass the image to the SLAM system.
-    curr_cam_transformation =
+    pose_.curr_cam_transformation =
         slam_engine.TrackMonocular(curr_image, curr_frame_time_stamp);
 
     Common::GetCurrTimeSec(curr_time_stamp);
@@ -64,25 +67,29 @@ int Wrapper::StartSLAM() {
 
     // Wait for the next frame or take the new one of we take longer then 1/fps
     // to track the image.
-    time_to_wait = std::max(1.0 / input_source_.fps_ - time_diff, 0.0);
+    double time_to_wait = std::max(1.0 / input_source_.fps_ - time_diff, 0.0);
 
-    if (curr_cam_transformation.rows > 1) {
-      //      std::cout << "Camera transformation at time " <<
-      //      std::setprecision(20)
-      //                << curr_frame_time_stamp << "\n"
-      //                << curr_cam_transformation << std::endl;
-      pose_.cam_pose.camera_pos[0] = curr_cam_transformation.at<float>(0, 3);
-      pose_.cam_pose.camera_pos[1] = curr_cam_transformation.at<float>(1, 3);
-      pose_.cam_pose.camera_pos[2] = curr_cam_transformation.at<float>(2, 3);
+    if (pose_.curr_cam_transformation.rows > 1) {
+      std::cout << "Camera transformation at time " << std::setprecision(20)
+                << curr_frame_time_stamp << "\n"
+                << pose_.curr_cam_transformation.rows << std::endl;
+      pose_.cam_pose.camera_pos[0] =
+          pose_.curr_cam_transformation.at<float>(0, 3);
+      pose_.cam_pose.camera_pos[1] =
+          pose_.curr_cam_transformation.at<float>(1, 3);
+      pose_.cam_pose.camera_pos[2] =
+          pose_.curr_cam_transformation.at<float>(2, 3);
 
     } else {
       std::cout << "\r"
                 << "Waiting for tracking: " << std::setprecision(20)
                 << curr_frame_time_stamp << " ";
     }
-
+    auto t = std::chrono::duration<double>(time_to_wait);
     sleep(time_to_wait);
   }
+
+  image_getter.join();
 
   return 0;
 }
@@ -99,9 +106,9 @@ void Wrapper::GetPose(std::shared_ptr<std::vector<double>> pos,
 }
 
 void Wrapper::DebugInfo() {
-  std::cout << "Camera transformation at time " << std::setprecision(20)
-            << curr_frame_time_stamp << "\n"
-            << curr_cam_transformation << std::endl;
+  //  std::cout << "Camera transformation at time " << std::setprecision(20)
+  //            << curr_frame_time_stamp << "\n"
+  //            << curr_cam_transformation << std::endl;
 }
 }
 // namespace openmapper_wrapper

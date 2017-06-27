@@ -13,6 +13,12 @@ class Pose {
     cam_pose.camera_rot.resize(4, 0);
   }
 
+  //
+  // OpenCV Matrix containing the current camera transformation from the origin
+  // to the current pose.
+  //
+  cv::Mat curr_cam_transformation;
+
   struct CameraPose {
     // TODO(gocarlos): define camera_pos and camera_rot.
     //

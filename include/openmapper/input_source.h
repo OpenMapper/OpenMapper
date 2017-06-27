@@ -82,7 +82,15 @@ class InputSource {
       cap >> current_image_;
       current_image_time_sec_ = cap.get(CV_CAP_PROP_POS_MSEC) / 1000.0;
       auto t = std::chrono::duration<double>(1.0 / fps_);
-      //      this_thread::sleep_for(t);
+      this_thread::sleep_for(t);
+      if (current_image_.empty()) {
+        std::cout << std::endl
+                  << "Failed to load another image, assuming the video stream "
+                     "has finished..."
+                  << std::endl;
+
+        break;
+      }
     }
   }
 
@@ -94,6 +102,9 @@ class InputSource {
   std::string path_to_file_;
   std::string camera_device_number_;
 
+  //
+  // OpenCV Matrix containing the current image.
+  //
   cv::Mat current_image_;
 
   double current_image_time_sec_;

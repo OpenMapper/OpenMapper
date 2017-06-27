@@ -2,6 +2,7 @@
 
 #ifndef ROS_IMAGE_GRABBER_H_
 #define ROS_IMAGE_GRABBER_H_
+#include <string>
 
 #include <opencv2/core/core.hpp>
 

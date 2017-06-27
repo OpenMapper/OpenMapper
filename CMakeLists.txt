@@ -9,7 +9,7 @@ SET(OM_WRAPPER_LIB "OpenMapper")
 SET(OM_WRAPPER_APP "OpenMapperApp")
 
 # Request C++11 standard from compiler.
-SET(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Suppress warnings from the compiler.

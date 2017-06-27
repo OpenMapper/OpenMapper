@@ -13,27 +13,32 @@ WrapperROS::WrapperROS(int argc, char** argv, ros::NodeHandle& nodeHandle)
       "visualization_marker", 1);
   position_pub_ =
       nodeHandle_.advertise<geometry_msgs::PoseStamped>("camera_pose", 1);
+
+  wrapper_.StartSLAM();
 }
 
 void WrapperROS::ChooseImage(char** argv) {
   // Choose the input topic.
-  if (argv[3] == "opencv_live") {
+  std::string input = argv[3];
+  std::string settings = argv[4];
+
+  if (input.compare("opencv_live") == 0) {
     // Use the opencv camera.
-    camera_stream_live_input_ = argv[4];
+    camera_stream_live_input_ = settings;
     std::cout << "Source is set to live video from camera device "
               << camera_stream_live_input_ << std::endl;
     wrapper_.input_source_.setInput(openmapper_wrapper::InputSource::kCamera,
                                     camera_stream_live_input_);
-  } else if (argv[3] == "opencv_movie") {
+  } else if (input.compare("opencv_movie") == 0) {
     // Read from file.
-    camera_stream_movie_path_ = argv[4];
+    camera_stream_movie_path_ = settings;
     std::cout << "Source is set to video file from path "
               << camera_stream_movie_path_ << std::endl;
     wrapper_.input_source_.setInput(openmapper_wrapper::InputSource::kFile,
                                     camera_stream_movie_path_);
-  } else if (argv[3] == "ros_topic") {
+  } else if (input.compare("ros_topic") == 0) {
     // Use ROS topic.
-    camera_stream_ros_topic_ = argv[4];
+    camera_stream_ros_topic_ = settings;
     std::cout << "Source is set to life video from ROS topic "
               << camera_stream_ros_topic_ << std::endl;
     // ROS subscriber to the images in this topic.

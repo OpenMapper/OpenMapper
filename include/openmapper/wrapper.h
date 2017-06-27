@@ -30,22 +30,6 @@ class Wrapper {
   Pose pose_;
 
   //
-  // OpenCV Matrix containing the current image.
-  //
-  cv::Mat curr_image;
-
-  //
-  // OpenCV Matrix containing the current camera transformation from the origin
-  // to the current pose.
-  //
-  cv::Mat curr_cam_transformation;
-
-  //
-  // Time stamp of the last image in seconds, measured as time since epoch.
-  //
-  double curr_frame_time_stamp;
-
-  //
   // Constructor
   // @param flags is a vector of strings containing the flags,
   // those flags are the settings for tracking

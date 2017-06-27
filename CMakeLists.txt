@@ -8,11 +8,11 @@ PROJECT(OpenMapper)
 SET(OM_WRAPPER_LIB "OpenMapper")
 SET(OM_WRAPPER_APP "OpenMapperApp")
 
-# Request C++11 standard from compiler. 
+# Request C++11 standard from compiler.
 SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Suppress warnings from the compiler. 
+# Suppress warnings from the compiler.
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -w")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
 
@@ -34,31 +34,31 @@ SET(BUILD_IOS_FW FALSE CACHE BOOL "Build OpenMapper iOS Framework")
 SET(BUILD_ROS_BINDING FALSE CACHE BOOL "Build OpenMapper ROS Nodes")
 
 #####################################
-## ROS catkin specific configuration 
+## ROS catkin specific configuration
 #####################################
 IF(BUILD_ROS_BINDING)
-	
-	SET(OM_WRAPPER_ROS_NODE "OpenMapperAppROSNode")
-	FIND_PACKAGE(catkin REQUIRED COMPONENTS
-	  roscpp
-	  rospy
-	  std_msgs
-	  cv_bridge
-	)
 
-	catkin_package(CATKIN_DEPENDS 
-	  roscpp 
-	  std_msgs 
-	  sensor_msgs 
-	  cv_bridge 
-	  opencv 
-	  image_transport 
-	  pthread
-	)
+  SET(OM_WRAPPER_ROS_NODE "OpenMapperAppROSNode")
+  FIND_PACKAGE(catkin REQUIRED COMPONENTS
+    roscpp
+    rospy
+    std_msgs
+    cv_bridge
+  )
 
-	SET(THREADS_PREFER_PTHREAD_FLAG ON)
-	INCLUDE_DIRECTORIES(${catkin_INCLUDE_DIRS})
-	
+  catkin_package(CATKIN_DEPENDS
+    roscpp
+    std_msgs
+    sensor_msgs
+    cv_bridge
+    opencv
+    image_transport
+    pthread
+  )
+
+  SET(THREADS_PREFER_PTHREAD_FLAG ON)
+  INCLUDE_DIRECTORIES(${catkin_INCLUDE_DIRS})
+
 ENDIF(BUILD_ROS_BINDING)
 
 ################################
@@ -148,13 +148,13 @@ ELSE(BUILD_IOS_FW)
     debug ${G2O_LIB} optimized ${G2O_LIB}
     debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
   )
-	
-	# Link catkin libraries if building with ROS support. 
-	IF(BUILD_ROS_BINDING)
-  	TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
-    	debug ${catkin_LIBRARIES} optimized ${catkin_LIBRARIES} # ROS stuff
-  	)
-	ENDIF(BUILD_ROS_BINDING)
+
+  # Link catkin libraries if building with ROS support.
+  IF(BUILD_ROS_BINDING)
+    TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
+      debug ${catkin_LIBRARIES} optimized ${catkin_LIBRARIES} # ROS stuff
+    )
+  ENDIF(BUILD_ROS_BINDING)
 
 ENDIF(BUILD_IOS_FW)
 
@@ -195,30 +195,30 @@ IF(BUILD_APP)
 ENDIF(BUILD_APP)
 
 IF(BUILD_ROS_BINDING)
-	ADD_EXECUTABLE(${OM_WRAPPER_ROS_NODE}
-		src/ros/main_node.cc
-	)
-	
-	SET_TARGET_PROPERTIES(${OM_WRAPPER_ROS_NODE} PROPERTIES
-	  DEBUG_POSTFIX "_d"
-	  LIBRARY_OUTPUT_DIRECTORY ../lib/
-	  LIBRARY_OUTPUT_DIRECTORY_DEBUG ../lib/
-	  LIBRARY_OUTPUT_DIRECTORY_RELEASE ../lib/
-	  LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ../lib/
-	  ARCHIVE_OUTPUT_DIRECTORY ../lib/
-	  ARCHIVE_OUTPUT_DIRECTORY_DEBUG ../lib/
-	  ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO ../lib/
-	  ARCHIVE_OUTPUT_DIRECTORY_RELEASE ../lib/
-	)
+  ADD_EXECUTABLE(${OM_WRAPPER_ROS_NODE}
+    src/ros/main_node.cc
+  )
 
-	TARGET_LINK_LIBRARIES(${OM_WRAPPER_ROS_NODE}
-	  debug ${catkin_LIBRARIES} optimized ${catkin_LIBRARIES} # ROS stuff
-	  debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
-      debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
-      debug ${G2O_LIB} optimized ${G2O_LIB}
-      debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}		
-      debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB}
-	)
+  SET_TARGET_PROPERTIES(${OM_WRAPPER_ROS_NODE} PROPERTIES
+    DEBUG_POSTFIX "_d"
+    LIBRARY_OUTPUT_DIRECTORY ../lib/
+    LIBRARY_OUTPUT_DIRECTORY_DEBUG ../lib/
+    LIBRARY_OUTPUT_DIRECTORY_RELEASE ../lib/
+    LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ../lib/
+    ARCHIVE_OUTPUT_DIRECTORY ../lib/
+    ARCHIVE_OUTPUT_DIRECTORY_DEBUG ../lib/
+    ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO ../lib/
+    ARCHIVE_OUTPUT_DIRECTORY_RELEASE ../lib/
+  )
+
+  TARGET_LINK_LIBRARIES(${OM_WRAPPER_ROS_NODE}
+    debug ${catkin_LIBRARIES} optimized ${catkin_LIBRARIES} # ROS stuff
+    debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
+    debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
+    debug ${G2O_LIB} optimized ${G2O_LIB}
+    debug ${ORB_SLAM2_LIB} optimized ${ORB_SLAM2_LIB}
+    debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB}
+  )
 ENDIF(BUILD_ROS_BINDING)
 
 ################################

@@ -1,9 +1,8 @@
 // (c) 2017 OpenMapper
 
-#ifndef WRAPPER_H_
-#define WRAPPER_H_
+#ifndef INCLUDE_OPENMAPPER_WRAPPER_H_
+#define INCLUDE_OPENMAPPER_WRAPPER_H_
 
-#include <chrono>
 #include <ctime>
 #include <iomanip>
 #include <iostream>
@@ -12,17 +11,28 @@
 #include <thread>
 #include <vector>
 
+// ORB_SLAM2
 #include <System.h>
+
+// OpenMapper
+#include "openmapper/common.h"
+#include "openmapper/input_source.h"
+#include "openmapper/pose.h"
 
 namespace openmapper_wrapper {
 
 class Wrapper {
  public:
+  std::string path_to_vocabulary;
+  std::string path_to_settings;
+
+  InputSource input_source;
+
   // TODO(gocarlos): get this state from  FrameDrawer::eTrackingState mState;
   bool has_tracked;
 
   //
-  // OpenCV Matrix containint the current image.
+  // OpenCV Matrix containing the current image.
   //
   cv::Mat curr_image;
 
@@ -40,12 +50,7 @@ class Wrapper {
   //
   // Input sensor
   //
-  enum VideoSource { kCamera = 0, kFile = 1 };
-
-  //
-  // Main instance of the SLAM engine used.
-  //
-  ORB_SLAM2::System slam_engine;
+  enum VideoSource { kCamera = 0, kFile = 1, kImage = 3 };
 
   struct CameraPose {
     // TODO(gocarlos): define camera_pos and camera_rot.
@@ -67,9 +72,14 @@ class Wrapper {
 
   //
   // Constructor
+  // @param flags is a vector of strings containing the flags,
+  // those flags are the settings for tracking
+  // flags[0] = path_to_vocabulary
+  // flags[1] = path_to_settings (camera dependent, *.yaml file)
   //
   Wrapper(const std::vector<std::string>& flags);
-
+  Wrapper(int argc, char** argv);
+  void Initialize();
   //
   // Destructor
   //
@@ -77,14 +87,13 @@ class Wrapper {
 
   //
   // When called, starts the engine in order to track the camera.
-  // @param flags is a vector of strings containing the flags,
-  // those flags are the settings for tracking
-  // flags[0] = path_to_vocabulary
-  // flags[1] = path_to_settings (camera dependent, *.yaml file)
   // @param input_file is the string corresponding to the path to the video
   // file.
+  // @param source is the input source for the video, web camera or video file.
   //
   int StartSLAM(const VideoSource source, const std::string input_file);
+
+  //  mpSLAM->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec());
 
   //
   // When called, stops the SLAM engine.
@@ -105,9 +114,13 @@ class Wrapper {
   //
   void DebugInfo();
 
-  void GetCurrTimeSec(double& time);
+ private:
+  //
+  // Main instance of the SLAM engine used.
+  //
+  ORB_SLAM2::System slam_engine;
 };
 
 }  // namespace openmapper_wrapper
 
-#endif  // WRAPPER_H_
+#endif  // INCLUDE_OPENMAPPER_WRAPPER_H_

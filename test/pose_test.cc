@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "config.h"
-#include "wrapper.h"
+#include "openmapper/wrapper.h"
 
 namespace openmapper_wrapper {
 

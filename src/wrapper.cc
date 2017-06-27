@@ -1,22 +1,36 @@
 // (c) 2017 OpenMapper
 
-#include "../include/wrapper.h"
+#include "openmapper/wrapper.h"
 
 namespace openmapper_wrapper {
 
+Wrapper::Wrapper(int argc, char** argv)
+    : path_to_vocabulary(argv[1]),
+      path_to_settings(argv[2]),
+      slam_engine(argv[1], argv[2], ORB_SLAM2::System::MONOCULAR, false),
+      input_source() {
+  Initialize();
+}
+
 Wrapper::Wrapper(const std::vector<std::string>& flags)
-    : slam_engine(flags[0], flags[1], ORB_SLAM2::System::MONOCULAR, true),
-      has_tracked(false),
-      curr_frame_time_stamp(0.0) {
+    : slam_engine(flags[0], flags[1], ORB_SLAM2::System::MONOCULAR, false),
+      path_to_vocabulary(flags[0]),
+      path_to_settings(flags[1]),
+      input_source() {
+  Initialize();
+}
+
+void Wrapper::Initialize() {
+  has_tracked = false;
+  curr_frame_time_stamp = 0.0;
+  cam_pose.camera_pos.resize(3, 0);
+  cam_pose.camera_rot.resize(4, 0);
   std::cout << "\n"
             << "Flags: "
             << "\n"
-            << flags[0] << "\n"
-            << flags[1] << std::endl
+            << path_to_vocabulary << "\n"
+            << path_to_settings << std::endl
             << std::endl;
-
-  cam_pose.camera_pos.resize(3, 0);
-  cam_pose.camera_rot.resize(4, 0);
 }
 
 Wrapper::~Wrapper() {}
@@ -24,7 +38,6 @@ Wrapper::~Wrapper() {}
 int Wrapper::StartSLAM(const VideoSource source, const std::string input_file) {
   cv::VideoCapture cap;
   assert(input_file != "");
-  time_t start_time_seconds = time(NULL);
 
   if (source == kCamera) {
     // Open the default camera.
@@ -44,7 +57,7 @@ int Wrapper::StartSLAM(const VideoSource source, const std::string input_file) {
 
   double start_time_stap;
   double time_to_wait;
-  GetCurrTimeSec(start_time_stap);
+  Common::GetCurrTimeSec(start_time_stap);
   double curr_time_stamp = start_time_stap;
   while (true) {
     // Get a new frame from camera.
@@ -65,7 +78,7 @@ int Wrapper::StartSLAM(const VideoSource source, const std::string input_file) {
     curr_cam_transformation =
         slam_engine.TrackMonocular(curr_image, curr_frame_time_stamp);
 
-    GetCurrTimeSec(curr_time_stamp);
+    Common::GetCurrTimeSec(curr_time_stamp);
     time_diff = curr_time_stamp - start_time_stap;
     start_time_stap = curr_time_stamp;
 
@@ -110,14 +123,6 @@ void Wrapper::DebugInfo() {
   std::cout << "Camera transformation at time " << std::setprecision(20)
             << curr_frame_time_stamp << "\n"
             << curr_cam_transformation << std::endl;
-}
-
-void Wrapper::GetCurrTimeSec(double& time) {
-  time = std::chrono::time_point_cast<std::chrono::milliseconds>(
-             std::chrono::system_clock::now())
-             .time_since_epoch()
-             .count() /
-         1000.0;
 }
 }
 // namespace openmapper_wrapper

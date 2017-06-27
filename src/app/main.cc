@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-#include "wrapper.h"
+#include "openmapper/wrapper.h"
 
 #include <System.h>
 

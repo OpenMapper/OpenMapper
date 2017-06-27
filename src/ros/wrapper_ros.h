@@ -10,7 +10,6 @@
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
 
-//#include "System.h"
 #include "openmapper/wrapper.h"
 
 namespace open_mapper_ros {
@@ -18,6 +17,8 @@ namespace open_mapper_ros {
 class WrapperROS {
  public:
   WrapperROS(int argc, char** argv, ros::NodeHandle& nodeHandle);
+
+  void ChooseImage(char** argv);
 
   void GrabImage(const sensor_msgs::ImageConstPtr& msg);
   void PublishPose();
@@ -32,8 +33,12 @@ class WrapperROS {
   ros::Publisher marker_pub_;
   ros::Publisher position_pub_;
 
+  std::string camera_stream_ros_topic_;
+  std::string camera_stream_live_input_;
+  std::string camera_stream_movie_path_;
+
   std::string camera_frame = "/camera_frame";
-  std::string world_frame= "/world";
+  std::string world_frame = "/world";
 
   openmapper_wrapper::Wrapper wrapper_;
 };

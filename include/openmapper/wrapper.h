@@ -23,13 +23,11 @@ namespace openmapper_wrapper {
 
 class Wrapper {
  public:
-  std::string path_to_vocabulary;
-  std::string path_to_settings;
+  std::string path_to_vocabulary_;
+  std::string path_to_settings_;
 
-  InputSource input_source;
-
-  // TODO(gocarlos): get this state from  FrameDrawer::eTrackingState mState;
-  bool has_tracked;
+  InputSource input_source_;
+  Pose pose_;
 
   //
   // OpenCV Matrix containing the current image.
@@ -46,29 +44,6 @@ class Wrapper {
   // Time stamp of the last image in seconds, measured as time since epoch.
   //
   double curr_frame_time_stamp;
-
-  //
-  // Input sensor
-  //
-  enum VideoSource { kCamera = 0, kFile = 1, kImage = 3 };
-
-  struct CameraPose {
-    // TODO(gocarlos): define camera_pos and camera_rot.
-    //
-    //
-    //
-    std::vector<double> camera_pos;
-
-    //
-    //
-    //
-    std::vector<double> camera_rot;
-  } cam_pose;
-
-  struct SceneMap {
-    std::size_t num_points = 0;
-
-  } scene_map;
 
   //
   // Constructor
@@ -91,7 +66,7 @@ class Wrapper {
   // file.
   // @param source is the input source for the video, web camera or video file.
   //
-  int StartSLAM(const VideoSource source, const std::string input_file);
+  int StartSLAM();
 
   //  mpSLAM->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec());
 

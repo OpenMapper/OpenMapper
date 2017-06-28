@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "config.h"
-#include "wrapper.h"
+#include "openmapper/wrapper.h"
 
 namespace openmapper_wrapper {
 
@@ -18,8 +18,9 @@ TEST(GetInitialPose, test_with_static_data) {
   flags.push_back(path_to_vocabulary);
   flags.push_back(path_to_settings);
   Wrapper wrapper(flags);
-
-  wrapper.StartSLAM(Wrapper::VideoSource::kFile, static_video);
+  wrapper.input_source_.setInput(openmapper_wrapper::InputSource::kFile,
+                                 static_video);
+  wrapper.StartSLAM();
   sleep(1);
   wrapper.GetPose(pos, rot);
 
@@ -32,7 +33,7 @@ TEST(GetInitialPose, test_with_static_data) {
   sqrt(distance);
 
   std::cout << "The distance is: " << distance << std::endl;
-  //wrapper.StopSLAM();
+  // wrapper.StopSLAM();
 
   double maximal_distance = 0.1;
   EXPECT_LE(distance, maximal_distance);
@@ -56,7 +57,7 @@ TEST(GetInitialPose, test_with_static_data) {
 //	wrapper.GetPose(pos, rot);
 //
 //	// Get the distance traveled by the camera between start point and end
-//point.
+// point.
 //	double distance = 0.0;
 //	for (auto v : *pos) {
 //		distance += std::pow(v, 2);

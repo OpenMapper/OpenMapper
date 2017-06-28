@@ -1,9 +1,4 @@
-/*
- * input_source.cc
- *
- *  Created on: Jun 27, 2017
- *      Author: gocarlos
- */
+// (c) 2017 OpenMapper
 
 #include "openmapper/common.h"
 

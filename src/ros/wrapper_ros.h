@@ -2,13 +2,17 @@
 
 #ifndef ROS_IMAGE_GRABBER_H_
 #define ROS_IMAGE_GRABBER_H_
+
 #include <string>
+#include <thread>
 
 #include <opencv2/core/core.hpp>
 
 #include <cv_bridge/cv_bridge.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <ros/ros.h>
+#include <sensor_msgs/Image.h>
+#include <sensor_msgs/image_encodings.h>
 #include <visualization_msgs/Marker.h>
 
 #include "openmapper/wrapper.h"
@@ -22,8 +26,10 @@ class WrapperROS {
   void ChooseImage(char** argv);
 
   void GrabImage(const sensor_msgs::ImageConstPtr& msg);
+  void PublishToROS();
   void PublishPose();
   void PublishLandMarks();
+  void PublishImage();
 
  private:
   // ROS nodehandle.
@@ -33,6 +39,7 @@ class WrapperROS {
 
   ros::Publisher marker_pub_;
   ros::Publisher position_pub_;
+  ros::Publisher image_pub_;
 
   std::string camera_stream_ros_topic_;
   std::string camera_stream_live_input_;

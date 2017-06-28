@@ -11,6 +11,8 @@
 
 #include <opencv2/core/core.hpp>
 
+#include "openmapper/common.h"
+
 namespace openmapper_wrapper {
 
 class InputSource {
@@ -46,10 +48,15 @@ class InputSource {
     switch (source_) {
       case kCamera: {
         camera_device_number_ = device;
+        assert(camera_device_number_ != "");
+        cap.open(std::stoi(camera_device_number_));
         break;
       }
       case kFile: {
         path_to_file_ = device;
+        assert(path_to_file_ != "" && "Path to movie file must not be empty!");
+        std::cout << "Path to file is: " << path_to_file_ << std::endl;
+        cap.open(path_to_file_);
         break;
       }
       case kImage: {
@@ -63,17 +70,8 @@ class InputSource {
   }
   InputSource::VideoSource getInput() { return source_; }
 
-  void StreamVideo() {
+  void GrabImage() {
     assert(is_input_mode_set_ && "Input mode must be set!");
-    cv::VideoCapture cap;
-    if (getInput() == InputSource::kCamera) {
-      assert(camera_device_number_ != "");
-      cap.open(std::stoi(camera_device_number_));
-    } else if (getInput() == InputSource::kFile) {
-      assert(path_to_file_ != "" && "Path to movie file must not be empty!");
-      std::cout << "Path to file ist: " << path_to_file_ << std::endl;
-      cap.open(path_to_file_);
-    }
 
     if (!cap.isOpened()) {
       // Check if we succeeded.
@@ -84,21 +82,11 @@ class InputSource {
     fps_ = cap.get(CV_CAP_PROP_FPS);
     assert(fps_ >= 1);
 
-    while (true) {
-      cap >> current_image_;
-
-      current_image_time_sec_ = cap.get(CV_CAP_PROP_POS_MSEC) / 1000.0;
-      auto t = std::chrono::duration<double>(1.0 / fps_);
-      this_thread::sleep_for(t);
-      if (current_image_.empty()) {
-        std::cout << std::endl
-                  << "Failed to load another image, assuming the video stream "
-                     "has finished..."
-                  << std::endl;
-
-        break;
-      }
-    }
+    cap >> current_image_;
+    // FIXME: there is a problem with openCV returning 0 instead of the right
+    // value. Using the current time instead.
+    // current_image_time_sec_ = cap.get(CV_CAP_PROP_POS_MSEC) / 1000.0;
+    Common::GetCurrTimeSec(current_image_time_sec_);
   }
 
   float fps_;
@@ -116,6 +104,8 @@ class InputSource {
 
   double current_image_time_sec_;
   VideoSource source_;
+
+  cv::VideoCapture cap;
 };
 
 }  // namespace openmapper_wrapper

@@ -50,7 +50,7 @@ class Wrapper {
   // file.
   // @param source is the input source for the video, web camera or video file.
   //
-  int StartSLAM();
+  void StartSLAM();
 
   //  mpSLAM->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec());
 

@@ -33,15 +33,16 @@ void Wrapper::Initialize() {
 
 Wrapper::~Wrapper() {}
 
-int Wrapper::StartSLAM() {
+void Wrapper::StartSLAM() {
   assert(input_source_.isIsInputModeSet());
 
   double start_time_stap;
   Common::GetCurrTimeSec(start_time_stap);
   double curr_time_stamp = start_time_stap;
-  std::thread image_getter(std::bind(&InputSource::StreamVideo, input_source_));
 
   while (true) {
+    input_source_.GrabImage();
+
     double curr_frame_time_stamp = input_source_.getCurrentImageTimeSec();
     double time_diff = curr_time_stamp - curr_frame_time_stamp;
 
@@ -54,11 +55,6 @@ int Wrapper::StartSLAM() {
                 << std::endl;
 
       break;
-    } else {
-      std::cout << "Camera transformation at time " << std::setprecision(20)
-                << curr_frame_time_stamp << "\n"
-                << curr_image.rows << "\n"
-                << curr_image.cols << std::endl;
     }
 
     // Pass the image to the SLAM system.
@@ -76,7 +72,7 @@ int Wrapper::StartSLAM() {
     if (pose_.curr_cam_transformation.rows > 1) {
       std::cout << "Camera transformation at time " << std::setprecision(20)
                 << curr_frame_time_stamp << "\n"
-                << pose_.curr_cam_transformation.rows << std::endl;
+                << pose_.curr_cam_transformation << std::endl;
       pose_.cam_pose.camera_pos[0] =
           pose_.curr_cam_transformation.at<float>(0, 3);
       pose_.cam_pose.camera_pos[1] =
@@ -89,13 +85,9 @@ int Wrapper::StartSLAM() {
                 << "Waiting for tracking: " << std::setprecision(20)
                 << curr_frame_time_stamp << " ";
     }
-    auto t = std::chrono::duration<double>(time_to_wait);
     sleep(time_to_wait);
+    //    std::cout << "waiting: " << time_to_wait << std::endl;
   }
-
-  image_getter.join();
-
-  return 0;
 }
 
 void Wrapper::StopSLAM() {

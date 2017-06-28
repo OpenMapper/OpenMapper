@@ -42,7 +42,6 @@ int main(int argc, char** argv) {
   }
   cout << "Could capture images " << endl << endl;
 
-  cv::Mat edges;
   cv::Mat im;
 
   // Create SLAM system. It initializes all system threads and gets ready to

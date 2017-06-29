@@ -4,3 +4,9 @@
 [submodule "thirdparty/slam_engine/ORB_SLAM2"]
 	path = thirdparty/slam_engine/ORB_SLAM2
 	url = https://github.com/OpenMapper/ORB_SLAM2.git
+[submodule "thirdparty/glog"]
+	path = thirdparty/glog
+	url = https://github.com/google/glog.git
+[submodule "thirdparty/eigen"]
+	path = thirdparty/eigen
+	url = https://github.com/RLovelett/eigen.git

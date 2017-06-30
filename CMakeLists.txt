@@ -152,6 +152,8 @@ ELSE(BUILD_IOS_FW)
   TARGET_LINK_LIBRARIES(${OM_WRAPPER_LIB}
   # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
     Threads::Threads #TODO(gocarlos) check if this is needed.
+
+    debug ${GLOG_LIBRARY} optimized ${GLOG_LIBRARY}
     debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
     debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
     debug ${G2O_LIB} optimized ${G2O_LIB}
@@ -196,6 +198,7 @@ IF(BUILD_APP)
   TARGET_LINK_LIBRARIES(${OM_WRAPPER_APP}
     # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
 #     debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
+    debug ${GLOG_LIBRARY} optimized ${GLOG_LIBRARY}
     debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
     debug ${G2O_LIB} optimized ${G2O_LIB}
     debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB}
@@ -226,6 +229,7 @@ IF(BUILD_ROS_BINDING)
   )
 
   TARGET_LINK_LIBRARIES(${OM_WRAPPER_ROS_NODE}
+    debug ${GLOG_LIBRARY} optimized ${GLOG_LIBRARY}
     debug ${catkin_LIBRARIES} optimized ${catkin_LIBRARIES} # ROS stuff
     debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
     debug ${DBOW2_LIB} optimized ${DBOW2_LIB}

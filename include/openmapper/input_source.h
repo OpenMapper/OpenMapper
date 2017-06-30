@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <thread>
+#include <glog/logging.h>
 
 // ORB_SLAM2
 #include <System.h>
@@ -40,8 +41,9 @@ class InputSource {
   bool isIsInputModeSet() const { return is_input_mode_set_; }
 
   void setInput(VideoSource source, std::string device) {
-    assert(device != "");
-    std::cout << "Input device is set to: " << device << std::endl;
+    CHECK(device != "");
+    LOG(INFO)    <<"Input device is set to: " << device;
+
     is_input_mode_set_ = true;
     source_ = source;
 

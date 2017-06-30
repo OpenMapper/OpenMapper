@@ -5,10 +5,10 @@
 #include <string>
 #include <vector>
 
+#include "openmapper/openmapper.h"
 #include "config.h"
-#include "openmapper/wrapper.h"
 
-namespace openmapper_wrapper {
+namespace openmapper {
 
 TEST(GetInitialPose, test_with_static_data) {
   std::vector<std::string> flags;
@@ -17,12 +17,16 @@ TEST(GetInitialPose, test_with_static_data) {
 
   flags.push_back(path_to_vocabulary);
   flags.push_back(path_to_settings);
-  Wrapper wrapper(flags);
-  wrapper.input_source_.setInput(openmapper_wrapper::InputSource::kFile,
-                                 static_video);
-  wrapper.StartSLAM();
+  OpenMapper openmapper_engine_(flags);
+  openmapper_engine_.input_source_.setInput(openmapper::InputSource::kFile,
+                                            static_video);
+
+  while (openmapper_engine_.trackImage()) {
+    sleep(1 / openmapper_engine_.input_source_.fps_);
+  }
+
   sleep(1);
-  wrapper.GetPose(pos, rot);
+  openmapper_engine_.getPose(pos, rot);
 
   // Get the distance traveled by the camera between start point and end point.
   double distance = 0.0;

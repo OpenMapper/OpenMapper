@@ -1,7 +1,7 @@
 // (c) 2017 OpenMapper
 
-#ifndef INCLUDE_OPENMAPPER_WRAPPER_H_
-#define INCLUDE_OPENMAPPER_WRAPPER_H_
+#ifndef INCLUDE_OPENMAPPER_OPENMAPPER_H_
+#define INCLUDE_OPENMAPPER_OPENMAPPER_H_
 
 #include <ctime>
 #include <iomanip>
@@ -19,9 +19,9 @@
 #include "openmapper/input_source.h"
 #include "openmapper/pose.h"
 
-namespace openmapper_wrapper {
+namespace openmapper {
 
-class Wrapper {
+class OpenMapper {
  public:
   std::string path_to_vocabulary_;
   std::string path_to_settings_;
@@ -36,13 +36,13 @@ class Wrapper {
   // flags[0] = path_to_vocabulary
   // flags[1] = path_to_settings (camera dependent, *.yaml file)
   //
-  Wrapper(const std::vector<std::string>& flags);
-  Wrapper(int argc, char** argv);
-  void Initialize();
+  OpenMapper(const std::vector<std::string>& flags);
+  OpenMapper(int argc, char** argv);
+  void initialize();
   //
   // Destructor
   //
-  virtual ~Wrapper();
+  virtual ~OpenMapper();
 
   //
   // When called, starts the engine in order to track the camera.
@@ -50,28 +50,20 @@ class Wrapper {
   // file.
   // @param source is the input source for the video, web camera or video file.
   //
-  void StartSLAM();
-
-  //  mpSLAM->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec());
+  bool trackImage();
 
   //
   // When called, stops the SLAM engine.
   //
-  void StopSLAM();
+  void stopSLAM();
 
   //
   // When called, returns the pose of the camera in the inertial frame.
   // @param pos is a vector with the absolute position x, y, z
   // @param rot is a vector with the absolute rotation as quaternion x, y, z, w
   //
-  void GetPose(std::shared_ptr<std::vector<double>> pos,
+  void getPose(std::shared_ptr<std::vector<double>> pos,
                std::shared_ptr<std::vector<double>> rot);
-
-  //
-  // When called prints some information about the status of the current
-  // process.
-  //
-  void DebugInfo();
 
  private:
   //
@@ -82,4 +74,4 @@ class Wrapper {
 
 }  // namespace openmapper_wrapper
 
-#endif  // INCLUDE_OPENMAPPER_WRAPPER_H_
+#endif  // INCLUDE_OPENMAPPER_OPENMAPPER_H_

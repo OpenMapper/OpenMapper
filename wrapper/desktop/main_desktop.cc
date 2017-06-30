@@ -5,28 +5,26 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <stdio.h>
+#include <time.h>
 
-#include "openmapper/wrapper.h"
 
 #include <System.h>
 
 #include <opencv2/core/core.hpp>
 
-#include <System.h>
-#include <stdio.h>
-#include <time.h>
+
+#include "openmapper/openmapper.h"
+#include "config.h"
 
 int main(int argc, char** argv) {
   std::cout << "Hello World!" << std::endl;
 
-  std::string path_to_vocabulary =
-      "../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBvoc.txt";
-  std::string path_to_settings =
-      "../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/webcam.yaml";
+
 
   if (argc != 3) {
-    cerr << endl
-         << "Usage: ./mono_main path_to_vocabulary path_to_settings " << endl;
+    std::cerr << std::endl
+         << "Usage: ./mono_main path_to_vocabulary path_to_settings " << std::endl;
     path_to_vocabulary =
         "../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBvoc.txt";
     path_to_settings =
@@ -40,7 +38,7 @@ int main(int argc, char** argv) {
   if (!cap.isOpened()) {    // check if we succeeded
     return -1;
   }
-  cout << "Could capture images " << endl << endl;
+  std::cout << "Could capture images " << std::endl << std::endl;
 
   cv::Mat im;
 
@@ -49,8 +47,8 @@ int main(int argc, char** argv) {
   ORB_SLAM2::System SLAM(path_to_vocabulary, path_to_settings,
                          ORB_SLAM2::System::MONOCULAR, false);
 
-  cout << endl << "-------" << endl;
-  cout << "Start processing sequence ..." << endl;
+  std::cout << std::endl << "-------" << std::endl;
+  std::cout << "Start processing sequence ..." << std::endl;
   while (true) {
     cap >> im;  // get a new frame from camera
 
@@ -58,7 +56,7 @@ int main(int argc, char** argv) {
     double tframe = seconds;
 
     if (im.empty()) {
-      cerr << endl << "Failed to load image" << endl;
+    	std::cerr << std::endl << "Failed to load image" << std::endl;
       return 1;
     }
 

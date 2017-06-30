@@ -2,16 +2,14 @@
 
 #include <openmapper/input_source.h>
 
-namespace openmapper_wrapper {
+namespace openmapper {
 
 InputSource::InputSource()
-    : is_input_mode_set_(false), current_image_time_sec_(0.0) {
-  //  current_image_ = new cv::Mat;
-  //  current_image_time_sec_ = new double;
-}
+    : is_input_mode_set_(false),
+      current_image_time_sec_(0.0),
+      fps_(0.0),
+      source_(InputSource::kCamera) {}
 
-InputSource::~InputSource() {
-  //	delete current_image_, current_image_time_sec_;
-}
+InputSource::~InputSource() {}
 
-}  // namespace openmapper_wrapper
+}  // namespace openmapper

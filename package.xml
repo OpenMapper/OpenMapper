@@ -1,34 +1,34 @@
 <?xml version="1.0"?>
 <package>
-	<name>OpenMapper</name>
-	<version>0.0.1</version>
-	<description>
-		description...
-	</description>
+  <name>OpenMapper</name>
+  <version>0.0.1</version>
+  <description>
+    description...
+  </description>
 
-	<author email="todo@todo.ch">todo todo</author>
-	<maintainer email="todo@todo.ch">todo todo</maintainer>
-	<url type="repository">todo</url>
-	<license>todo</license>
+  <author email="todo@todo.ch">todo todo</author>
+  <maintainer email="todo@todo.ch">todo todo</maintainer>
+  <url type="repository">todo</url>
+  <license>todo</license>
 
-	<buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>catkin</buildtool_depend>
 
-	<build_depend>cv_bridge</build_depend>
-	<build_depend>image_transport</build_depend>
-	<build_depend>opencv</build_depend>
-	<build_depend>pthread</build_depend>
-	<build_depend>roscpp</build_depend>
-	<build_depend>sensor_msgs</build_depend>
-	<build_depend>std_msgs</build_depend>
-	<build_depend>tf</build_depend>
+  <build_depend>cv_bridge</build_depend>
+  <build_depend>image_transport</build_depend>
+  <build_depend>opencv</build_depend>
+  <build_depend>pthread</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>tf</build_depend>
 
-	<run_depend>cv_bridge</run_depend>
-	<run_depend>image_transport</run_depend>
-	<run_depend>opencv</run_depend>
-	<run_depend>pthread</run_depend>
-	<run_depend>roscpp</run_depend>
-	<run_depend>sensor_msgs</run_depend>
-	<run_depend>std_msgs</run_depend>
-	<run_depend>tf</run_depend>
+  <run_depend>cv_bridge</run_depend>
+  <run_depend>image_transport</run_depend>
+  <run_depend>opencv</run_depend>
+  <run_depend>pthread</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>tf</run_depend>
 
 </package>

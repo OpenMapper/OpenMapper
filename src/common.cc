@@ -2,17 +2,17 @@
 
 #include "openmapper/common.h"
 
-namespace openmapper_wrapper {
+namespace openmapper {
 
 Common::Common() {}
 
 Common::~Common() {}
 
-void Common::GetCurrTimeSec(double& time) {
+void Common::getCurrTimeSec(double& time) {
   time = std::chrono::time_point_cast<std::chrono::milliseconds>(
              std::chrono::system_clock::now())
              .time_since_epoch()
              .count() /
          1000.0;
 }
-} /* namespace openmapper_wrapper */
+} // namespace openmapper

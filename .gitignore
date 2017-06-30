@@ -43,8 +43,18 @@ xc_build/
 bin/
 lib/
 
-# Some code snipets used during development. 
+# Some code snippets used during development.
 playground/
 
-# Cache for test data, on travis this directory is created from the somewhere, on the development machine, it can be stored --> one does not have to download the test data every time. 
+# Cache for test data, on travis this directory is created from the somewhere, on the development machine, it can be stored --> one does not have to download the test data every time.
 test_data/
+test_data.tar.gz
+
+# ROS files & folders
+catkin_generated/
+catkin/
+
+
+# Unit tests stuff
+gtest_build/
+gtest/

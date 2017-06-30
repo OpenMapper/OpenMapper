@@ -47,8 +47,10 @@ lib/
 playground/
 
 # Cache for test data, on travis this directory is created from the somewhere, on the development machine, it can be stored --> one does not have to download the test data every time.
-test_data/
-test_data.tar.gz
+test/test_data/
+test/test_data/*
+test/test_data.tar.gz
+test/test_data.tar.gz?raw=1
 
 # ROS files & folders
 catkin_generated/

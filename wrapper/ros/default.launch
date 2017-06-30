@@ -1,0 +1,17 @@
+<launch>
+
+  <!-- a basic listener node -->
+  <node
+    name="OpenMapperAppROSNode"
+    pkg="OpenMapper"
+    type="OpenMapperAppROSNode"
+    args="
+    $(find OpenMapper)/thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBvoc.txt
+    $(find OpenMapper)/thirdparty/slam_engine/ORB_SLAM2/Vocabulary/iphone.yaml
+    opencv_live
+    0
+    "/>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find OpenMapper)/wrapper/ros/openmapper.rviz"/>
+
+</launch>

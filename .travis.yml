@@ -49,4 +49,4 @@ script:
   - gcc -v && g++ -v && cmake --version
   # Run your build commands next
   - ./build.sh
-  - ./test.sh
+  - ./test/test.sh

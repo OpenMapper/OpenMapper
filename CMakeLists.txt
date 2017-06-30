@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.1)
 
 ################################
-# OpenMapper`
+# OpenMapper
 ################################
 
 PROJECT(OpenMapper)
@@ -28,10 +28,10 @@ IF(CMAKE_SYSTEM_PROCESSOR MATCHES "amd64.*|x86_64.*|AMD64.*|i686.*|i386.*|x86.*"
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
 ENDIF()
 
-SET(BUILD_TESTS TRUE CACHE BOOL "Build OpenMapper tests")
-SET(BUILD_APP FALSE CACHE BOOL "Build OpenMapper App")
-SET(BUILD_IOS_FW FALSE CACHE BOOL "Build OpenMapper iOS Framework")
-SET(BUILD_ROS_BINDING FALSE CACHE BOOL "Build OpenMapper ROS Nodes")
+SET(BUILD_TESTS TRUE CACHE BOOL "Build OpenMapper tests.")
+SET(BUILD_APP FALSE CACHE BOOL "Build OpenMapper App.")
+SET(BUILD_IOS_FW FALSE CACHE BOOL "Build OpenMapper iOS Framework.")
+SET(BUILD_ROS_BINDING FALSE CACHE BOOL "Build OpenMapper ROS Nodes.")
 
 #####################################
 ## ROS catkin specific configuration
@@ -73,7 +73,8 @@ IF(BUILD_IOS_FW)
                                          "${CMAKE_CURRENT_LIST_DIR}/wrapper/ios/open_mapper.h")
 ENDIF(BUILD_IOS_FW)
 
-SET(OM_APP_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/src/app/main.cc")
+FILE(GLOB_RECURSE OM_APP_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/wrapper/desktop/*.cc"
+  "${CMAKE_CURRENT_LIST_DIR}/wrapper/desktop/*.h")
 
 LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 
@@ -203,21 +204,8 @@ IF(BUILD_ROS_BINDING)
   FILE(GLOB OM_WRAPPER_ROS_NODE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/ros/*.cc")
 
   ADD_EXECUTABLE(${OM_WRAPPER_ROS_NODE}
-#     src/ros/main_node.cc
     ${OM_WRAPPER_ROS_NODE_HEADERS}
     ${OM_WRAPPER_ROS_NODE_SOURCES}
-  )
-
-  SET_TARGET_PROPERTIES(${OM_WRAPPER_ROS_NODE} PROPERTIES
-    DEBUG_POSTFIX "_d"
-    LIBRARY_OUTPUT_DIRECTORY ../bin/
-    LIBRARY_OUTPUT_DIRECTORY_DEBUG ../bin/
-    LIBRARY_OUTPUT_DIRECTORY_RELEASE ../bin/
-    LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ../bin/
-    ARCHIVE_OUTPUT_DIRECTORY ../bin/
-    ARCHIVE_OUTPUT_DIRECTORY_DEBUG ../bin/
-    ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO ../bin/
-    ARCHIVE_OUTPUT_DIRECTORY_RELEASE ../bin/
   )
 
   TARGET_LINK_LIBRARIES(${OM_WRAPPER_ROS_NODE}
@@ -239,7 +227,7 @@ IF(BUILD_TESTS)
   INCLUDE("${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt")
 ENDIF(BUILD_TESTS)
 
-# # Uncomment to display all CMAKE variables:
+# Uncomment to display all CMAKE variables:
 # GET_CMAKE_PROPERTY(VARIABLE_NAMES VARIABLES)
 # FOREACH (VARIABLE_NAME ${VARIABLE_NAMES})
 #    MESSAGE(STATUS "${VARIABLE_NAME}=${${VARIABLE_NAME}}")

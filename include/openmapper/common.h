@@ -5,13 +5,13 @@
 
 #include <chrono>
 
-namespace openmapper_wrapper {
+namespace openmapper {
 
 class Common {
  public:
   Common();
   virtual ~Common();
-  static void GetCurrTimeSec(double& time);
+  static void getCurrTimeSec(double& time);
 };
 
 }  // namespace openmapper_wrapper

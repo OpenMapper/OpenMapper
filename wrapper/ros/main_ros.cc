@@ -1,6 +1,6 @@
 // (c) 2017 OpenMapper
 
-#include "wrapper_ros.h"
+#include "openmapper_ros.h"
 
 int main(int argc, char** argv) {
   if (argc < 5) {
@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
   }
   ros::init(argc, argv, "openmapper_wrapper_ros");
   ros::NodeHandle nodeHandle("~");
-  open_mapper_ros::WrapperROS wrapper_ros(argc, argv, nodeHandle);
-  ros::spin();
+  openmapper_ros::WrapperROS wrapper_ros(argc, argv, nodeHandle);
+//  ros::spin();
   return 0;
 }

@@ -14,7 +14,7 @@
 
 #include "openmapper/common.h"
 
-namespace openmapper_wrapper {
+namespace openmapper {
 
 class InputSource {
  public:
@@ -72,7 +72,7 @@ class InputSource {
   }
   InputSource::VideoSource getInput() { return source_; }
 
-  void GrabImage() {
+  void grabImage() {
     assert(is_input_mode_set_ && "Input mode must be set!");
 
     if (!cap.isOpened()) {
@@ -88,7 +88,7 @@ class InputSource {
     // FIXME: there is a problem with openCV returning 0 instead of the right
     // value. Using the current time instead.
     // current_image_time_sec_ = cap.get(CV_CAP_PROP_POS_MSEC) / 1000.0;
-    Common::GetCurrTimeSec(current_image_time_sec_);
+    Common::getCurrTimeSec(current_image_time_sec_);
   }
 
   float fps_;

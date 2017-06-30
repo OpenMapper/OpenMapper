@@ -8,6 +8,7 @@
 
 #include <opencv2/core/core.hpp>
 
+// ROS
 #include <cv_bridge/cv_bridge.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <ros/ros.h>
@@ -15,21 +16,21 @@
 #include <sensor_msgs/image_encodings.h>
 #include <visualization_msgs/Marker.h>
 
-#include "openmapper/wrapper.h"
+#include "openmapper/openmapper.h"
 
-namespace open_mapper_ros {
+namespace openmapper_ros {
 
 class WrapperROS {
  public:
   WrapperROS(int argc, char** argv, ros::NodeHandle& nodeHandle);
 
-  void ChooseImage(char** argv);
+  void initialize(char** argv);
 
-  void GrabImage(const sensor_msgs::ImageConstPtr& msg);
-  void PublishToROS();
-  void PublishPose();
-  void PublishLandMarks();
-  void PublishImage();
+  void grabROSImage(const sensor_msgs::ImageConstPtr& msg);
+  void trackCamera();
+  void publishPose();
+  void publishLandMarks();
+  void publishImage();
 
  private:
   // ROS nodehandle.
@@ -48,9 +49,9 @@ class WrapperROS {
   std::string camera_frame = "/camera_frame";
   std::string world_frame = "/world";
 
-  openmapper_wrapper::Wrapper wrapper_;
+  openmapper::OpenMapper openmapper_engine_;
 };
 
-}  // namespace  open_mapper_ros
+}  // namespace  openmapper_ros
 
 #endif  // ROS_IMAGE_GRABBER_H_

@@ -87,15 +87,7 @@ FIND_PACKAGE(OpenCV 3.0.0 REQUIRED)
 FIND_PACKAGE(Eigen3 3.1.0 REQUIRED)
 FIND_PACKAGE(OpenGL REQUIRED)
 FIND_PACKAGE(Threads REQUIRED)
-
-# Try the system-wide glog first.
-FIND_PACKAGE(Glog)
-if (GLOG_FOUND)
-  message(STATUS "Found system glog installation.")
-else()
-  message(WARNING "glog was not found. It will be build from source.")
-  INCLUDE("${CMAKE_CURRENT_LIST_DIR}/thirdparty/glog/CMakeLists.txt")
-endif()
+FIND_PACKAGE(Glog REQUIRED)
 
 # FIND_LIBRARY(OpenGL_LIBRARIES OpenGL)
 # SET(OpenCV_DEBUG_LIBRARIES ${OpenCV_LIBRARIES})

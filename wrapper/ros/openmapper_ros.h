@@ -37,6 +37,7 @@ class WrapperROS {
   ros::NodeHandle& nodeHandle_;
 
   cv_bridge::CvImageConstPtr cv_ptr_;
+  std::vector<std::string> flags_;
 
   ros::Publisher marker_pub_;
   ros::Publisher position_pub_;

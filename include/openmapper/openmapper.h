@@ -37,7 +37,7 @@ class OpenMapper {
   // flags[1] = path_to_settings (camera dependent, *.yaml file)
   //
   OpenMapper(const std::vector<std::string>& flags);
-  OpenMapper(int argc, char** argv);
+
   void initialize();
   //
   // Destructor
@@ -69,7 +69,7 @@ class OpenMapper {
   //
   // Main instance of the SLAM engine used.
   //
-  ORB_SLAM2::System slam_engine;
+  std::shared_ptr<ORB_SLAM2::System> slam_engine;
 };
 
 }  // namespace openmapper_wrapper

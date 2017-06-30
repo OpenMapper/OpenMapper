@@ -5,7 +5,9 @@
 namespace openmapper_ros {
 
 WrapperROS::WrapperROS(int argc, char** argv, ros::NodeHandle& nodeHandle)
-    : nodeHandle_(nodeHandle), openmapper_engine_(argc, argv) {
+    : nodeHandle_(nodeHandle),
+      flags_{argv[1], argv[2]},
+      openmapper_engine_(flags_) {
   initialize(argv);
 
   // ROS publisher for the position of the camera.

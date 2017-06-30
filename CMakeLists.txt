@@ -88,6 +88,15 @@ FIND_PACKAGE(Eigen3 3.1.0 REQUIRED)
 FIND_PACKAGE(OpenGL REQUIRED)
 FIND_PACKAGE(Threads REQUIRED)
 
+# Try the system-wide glog first.
+FIND_PACKAGE(Glog)
+if (GLOG_FOUND)
+  message(STATUS "Found system glog installation.")
+else()
+  message(WARNING "glog was not found. It will be build from source.")
+  INCLUDE("${CMAKE_CURRENT_LIST_DIR}/thirdparty/glog/CMakeLists.txt")
+endif()
+
 # FIND_LIBRARY(OpenGL_LIBRARIES OpenGL)
 # SET(OpenCV_DEBUG_LIBRARIES ${OpenCV_LIBRARIES})
 INCLUDE_DIRECTORIES("/usr/local/include")
@@ -114,7 +123,7 @@ IF(BUILD_IOS_FW)
   INCLUDE(cmake_modules/xcode_framework_config.cmake)
 
   ADD_LIBRARY(${OM_WRAPPER_LIB} SHARED ${OM_LIB_SOURCES})
-  # Configure build targets for iOS
+  # Configure build targets for iOS.
   CONFIGURE_FOR_IOS_10_3(${OM_WRAPPER_LIB})
   CONFIGURE_FOR_IOS_10_3(${ORB_SLAM2_LIB})
   CONFIGURE_FOR_IOS_10_3(${DBOW2_LIB})
@@ -197,7 +206,7 @@ ENDIF(BUILD_APP)
 IF(BUILD_ROS_BINDING)
   FILE(GLOB_RECURSE OM_WRAPPER_ROS_NODE_HEADERS "${CMAKE_CURRENT_LIST_DIR}/src/ros/*.h")
   FILE(GLOB OM_WRAPPER_ROS_NODE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/ros/*.cc")
-  
+
   ADD_EXECUTABLE(${OM_WRAPPER_ROS_NODE}
 #     src/ros/main_node.cc
     ${OM_WRAPPER_ROS_NODE_HEADERS}

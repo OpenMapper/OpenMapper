@@ -48,5 +48,5 @@ script:
   # Check versions of gcc, g++ and cmake
   - gcc -v && g++ -v && cmake --version
   # Run your build commands next
-  - ./build.sh
+  - ./tools/build.sh
   - ./test/test.sh

@@ -47,8 +47,8 @@ matrix:
         # Check versions of gcc, g++ and cmake
         - gcc -v && g++ -v && cmake --version
         # Run your build commands next
-        - ./build.sh
-        - ./test.sh
+        - ./tools/build.sh
+        - ./test/test.sh
     - os: osx
       osx_image: xcode7.3
       language: objective-c

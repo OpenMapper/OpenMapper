@@ -8,44 +8,51 @@
 #    OPTIONAL before_deploy
 #    OPTIONAL deploy
 #    OPTIONAL after_deploy
+  
+matrix:
+  include:
+    - os: linux
+      language: cpp
+      dist: trusty # 14.04
+      sudo: required
+      compiler: gcc
+      before_install: sudo apt-get update
+      updateaddons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-6
+            - g++-6
+            - cmake
+            - python-dev
+            - python-numpy
+            - libeigen3-dev
+            - freeglut3-dev # OpenGL
+      before_script:
+            - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+            - sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+            - sudo apt-get update
+            - sudo apt-get install ros-indigo-ros-base
+            - sudo rosdep init
+            - rosdep update
+            - source /opt/ros/indigo/setup.bash
+            - sudo apt-get install ros-indigo-opencv3 ros-indigo-eigen-conversions
 
-dist: trusty # Ubuntu 14.04
-sudo: required
-language:
-  - cpp
-compiler:
-  - gcc
-before_install:
-  - sudo apt-get update
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - gcc-6
-      - g++-6
-      - cmake
-      - python-dev
-      - python-numpy
-      - libeigen3-dev
-      - freeglut3-dev # OpenGL
-      - libgoogle-glog-dev # google log
-before_script:
-      - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-      - sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
-      - sudo apt-get update
-      - sudo apt-get install ros-indigo-ros-base
-      - sudo rosdep init
-      - rosdep update
-      - source /opt/ros/indigo/setup.bash
-      - sudo apt-get install ros-indigo-opencv3 ros-indigo-eigen-conversions
+      script:
 
-script:
-  # Export CC and CXX to tell cmake which compiler to use
-  - export CC=/usr/bin/gcc-6
-  - export CXX=/usr/bin/g++-6
-  # Check versions of gcc, g++ and cmake
-  - gcc -v && g++ -v && cmake --version
-  # Run your build commands next
-  - sh ./tools/build.sh
-  - sh ./test/test.sh
+        # Export CC and CXX to tell cmake which compiler to use
+        - export CC=/usr/bin/gcc-6
+        - export CXX=/usr/bin/g++-6
+        # Check versions of gcc, g++ and cmake
+        - gcc -v && g++ -v && cmake --version
+        # Run your build commands next
+        - ./build.sh
+        - ./test.sh
+    - os: osx
+      osx_image: xcode7.3
+      language: objective-c
+      before_script: sh tools/ios/generate_om_fw.sh
+      script: 
+        - cd fw_build
+        - xcodebuild -target OpenMapper -sdk iphoneos ONLY_ACTIVE_ARCH=FALSE

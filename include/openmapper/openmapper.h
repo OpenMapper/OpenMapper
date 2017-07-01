@@ -42,7 +42,7 @@ class OpenMapper {
   //
   // Destructor
   //
-  virtual ~OpenMapper();
+  // /* virtual */ ~OpenMapper();
 
   //
   // When called, starts the engine in order to track the camera.

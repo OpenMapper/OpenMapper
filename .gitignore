@@ -60,3 +60,5 @@ catkin/
 # Unit tests stuff
 gtest_build/
 gtest/
+
+tmp_build/CMakeLists.txt

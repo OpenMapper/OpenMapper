@@ -28,7 +28,7 @@ ADD_EXECUTABLE(${OM_WRAPPER_TESTS}
 # Link test executable against gtest & gtest_main
 TARGET_LINK_LIBRARIES(${OM_WRAPPER_TESTS}
   gtest gtest_main
-  debug ${OM_WRAPPER_LIB} optimized ${OM_WRAPPER_LIB}
+  debug ${OPENMAPPER_LIB} optimized ${OPENMAPPER_LIB}
 )
 
 ADD_TEST(${OM_WRAPPER_TESTS} ${OM_WRAPPER_TESTS})

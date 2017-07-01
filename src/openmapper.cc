@@ -31,8 +31,6 @@ void OpenMapper::initialize() {
             << std::endl;
 }
 
-// OpenMapper::~OpenMapper() {}
-
 bool OpenMapper::trackImage() {
   //  CHECK(input_source_.isIsInputModeSet())
 

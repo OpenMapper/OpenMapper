@@ -76,4 +76,4 @@ TEST(GetInitialPose, test_with_static_data) {
 //	EXPECT_GE(distance, minimal_distance);
 //}
 
-}  // namespace openmapper_wrapper
+}  // namespace openmapper 

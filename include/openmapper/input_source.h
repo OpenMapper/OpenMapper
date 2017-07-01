@@ -110,6 +110,6 @@ class InputSource {
   cv::VideoCapture cap;
 };
 
-}  // namespace openmapper_wrapper
+}  // namespace openmapper 
 
 #endif  // INCLUDE_OPENMAPPER_INPUT_SOURCE_H_

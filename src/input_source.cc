@@ -10,6 +10,4 @@ InputSource::InputSource()
       fps_(0.0),
       source_(InputSource::kCamera) {}
 
-// InputSource::~InputSource() {}
-
 }  // namespace openmapper

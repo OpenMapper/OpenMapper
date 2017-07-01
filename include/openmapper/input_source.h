@@ -28,7 +28,7 @@ class InputSource {
                   // ROS, native mobile framework...
   };
   InputSource();
-  virtual ~InputSource();
+  // virtual ~InputSource();
 
   cv::Mat getCurrentImage() { return current_image_; }
   void setCurrentImage(cv::Mat currentImage) { current_image_ = currentImage; }

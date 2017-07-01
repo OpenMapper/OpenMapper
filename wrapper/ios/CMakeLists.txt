@@ -24,6 +24,10 @@ INCLUDE_DIRECTORIES(PUBLIC "${CMAKE_CURRENT_LIST_DIR}")
 # Include OpenMapper lib
 INCLUDE("${CMAKE_CURRENT_LIST_DIR}/../../CMakeLists.txt")
 
+# override some flags from OpenMapper Lib
+SET(CMAKE_C_FLAGS "-w -std=c++11")
+SET(CMAKE_CXX_FLAGS "-w -std=c++11")
+
 ################################
 # Define OpenMapper Library
 ################################

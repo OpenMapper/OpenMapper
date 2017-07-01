@@ -19,14 +19,12 @@ IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE Release)
 ENDIF()
 
-# TODO(nidegen) re-enable it
 # Optimize the code with the compiler if the target device has a x86 processor.
-# IF(CMAKE_SYSTEM_PROCESSOR MATCHES "amd64.*|x86_64.*|AMD64.*|i686.*|i386.*|x86.*")
-#   MESSAGE("Current System is x86.")
-#   SET(X86 TRUE)
-#   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=native")
-#   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-# ENDIF()
+IF(CMAKE_SYSTEM_PROCESSOR MATCHES "amd64.*|x86_64.*|AMD64.*|i686.*|i386.*|x86.*")
+  MESSAGE("Current System is x86.")
+  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=native")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+ENDIF()
 
 SET(BUILD_TESTS FALSE CACHE BOOL "Build OpenMapper tests.")
 

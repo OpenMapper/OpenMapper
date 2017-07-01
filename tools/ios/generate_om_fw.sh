@@ -1,3 +1,7 @@
+#!/bin/bash
+
+# Generate OpenMapper Xcode Framework Project for iOS
 mkdir -p fw_build
+rm -r ./fw_build/*
 cd fw_build
-cmake ../. -DBUILD_IOS_FW=TRUE -GXcode
+cmake ../wrapper/ios -GXcode

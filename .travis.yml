@@ -32,6 +32,7 @@ matrix:
             - libeigen3-dev
             - freeglut3-dev # OpenGL
             - libgoogle-glog-dev
+            – libgflags–dev
       before_script:
             - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
             - sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
@@ -41,12 +42,7 @@ matrix:
             - rosdep update
             - source /opt/ros/indigo/setup.bash
             - sudo apt-get install ros-indigo-opencv3 ros-indigo-eigen-conversions
-            - cd thirdparty/glog
-            - mkdir build
-            - cd build
-            - cmake ..
-            - make
-            - cd ../../..
+            
       script:
 
         # Export CC and CXX to tell cmake which compiler to use

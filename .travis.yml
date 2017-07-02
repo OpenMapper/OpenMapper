@@ -44,7 +44,8 @@ matrix:
             - cd thirdparty/glog
             - mkdir build
             - cd build
-            - make ..
+            - cmake ..
+            - make
             - cd ../../..
       script:
 

@@ -1,4 +1,4 @@
-# NOTE: The build lifecycle on Travis.ci is something like this:
+# NOTE:               The build lifecycle on Travis.ci is something like this:
 #    before_install
 #    install
 #    before_script
@@ -11,11 +11,11 @@
 
 matrix:
   include:
-    - os: linux
-      language: cpp
-      dist: trusty # 14.04
-      sudo: required
-      compiler: gcc
+    - os:             linux
+      language:       cpp
+      dist:           trusty # 14.04
+      sudo:           required
+      compiler:       gcc
       before_install: sudo apt-get update
       updateaddons:
         apt:
@@ -49,10 +49,16 @@ matrix:
         # Run your build commands next
         - ./tools/build.sh
         - ./test/test.sh
-    - os: osx
-      osx_image: xcode7.3
-      language: objective-c
-      before_script: sh tools/ios/generate_om_fw.sh
+    - os:             osx
+      osx_image:      xcode7.3
+      language:       objective-c
+      before_script:
+        - brew update
+        - brew install python3
+        - brew install gcc
+        - sudo pip3 install -U numpy scipy matplotlib scikit-learn scikit-image
+        - brew install opencv3 --with-python3
+        - sh tools/ios/generate_om_fw.sh
       script:
         - cd fw_build
         - xcodebuild -target OpenMapper -sdk iphoneos ONLY_ACTIVE_ARCH=FALSE

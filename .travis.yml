@@ -8,7 +8,7 @@
 #    OPTIONAL before_deploy
 #    OPTIONAL deploy
 #    OPTIONAL after_deploy
-  
+
 matrix:
   include:
     - os: linux
@@ -42,10 +42,10 @@ matrix:
       script:
 
         # Export CC and CXX to tell cmake which compiler to use
-        - export CC=/usr/bin/gcc-6
-        - export CXX=/usr/bin/g++-6
+        # - export CC=/usr/bin/gcc-6
+        # - export CXX=/usr/bin/g++-6
         # Check versions of gcc, g++ and cmake
-        - gcc -v && g++ -v && cmake --version
+        # - gcc -v && g++ -v && cmake --version
         # Run your build commands next
         - ./tools/build.sh
         - ./test/test.sh
@@ -53,6 +53,6 @@ matrix:
       osx_image: xcode7.3
       language: objective-c
       before_script: sh tools/ios/generate_om_fw.sh
-      script: 
+      script:
         - cd fw_build
         - xcodebuild -target OpenMapper -sdk iphoneos ONLY_ACTIVE_ARCH=FALSE

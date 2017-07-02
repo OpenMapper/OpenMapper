@@ -42,9 +42,10 @@ matrix:
             - source /opt/ros/indigo/setup.bash
             - sudo apt-get install ros-indigo-opencv3 ros-indigo-eigen-conversions
             - cd thirdparty/glog
-            - ./configure
-            - make
-            - cd ../..
+            - mkdir build
+            - cd build
+            - make ..
+            - cd ../../..
       script:
 
         # Export CC and CXX to tell cmake which compiler to use

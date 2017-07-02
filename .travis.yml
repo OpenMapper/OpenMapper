@@ -57,7 +57,7 @@ matrix:
         - brew install python3
         - brew install gcc
         - sudo pip3 install -U numpy scipy matplotlib scikit-learn scikit-image
-        - brew install opencv3 --with-python3
+        - brew install homebrew/science/opencv3 --with-python3
         - sh tools/ios/generate_om_fw.sh
       script:
         - cd fw_build

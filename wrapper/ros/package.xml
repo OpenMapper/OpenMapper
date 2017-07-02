@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>OpenMapper</name>
+  <name>open_mapper_ros</name>
   <version>0.0.1</version>
   <description>
     description...

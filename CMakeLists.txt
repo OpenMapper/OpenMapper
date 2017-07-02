@@ -4,7 +4,13 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.1)
 # OpenMapper
 ################################
 
-PROJECT(OpenMapper)
+IF(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
+  MESSAGE("This project: " ${PROJECT_NAME})
+ELSE()
+ PROJECT(OpenMapper)
+ENDIF(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
+
+
 SET(OPENMAPPER_LIB "OpenMapper")
 
 # Request C++11 standard from compiler.
@@ -35,7 +41,7 @@ LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake_modules)
 ################################
 
 FILE(GLOB_RECURSE OM_LIB_HEADERS "${CMAKE_CURRENT_LIST_DIR}/include/*.h")
-FILE(GLOB OM_LIB_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/*.cc")
+FILE(GLOB_RECURSE OM_LIB_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/*.cc")
 
 INCLUDE_DIRECTORIES(PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include")
 
@@ -72,11 +78,20 @@ INCLUDE_DIRECTORIES(
 
 ADD_LIBRARY(${OPENMAPPER_LIB} STATIC ${OM_LIB_SOURCES})
 
+# MESSAGE("---------------------")
+# MESSAGE("---------------------")
+# MESSAGE("---------------------")
+# MESSAGE("---------------------")
+# MESSAGE("GLOG_LIBRARY: " ${GLOG_LIBRARY})
+# MESSAGE("---------------------")
+# MESSAGE("---------------------")
+# MESSAGE("---------------------")
+
 TARGET_LINK_LIBRARIES(${OPENMAPPER_LIB}
 # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
   Threads::Threads #TODO(gocarlos) check if this is needed.
-
-  debug ${GLOG_LIBRARY} optimized ${GLOG_LIBRARY}
+  # glog::glog
+  ${GLOG_LIBRARY}
   debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
   debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
   debug ${G2O_LIB} optimized ${G2O_LIB}

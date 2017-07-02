@@ -1,11 +1,11 @@
 #!/bin/bash
 
-root_dir=$(pwd)/../..
+# root_dir=$(pwd)/../..
+# export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:$root_dir
 
-export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:$root_dir
-
+echo $(pwd)
 # Build OpenMapper ROS Node
 mkdir -p ros_build
-cd build
-cmake ../wrapper/ros/  -DCMAKE_BUILD_TYPE=DEBUG 
+cd ros_build
+cmake ../wrapper/ros/  -DCMAKE_BUILD_TYPE=DEBUG
 make -j4

@@ -39,10 +39,6 @@ class OpenMapper {
   OpenMapper(const std::vector<std::string>& flags);
 
   void initialize();
-  //
-  // Destructor
-  //
-  virtual ~OpenMapper();
 
   //
   // When called, starts the engine in order to track the camera.
@@ -72,6 +68,6 @@ class OpenMapper {
   std::shared_ptr<ORB_SLAM2::System> slam_engine;
 };
 
-}  // namespace openmapper_wrapper
+}  // namespace openmapper 
 
 #endif  // INCLUDE_OPENMAPPER_OPENMAPPER_H_

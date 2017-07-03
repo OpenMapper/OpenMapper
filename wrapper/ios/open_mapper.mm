@@ -10,11 +10,11 @@
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
-#include "wrapper.h"
+#include "openmapper/openmapper.h"
 
 
 struct OpenMapperOpaqueMembers {
-  openmapper_wrapper::Wrapper open_mapper;
+  openmapper::OpenMapper open_mapper;
 };
 
 @implementation OpenMapper

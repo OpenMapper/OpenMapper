@@ -6,8 +6,6 @@ namespace openmapper {
 
 Common::Common() {}
 
-Common::~Common() {}
-
 void Common::getCurrTimeSec(double& time) {
   time = std::chrono::time_point_cast<std::chrono::milliseconds>(
              std::chrono::system_clock::now())

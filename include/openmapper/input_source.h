@@ -28,7 +28,7 @@ class InputSource {
                   // ROS, native mobile framework...
   };
   InputSource();
-  virtual ~InputSource();
+  // virtual ~InputSource();
 
   cv::Mat getCurrentImage() { return current_image_; }
   void setCurrentImage(cv::Mat currentImage) { current_image_ = currentImage; }
@@ -110,6 +110,6 @@ class InputSource {
   cv::VideoCapture cap;
 };
 
-}  // namespace openmapper_wrapper
+}  // namespace openmapper 
 
 #endif  // INCLUDE_OPENMAPPER_INPUT_SOURCE_H_

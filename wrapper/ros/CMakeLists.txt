@@ -4,9 +4,9 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.1)
 # OpenMapper
 ################################
 
-PROJECT("OpenMapperROS")
+PROJECT("open_mapper_ros")
 
-SET(OPENMAPPER_ROS_NODE "OpenMapperROS")
+SET(OPENMAPPER_ROS_NODE "open_mapper_ros")
 
 # Request C++11 standard from compiler.
 SET(CMAKE_CXX_STANDARD 11)
@@ -24,8 +24,8 @@ ENDIF()
 # Define Sources and Headers
 ################################
 
-FILE(GLOB_RECURSE OM_WRAPPER_ROS_NODE_HEADERS "${CMAKE_CURRENT_LIST_DIR}/src/ros/*.h")
-FILE(GLOB OM_WRAPPER_ROS_NODE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/ros/*.cc")
+FILE(GLOB_RECURSE OPENMAPPER_ROS_NODE_HEADERS "${CMAKE_CURRENT_LIST_DIR}/*.h")
+FILE(GLOB_RECURSE OPENMAPPER_ROS_NODE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.cc")
 
 
 ################################
@@ -33,7 +33,7 @@ FILE(GLOB OM_WRAPPER_ROS_NODE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/src/ros/*.cc")
 ################################
 
 # Include OpenMapper lib
-INCLUDE("${CMAKE_CURRENT_LIST_DIR}../../CMakeLists.txt")
+INCLUDE("${CMAKE_CURRENT_LIST_DIR}/../../CMakeLists.txt")
 
 FIND_PACKAGE(catkin REQUIRED COMPONENTS
   roscpp
@@ -66,6 +66,8 @@ ADD_EXECUTABLE(${OPENMAPPER_ROS_NODE}
 
 TARGET_LINK_LIBRARIES(${OPENMAPPER_ROS_NODE}
   debug ${OPENMAPPER_LIB} optimized ${OPENMAPPER_LIB}
+  debug ${catkin_LIBRARIES} optimized ${catkin_LIBRARIES} # ROS stuff
+
 )
 
 

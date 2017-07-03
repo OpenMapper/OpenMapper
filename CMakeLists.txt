@@ -4,8 +4,11 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.1)
 # OpenMapper
 ################################
 
-PROJECT(OpenMapper)
 SET(OPENMAPPER_LIB "OpenMapper")
+
+IF(NOT PROJECT_NAME)
+  PROJECT(${OPENMAPPER_LIB})
+ENDIF(NOT PROJECT_NAME)
 
 # Request C++11 standard from compiler.
 SET(CMAKE_CXX_STANDARD 11)

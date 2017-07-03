@@ -10,6 +10,11 @@ namespace openmapper {
 class Map {
  public:
   Map();
+
+  void getFeatures();
+
+ private:
+  Map* orb_slam_map_;
 };
 
 }  // namespace openmapper

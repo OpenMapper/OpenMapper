@@ -6,10 +6,11 @@ int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   FLAGS_alsologtostderr = 1;
   FLAGS_colorlogtostderr = 1;
+  google::InstallFailureSignalHandler();
 
   if (argc < 5) {
-    LOG(FATAL) << "Usage: rosrun open_mapper_ros open_mapper_ros "
-                  "path_to_vocabulary path_to_settings";
+    LOG(FATAL) << "Example usage: rosrun open_mapper_ros open_mapper_ros "
+                  "path_to_vocabulary path_to_settings opencv_live 0";
   } else {
     LOG(INFO) << "Going to print out the arguments: ";
     for (std::size_t i = 0u; i < argc; ++i) {

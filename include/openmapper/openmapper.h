@@ -59,6 +59,8 @@ class OpenMapper {
   void getPose(std::shared_ptr<std::vector<double>> pos,
                std::shared_ptr<std::vector<double>> rot);
 
+  std::shared_ptr<ORB_SLAM2::System> getSlamEngine() { return slam_engine; }
+
  private:
   //
   // Main instance of the SLAM engine used.

@@ -16,8 +16,8 @@
 #include <sensor_msgs/image_encodings.h>
 #include <visualization_msgs/Marker.h>
 
-#include "openmapper/openmapper.h"
 #include "openmapper/input_source.h"
+#include "openmapper/openmapper.h"
 
 namespace openmapper_ros {
 
@@ -31,7 +31,7 @@ class WrapperROS {
   void trackCamera();
   void publishPose();
   void publishLandMarks();
-  void publishImage();
+  void publishImage(const cv::Mat& img);
 
  private:
   // ROS nodehandle.

@@ -3,9 +3,9 @@
 #ifndef INCLUDE_OPENMAPPER_INPUT_SOURCE_H_
 #define INCLUDE_OPENMAPPER_INPUT_SOURCE_H_
 
+#include <glog/logging.h>
 #include <iostream>
 #include <thread>
-#include <glog/logging.h>
 
 // ORB_SLAM2
 #include <System.h>
@@ -42,7 +42,7 @@ class InputSource {
 
   void setInput(VideoSource source, std::string device) {
     CHECK(device != "");
-    LOG(INFO)    <<"Input device is set to: " << device;
+    LOG(INFO) << "Input device is set to: " << device;
 
     is_input_mode_set_ = true;
     source_ = source;
@@ -82,7 +82,7 @@ class InputSource {
     }
 
     fps_ = cap.get(CV_CAP_PROP_FPS);
-    assert(fps_ >= 1);
+    CHECK_GT(fps_, 1.0);
 
     cap >> current_image_;
     // FIXME: there is a problem with openCV returning 0 instead of the right
@@ -110,6 +110,6 @@ class InputSource {
   cv::VideoCapture cap;
 };
 
-}  // namespace openmapper 
+}  // namespace openmapper
 
 #endif  // INCLUDE_OPENMAPPER_INPUT_SOURCE_H_

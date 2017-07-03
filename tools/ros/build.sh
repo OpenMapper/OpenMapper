@@ -1,6 +1,8 @@
 #!/bin/bash
 
-root_dir=$(pwd)/../..
+# This script should be executed from the root directory of the OpenMapper software. 
+
+root_dir=$(pwd)
 
 export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:$root_dir
 

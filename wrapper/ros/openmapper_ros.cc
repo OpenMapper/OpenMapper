@@ -15,7 +15,7 @@ WrapperROS::WrapperROS(int argc, char** argv, ros::NodeHandle& nodeHandle)
       "/visualization_marker", 1);
   position_pub_ =
       nodeHandle_.advertise<geometry_msgs::PoseStamped>("/camera_pose", 1);
-  image_pub_ = nodeHandle_.advertise<sensor_msgs::Image>("/camera_image", 1);
+  image_pub_ = nodeHandle_.advertise<sensor_msgs::Image>("/camera/image_raw", 1);
 
   trackCamera();
 }

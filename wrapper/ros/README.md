@@ -1,6 +1,6 @@
 #ROS Node Usage
 
-rosrun OpenMapper OpenMapperAppROSNode path_to_vocabulary path_to_settings [ opencv_live  0 | opencv_movie PATH/movie.mov | ros_topic "/camera/image_raw" ]
+rosrun open_mapper_ros open_mapper_ros path_to_vocabulary path_to_settings [ opencv_live  0 | opencv_movie PATH/movie.mov | ros_topic "/camera/image_raw" ]
 
 
 ##Example:

@@ -17,6 +17,7 @@
 #include <visualization_msgs/Marker.h>
 
 #include "openmapper/openmapper.h"
+#include "openmapper/input_source.h"
 
 namespace openmapper_ros {
 
@@ -35,6 +36,7 @@ class WrapperROS {
  private:
   // ROS nodehandle.
   ros::NodeHandle& nodeHandle_;
+  std::shared_ptr<openmapper::InputSource> input_source_;
 
   cv_bridge::CvImageConstPtr cv_ptr_;
   std::vector<std::string> flags_;

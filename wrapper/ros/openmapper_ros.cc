@@ -24,9 +24,8 @@ void WrapperROS::grabROSImage(const sensor_msgs::ImageConstPtr& msg) {
   // Copy the ROS image message to cv::Mat.
   try {
     cv_ptr_ = cv_bridge::toCvShare(msg);
-    openmapper_engine_.input_source_.setCurrentImage(cv_ptr_->image);
-    openmapper_engine_.input_source_.setCurrentImageTimeSec(
-        cv_ptr_->header.stamp.toSec());
+    input_source_->setCurrentImage(cv_ptr_->image);
+    input_source_->setCurrentImageTimeSec(cv_ptr_->header.stamp.toSec());
   } catch (cv_bridge::Exception& e) {
     ROS_ERROR("cv_bridge exception: %s", e.what());
   }
@@ -34,37 +33,41 @@ void WrapperROS::grabROSImage(const sensor_msgs::ImageConstPtr& msg) {
 }
 
 void WrapperROS::initialize(char** argv) {
+  CHECK(argv);
   // Choose the input topic.
   const std::string input = argv[3];
   const std::string settings = argv[4];
 
+  input_source_.reset(new openmapper::InputSource());
+
+  // string::compare == 0 returns true if both strings are equal .
   if (input.compare("opencv_live") == 0) {
     // Use the openCV camera.
     camera_stream_live_input_ = settings;
-    std::cout << "Source is set to live video from camera device "
-              << camera_stream_live_input_ << std::endl;
-    openmapper_engine_.input_source_.setInput(openmapper::InputSource::kCamera,
-                                              camera_stream_live_input_);
+    LOG(INFO) << "Source is set to live video from camera device "
+              << camera_stream_live_input_;
+    input_source_->setInput(openmapper::InputSource::kCamera,
+                            camera_stream_live_input_);
   } else if (input.compare("opencv_movie") == 0) {
     // Read from file.
     camera_stream_movie_path_ = settings;
-    std::cout << "Source is set to video file from path "
-              << camera_stream_movie_path_ << std::endl;
-    openmapper_engine_.input_source_.setInput(openmapper::InputSource::kFile,
-                                              camera_stream_movie_path_);
+    LOG(INFO) << "Source is set to video file from path "
+              << camera_stream_movie_path_;
+    input_source_->setInput(openmapper::InputSource::kFile,
+                            camera_stream_movie_path_);
   } else if (input.compare("ros_topic") == 0) {
     // Use ROS topic.
     camera_stream_ros_topic_ = settings;
-    std::cout << "Source is set to life video from ROS topic "
-              << camera_stream_ros_topic_ << std::endl;
+    LOG(INFO) << "Source is set to life video from ROS topic "
+              << camera_stream_ros_topic_;
+
     // ROS subscriber to the images in this topic.
     ros::Subscriber sub = nodeHandle_.subscribe(
         camera_stream_ros_topic_, 1, &WrapperROS::grabROSImage, this);
-    openmapper_engine_.input_source_.setInput(openmapper::InputSource::kImage,
-                                              camera_stream_ros_topic_);
+    input_source_->setInput(openmapper::InputSource::kImage,
+                            camera_stream_ros_topic_);
   } else {
-    std::cerr << "ERROR: no image source have been chosen!" << std::endl;
-    exit(1);
+    LOG(FATAL) << "ERROR: no image source have been chosen!";
   }
 }
 
@@ -87,43 +90,43 @@ void WrapperROS::publishPose() {
     pose.pose.orientation.w = (*rot)[3];
 
     position_pub_.publish(pose);
-    sleep(1 / openmapper_engine_.input_source_.fps_);
+    sleep(1 / input_source_->fps_);
   }
 }
 
 void WrapperROS::publishLandMarks() {
-  while (true) {
-    // TODO(gocarlos): finish this.
-    //    visualization_msgs::Marker marker;
-    //    marker.header.frame_id = world_frame;
-    //    marker.header.stamp = ros::Time::now();
-    //    marker.ns = "camera";
-    //    marker.id = 0u;
-    //
-    //    marker.type = visualization_msgs::Marker::ARROW;
-    //    marker.action = visualization_msgs::Marker::ADD;
-    //
-    //    marker.pose.position.x = (*pos)[0];
-    //    marker.pose.position.y = (*pos)[1];
-    //    marker.pose.position.z = (*pos)[2];
-    //    marker.pose.orientation.x = (*rot)[0];
-    //    marker.pose.orientation.y = (*rot)[1];
-    //    marker.pose.orientation.z = (*rot)[2];
-    //    marker.pose.orientation.w = (*rot)[3];
-    //
-    //    marker.scale.x = 0.2;
-    //    marker.scale.y = 0.2;
-    //    marker.scale.z = 0.2;
-    //
-    //    marker.color.r = 0.0f;
-    //    marker.color.g = 1.0f;
-    //    marker.color.b = 0.0f;
-    //    marker.color.a = 1.0;
-    //
-    //    marker.lifetime = ros::Duration();
-    //    marker_pub_.publish(marker);
-    sleep(1 / openmapper_engine_.input_source_.fps_);
-  }
+  //  while (true) {
+  //    // TODO(gocarlos): finish this.
+  //    visualization_msgs::Marker marker;
+  //    marker.header.frame_id = world_frame;
+  //    marker.header.stamp = ros::Time::now();
+  //    marker.ns = "camera";
+  //    marker.id = 0u;
+  //
+  //    marker.type = visualization_msgs::Marker::ARROW;
+  //    marker.action = visualization_msgs::Marker::ADD;
+  //
+  //    marker.pose.position.x = (*pos)[0];
+  //    marker.pose.position.y = (*pos)[1];
+  //    marker.pose.position.z = (*pos)[2];
+  //    marker.pose.orientation.x = (*rot)[0];
+  //    marker.pose.orientation.y = (*rot)[1];
+  //    marker.pose.orientation.z = (*rot)[2];
+  //    marker.pose.orientation.w = (*rot)[3];
+  //
+  //    marker.scale.x = 0.2;
+  //    marker.scale.y = 0.2;
+  //    marker.scale.z = 0.2;
+  //
+  //    marker.color.r = 0.0f;
+  //    marker.color.g = 1.0f;
+  //    marker.color.b = 0.0f;
+  //    marker.color.a = 1.0;
+  //
+  //    marker.lifetime = ros::Duration();
+  //    marker_pub_.publish(marker);
+  //    sleep(1 / input_source_->fps_);
+  //  }
 }
 
 void WrapperROS::publishImage() {
@@ -134,7 +137,7 @@ void WrapperROS::publishImage() {
 
   while (true) {
     // header.seq = counter; // user defined counter
-    img = openmapper_engine_.input_source_.getCurrentImage();
+    img = input_source_->getCurrentImage();
     if (img.empty()) {
       continue;
     }
@@ -143,15 +146,23 @@ void WrapperROS::publishImage() {
         cv_bridge::CvImage(header, sensor_msgs::image_encodings::RGB8, img);
     img_bridge.toImageMsg(img_msg);
     image_pub_.publish(img_msg);
-    sleep(1 / openmapper_engine_.input_source_.fps_);
+    sleep(1 / input_source_->fps_);
   }
 }
 
 void WrapperROS::trackCamera() {
+  CHECK(input_source_);
+  CHECK(input_source_->isInputModeSet());
   while (true) {
-    openmapper_engine_.trackImage();
+    input_source_->grabImage();
 
-    sleep(1 / openmapper_engine_.input_source_.fps_);
+    bool tracking =
+        openmapper_engine_.trackImage(input_source_->getCurrentImage(),
+                                      input_source_->getCurrentImageTimeSec());
+    if (!tracking) {
+      break;
+    }
+    sleep(1 / input_source_->fps_);
     publishImage();
     publishLandMarks();
     publishPose();

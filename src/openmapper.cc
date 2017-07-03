@@ -9,38 +9,30 @@ OpenMapper::OpenMapper(const std::vector<std::string>& flags)
                                         ORB_SLAM2::System::MONOCULAR, false)),
       path_to_vocabulary_(flags[0]),
       path_to_settings_(flags[1]),
-      input_source_(),
       pose_() {
   initialize();
 }
 
 void OpenMapper::initialize() {
-  std::cout << "\n"
-            << "Flags: "
+  LOG(INFO) << "Flags: "
             << "\n"
             << path_to_vocabulary_ << "\n"
-            << path_to_settings_ << std::endl
-            << std::endl;
+            << path_to_settings_ << "\n\n";
 }
 
-bool OpenMapper::trackImage() {
-  CHECK(input_source_.isIsInputModeSet());
-
-  input_source_.grabImage();
-
-  if (input_source_.getCurrentImage().empty()) {
+bool OpenMapper::trackImage(const cv::Mat& img, const double& time_stamp) {
+  if (img.empty()) {
     LOG(INFO) << "Failed to load another image, assuming the video stream "
                  "has finished...";
     return false;
   } else {
     pose_.curr_cam_transformation =
-        slam_engine->TrackMonocular(input_source_.getCurrentImage(),
-                                    input_source_.getCurrentImageTimeSec());
+        slam_engine->TrackMonocular(img, time_stamp);
 
     if (pose_.curr_cam_transformation.rows > 1) {
-      std::cout << "Camera transformation at time " << std::setprecision(20)
-                << input_source_.getCurrentImageTimeSec() << "\n"
-                << pose_.curr_cam_transformation << std::endl;
+      LOG(INFO) << "Camera transformation at time " << std::setprecision(20)
+                << time_stamp << "\n"
+                << pose_.curr_cam_transformation;
       pose_.cam_pose.camera_pos[0] =
           pose_.curr_cam_transformation.at<float>(0, 3);
       pose_.cam_pose.camera_pos[1] =
@@ -51,7 +43,7 @@ bool OpenMapper::trackImage() {
     } else {
       std::cout << "\r"
                 << "Waiting for tracking: " << std::setprecision(20)
-                << input_source_.getCurrentImageTimeSec() << " ";
+                << time_stamp << " ";
     }
   }
   return true;

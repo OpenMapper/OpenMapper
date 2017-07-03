@@ -5,6 +5,5 @@
 namespace openmapper {
 
 Map::Map() {}
-Map::~Map() {}
 
 }  // namespace openmapper

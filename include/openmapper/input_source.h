@@ -38,7 +38,7 @@ class InputSource {
     current_image_time_sec_ = currentImageTimeSec;
   }
 
-  bool isIsInputModeSet() const { return is_input_mode_set_; }
+  bool isInputModeSet() const { return is_input_mode_set_; }
 
   void setInput(VideoSource source, std::string device) {
     CHECK(device != "");

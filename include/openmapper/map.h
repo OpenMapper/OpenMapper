@@ -10,7 +10,6 @@ namespace openmapper {
 class Map {
  public:
   Map();
-  virtual ~Map();
 };
 
 }  // namespace openmapper

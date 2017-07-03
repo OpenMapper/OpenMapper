@@ -54,8 +54,17 @@ FIND_PACKAGE(OpenGL REQUIRED)
 FIND_PACKAGE(Threads REQUIRED)
 FIND_PACKAGE(Glog REQUIRED)
 if(Glog_FOUND)
-  include_directories(${Glog_INCLUDE_PATH})
+  include_directories(${Glog_INCLUDE_PATH} ${GLOG_INCLUDE_DIRS})
+  MESSAGE("---------------------")
+  MESSAGE( "Glog  found: " ${Glog_INCLUDE_PATH} " "  ${GLOG_INCLUDE_DIRS})
+  MESSAGE("---------------------")
 endif(Glog_FOUND)
+
+if(NOT Glog_FOUND)
+  MESSAGE("---------------------")
+  MESSAGE("Glog not found!" )
+  MESSAGE("---------------------")
+endif(NOT Glog_FOUND)
 
 # FIND_LIBRARY(OpenGL_LIBRARIES OpenGL)
 # SET(OpenCV_DEBUG_LIBRARIES ${OpenCV_LIBRARIES})
@@ -81,17 +90,16 @@ INCLUDE_DIRECTORIES(
 
 ADD_LIBRARY(${OPENMAPPER_LIB} STATIC ${OM_LIB_SOURCES})
 
-# MESSAGE("---------------------")
-# MESSAGE("---------------------")
-# MESSAGE("---------------------")
-# MESSAGE("---------------------")
+MESSAGE("---------------------")
+MESSAGE("---------------------")
+MESSAGE("---------------------")
 MESSAGE("GLOG_LIBRARY: " ${GLOG_LIBRARY})
 MESSAGE("GLOG_LIBRARIES: " ${GLOG_LIBRARIES})
 MESSAGE("GLOG_INCLUDE_DIRS: " ${GLOG_INCLUDE_DIRS})
 MESSAGE("GLOG_LIBRARYRARY_DIRS: " ${GLOG_LIBRARYRARY_DIRS})
-# MESSAGE("---------------------")
-# MESSAGE("---------------------")
-# MESSAGE("---------------------")
+MESSAGE("---------------------")
+MESSAGE("---------------------")
+MESSAGE("---------------------")
 
 TARGET_LINK_LIBRARIES(${OPENMAPPER_LIB}
 # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -ev
+# The -e flag causes the script to exit as soon as one command returns a non-zero exit code.
+# The -v flag makes the shell print all lines in the script before executing them, which helps identify which steps failed.
+
 rm -rf build/
 # rm -rf bin/
 # rm -rf lib/

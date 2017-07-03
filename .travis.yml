@@ -9,15 +9,17 @@
 #    OPTIONAL deploy
 #    OPTIONAL after_deploy
 
+os:
+  - linux
+  - osx
+
 matrix:
   allow_failures:
     - os: osx
   include:
-    - os:             linux
-      language:       cpp
-      dist:           trusty # 14.04
-      sudo:           required
-      compiler:       gcc
+    - os: linux
+      dist: trusty # 14.04
+      sudo: required
       before_install: sudo apt-get update
       updateaddons:
         apt:
@@ -42,20 +44,21 @@ matrix:
             - rosdep update
             - source /opt/ros/indigo/setup.bash
             - sudo apt-get install ros-indigo-opencv3 ros-indigo-eigen-conversions
-            
-      script:
 
+      script:
         # Export CC and CXX to tell cmake which compiler to use
         # - export CC=/usr/bin/gcc-6
         # - export CXX=/usr/bin/g++-6
         # Check versions of gcc, g++ and cmake
-        # - gcc -v && g++ -v && cmake --version
+        - gcc -v && g++ -v && cmake --version
         # Run your build commands next
         - ./tools/build.sh
         - ./test/test.sh
-    - os:             osx
-      osx_image:      xcode7.3
-      language:       objective-c
+
+    - os: osx
+      osx_image: xcode7.3
+      sudo: required
+      language: objective-c
       before_script:
         - brew update
         # - brew install python3

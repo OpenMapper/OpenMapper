@@ -53,6 +53,9 @@ FIND_PACKAGE(OpenCV 3.0.0 REQUIRED)
 FIND_PACKAGE(OpenGL REQUIRED)
 FIND_PACKAGE(Threads REQUIRED)
 FIND_PACKAGE(Glog REQUIRED)
+if(Glog_FOUND)
+  include_directories(${Glog_INCLUDE_PATH})
+endif(Glog_FOUND)
 
 # FIND_LIBRARY(OpenGL_LIBRARIES OpenGL)
 # SET(OpenCV_DEBUG_LIBRARIES ${OpenCV_LIBRARIES})
@@ -82,7 +85,10 @@ ADD_LIBRARY(${OPENMAPPER_LIB} STATIC ${OM_LIB_SOURCES})
 # MESSAGE("---------------------")
 # MESSAGE("---------------------")
 # MESSAGE("---------------------")
-# MESSAGE("GLOG_LIBRARY: " ${GLOG_LIBRARY})
+MESSAGE("GLOG_LIBRARY: " ${GLOG_LIBRARY})
+MESSAGE("GLOG_LIBRARIES: " ${GLOG_LIBRARIES})
+MESSAGE("GLOG_INCLUDE_DIRS: " ${GLOG_INCLUDE_DIRS})
+MESSAGE("GLOG_LIBRARYRARY_DIRS: " ${GLOG_LIBRARYRARY_DIRS})
 # MESSAGE("---------------------")
 # MESSAGE("---------------------")
 # MESSAGE("---------------------")
@@ -90,8 +96,8 @@ ADD_LIBRARY(${OPENMAPPER_LIB} STATIC ${OM_LIB_SOURCES})
 TARGET_LINK_LIBRARIES(${OPENMAPPER_LIB}
 # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
   Threads::Threads #TODO(gocarlos) check if this is needed.
-  # glog::glog
-  ${GLOG_LIBRARY}
+
+  debug ${GLOG_LIBRARY} optimized ${GLOG_LIBRARY}
   debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
   debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
   debug ${G2O_LIB} optimized ${G2O_LIB}

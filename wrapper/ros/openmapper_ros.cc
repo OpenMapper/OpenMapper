@@ -1,6 +1,7 @@
 // (c) 2017 OpenMapper
 
 #include "openmapper_ros.h"
+#include <csignal>
 
 namespace openmapper_ros {
 
@@ -11,14 +12,22 @@ WrapperROS::WrapperROS(int argc, char** argv, ros::NodeHandle& nodeHandle)
   initialize(argv);
 
   // ROS publisher for the position of the camera.
-  marker_pub_ = nodeHandle_.advertise<visualization_msgs::Marker>(
+  marker_pub_ = nodeHandle_.advertise<visualization_msgs::MarkerArray>(
       "/visualization_marker", 1);
   position_pub_ =
       nodeHandle_.advertise<geometry_msgs::PoseStamped>("/camera_pose", 1);
   image_pub_ =
       nodeHandle_.advertise<sensor_msgs::Image>("/camera/image_raw", 1);
+  signal(SIGINT, inthand);
 
   trackCamera();
+}
+
+bool WrapperROS::stop = false;
+
+void WrapperROS::inthand(int signum) {
+  LOG(WARNING) << "Interrupt signal (" << signum << ") received.";
+  stop = true;
 }
 
 void WrapperROS::grabROSImage(const sensor_msgs::ImageConstPtr& msg) {
@@ -103,11 +112,12 @@ void WrapperROS::publishLandMarks() {
 
     LOG(INFO) << "Number of tracked map points: " << map_points.size();
 
+    visualization_msgs::MarkerArray markers;
     for (size_t i = 0u; i < map_points.size(); ++i) {
       CHECK_NOTNULL(map_points[i]);
       cv::Mat pose = map_points[i]->GetWorldPos();
       // TODO(gocarlos): make an array out of this.
-      LOG(INFO) << "point " << i << "\n" << pose;
+      //      LOG(INFO) << "point " << i << "\n" << pose;
 
       visualization_msgs::Marker marker;
       marker.header.frame_id = world_frame;
@@ -136,8 +146,9 @@ void WrapperROS::publishLandMarks() {
       marker.color.a = 1.0;
 
       marker.lifetime = ros::Duration();
-      marker_pub_.publish(marker);
+      markers.markers.push_back(marker);
     }
+    marker_pub_.publish(markers);
   }
 }
 
@@ -156,7 +167,9 @@ void WrapperROS::publishImage(const cv::Mat& img) {
 void WrapperROS::trackCamera() {
   CHECK_NOTNULL(input_source_.get());
   CHECK(input_source_->isInputModeSet());
-  int time_step_to_publish = 5;
+
+  signal(SIGINT, inthand);
+
   double curr_time = 0.0;
   openmapper::Common::getCurrTimeSec(curr_time);
   double start_time = 0.0;
@@ -170,10 +183,14 @@ void WrapperROS::trackCamera() {
     if (!tracking) {
       break;
     }
-    sleep(1.0 / input_source_.fps_);
+    if (stop) {
+      break;
+    }
+
+    sleep(1.0 / input_source_->fps_);
     openmapper::Common::getCurrTimeSec(curr_time);
 
-    if (curr_time - start_time > 5) {
+    if (curr_time - start_time > kPublishCycleTime_) {
       openmapper::Common::getCurrTimeSec(start_time);
 
       publishImage(img);

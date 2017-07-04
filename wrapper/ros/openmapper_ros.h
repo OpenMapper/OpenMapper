@@ -15,7 +15,9 @@
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/image_encodings.h>
 #include <visualization_msgs/Marker.h>
+#include <visualization_msgs/MarkerArray.h>
 
+// OpenMapper
 #include "openmapper/input_source.h"
 #include "openmapper/openmapper.h"
 
@@ -32,6 +34,7 @@ class WrapperROS {
   void publishPose();
   void publishLandMarks();
   void publishImage(const cv::Mat& img);
+  static void inthand(int signum);
 
  private:
   // ROS nodehandle.
@@ -53,6 +56,8 @@ class WrapperROS {
   std::string world_frame = "/world";
 
   openmapper::OpenMapper openmapper_engine_;
+  const std::size_t kPublishCycleTime_ = 5u;
+  static bool stop;
 };
 
 }  // namespace  openmapper_ros

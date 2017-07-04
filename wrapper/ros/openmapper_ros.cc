@@ -116,8 +116,6 @@ void WrapperROS::publishLandMarks() {
     for (size_t i = 0u; i < map_points.size(); ++i) {
       CHECK_NOTNULL(map_points[i]);
       cv::Mat pose = map_points[i]->GetWorldPos();
-      // TODO(gocarlos): make an array out of this.
-      //      LOG(INFO) << "point " << i << "\n" << pose;
 
       visualization_msgs::Marker marker;
       marker.header.frame_id = world_frame;
@@ -136,14 +134,14 @@ void WrapperROS::publishLandMarks() {
       marker.pose.orientation.z = 0.0;
       marker.pose.orientation.w = 1.0;
 
-      marker.scale.x = 0.05;
-      marker.scale.y = 0.05;
+      marker.scale.x = 0.01;
+      marker.scale.y = 0.01;
       marker.scale.z = 0.01;
 
       marker.color.r = 0.0f;
       marker.color.g = 1.0f;
       marker.color.b = 0.0f;
-      marker.color.a = 1.0;
+      marker.color.a = 1.0f;
 
       marker.lifetime = ros::Duration();
       markers.markers.push_back(marker);
@@ -168,8 +166,6 @@ void WrapperROS::trackCamera() {
   CHECK_NOTNULL(input_source_.get());
   CHECK(input_source_->isInputModeSet());
 
-  signal(SIGINT, inthand);
-
   double curr_time = 0.0;
   openmapper::Common::getCurrTimeSec(curr_time);
   double start_time = 0.0;
@@ -180,10 +176,7 @@ void WrapperROS::trackCamera() {
 
     bool tracking = openmapper_engine_.trackImage(
         img, input_source_->getCurrentImageTimeSec());
-    if (!tracking) {
-      break;
-    }
-    if (stop) {
+    if (!tracking || stop) {
       break;
     }
 

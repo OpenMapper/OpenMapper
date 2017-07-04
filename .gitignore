@@ -56,6 +56,13 @@ test/test_data.tar.gz?raw=1
 catkin_generated/
 catkin/
 ros_build/
+CMakeFiles/
+devel/
+CATKIN_IGNORE
+cmake_install.cmake
+CMakeCache.txt
+CTestTestfile.cmake
+Makefile
 
 # Unit tests stuff
 gtest_build/

@@ -11,6 +11,7 @@
 #include <thread>
 #include <vector>
 
+#include <glog/logging.h>
 // ORB_SLAM2
 #include <System.h>
 
@@ -26,7 +27,6 @@ class OpenMapper {
   std::string path_to_vocabulary_;
   std::string path_to_settings_;
 
-  InputSource input_source_;
   Pose pose_;
 
   //
@@ -37,16 +37,14 @@ class OpenMapper {
   // flags[1] = path_to_settings (camera dependent, *.yaml file)
   //
   OpenMapper(const std::vector<std::string>& flags);
-  OpenMapper(int argc, char** argv);
+
   void initialize();
 
   //
   // When called, starts the engine in order to track the camera.
-  // @param input_file is the string corresponding to the path to the video
-  // file.
-  // @param source is the input source for the video, web camera or video file.
+  // @param img current image.
   //
-  bool trackImage();
+  bool trackImage(const cv::Mat& img, const double& time_stamp);
 
   //
   // When called, stops the SLAM engine.
@@ -61,13 +59,15 @@ class OpenMapper {
   void getPose(std::shared_ptr<std::vector<double>> pos,
                std::shared_ptr<std::vector<double>> rot);
 
+  std::shared_ptr<ORB_SLAM2::System> getSlamEngine() { return slam_engine; }
+
  private:
   //
   // Main instance of the SLAM engine used.
   //
-  ORB_SLAM2::System slam_engine;
+  std::shared_ptr<ORB_SLAM2::System> slam_engine;
 };
 
-}  // namespace openmapper 
+}  // namespace openmapper
 
 #endif  // INCLUDE_OPENMAPPER_OPENMAPPER_H_

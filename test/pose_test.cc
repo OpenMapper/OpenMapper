@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "openmapper/openmapper.h"
 #include "config.h"
+#include "openmapper/openmapper.h"
 
 namespace openmapper {
 
@@ -18,11 +18,21 @@ TEST(GetInitialPose, test_with_static_data) {
   flags.push_back(path_to_vocabulary);
   flags.push_back(path_to_settings);
   OpenMapper openmapper_engine_(flags);
-  openmapper_engine_.input_source_.setInput(openmapper::InputSource::kFile,
-                                            static_video);
+  std::shared_ptr<openmapper::InputSource> input_source_(
+      new openmapper::InputSource);
 
-  while (openmapper_engine_.trackImage()) {
-    sleep(1 / openmapper_engine_.input_source_.fps_);
+  input_source_->setInput(openmapper::InputSource::kFile, static_video);
+
+  while (true) {
+    input_source_->grabImage();
+
+    bool tracking =
+        openmapper_engine_.trackImage(input_source_->getCurrentImage(),
+                                      input_source_->getCurrentImageTimeSec());
+    if (!tracking) {
+      break;
+    }
+    sleep(1 / input_source_->fps_);
   }
 
   sleep(1);
@@ -76,4 +86,4 @@ TEST(GetInitialPose, test_with_static_data) {
 //	EXPECT_GE(distance, minimal_distance);
 //}
 
-}  // namespace openmapper 
+}  // namespace openmapper

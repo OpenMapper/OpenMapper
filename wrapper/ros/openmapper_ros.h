@@ -20,6 +20,7 @@
 // OpenMapper
 #include "openmapper/input_source.h"
 #include "openmapper/openmapper.h"
+#include "openmapper/renderer.h"
 
 namespace openmapper_ros {
 
@@ -61,6 +62,12 @@ class WrapperROS {
   std::shared_ptr<openmapper::InputSource> input_source_;
 
   //
+  // The input source manages the input images. It gets the images over opencv
+  // from a camera or movie.
+  //
+  std::shared_ptr<openmapper::Renderer> renderer_;
+
+  //
   // ROS CV bridge converts ROS images into CV images. This is needed when
   // subscribing to images via topic and passing them to the low level engine as
   // opencv Mat.
@@ -96,7 +103,7 @@ class WrapperROS {
 
   // The images, poses & landmarks are published to tha ROS topic every couple
   // of seconds.
-  const std::size_t kPublishCycleTime_ = 5u;
+  const double kPublishCycleTime_ = 0.5;
 
   // This variable is used to get out of the main loop if SIGINT is received.
   static bool stop;

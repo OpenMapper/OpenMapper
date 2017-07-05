@@ -4,6 +4,7 @@
 
 root_dir=$(pwd)
 export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:$root_dir
+# export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:/home/gocarlos/Dropbox/software/openmapper/OpenMapper
 
 # Build OpenMapper ROS Node
 cd wrapper/ros/

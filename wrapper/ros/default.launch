@@ -1,16 +1,34 @@
 <launch>
 
-  <!-- a basic listener node -->
-  <node
-    name="open_mapper_ros"
-    pkg="open_mapper_ros"
-    type="open_mapper_ros"
-    args="
-    $(find open_mapper_ros)/../../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBvoc.txt
-    $(find open_mapper_ros)/../../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/iphone.yaml
-    opencv_live
-    0
-    "/>
+  <arg name="camera_stream" default="true"/>
+
+  <group if="$(arg camera_stream)">
+    <!-- a basic listener node -->
+    <node
+      name="open_mapper_ros"
+      pkg="open_mapper_ros"
+      type="open_mapper_ros"
+      args="
+      $(find open_mapper_ros)/../../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBvoc.txt
+      $(find open_mapper_ros)/../../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/iphone.yaml
+      opencv_live
+      0
+      "/>
+  </group>
+
+  <group unless="$(arg camera_stream)">
+    <!-- a basic listener node -->
+    <node
+      name="open_mapper_ros"
+      pkg="open_mapper_ros"
+      type="open_mapper_ros"
+      args="
+      $(find open_mapper_ros)/../../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBvoc.txt
+      $(find open_mapper_ros)/../../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/iphone.yaml
+      opencv_movie
+      $(find open_mapper_ros)/../../test/test_data/dynamic.mov
+      "/>
+  </group>
 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find open_mapper_ros)/../../wrapper/ros/openmapper.rviz"/>
 

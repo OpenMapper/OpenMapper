@@ -12,12 +12,14 @@
 #include <vector>
 
 #include <glog/logging.h>
+
 // ORB_SLAM2
 #include <System.h>
 
 // OpenMapper
 #include "openmapper/common.h"
 #include "openmapper/input_source.h"
+#include "openmapper/map.h"
 #include "openmapper/pose.h"
 
 namespace openmapper {
@@ -28,6 +30,7 @@ class OpenMapper {
   std::string path_to_settings_;
 
   Pose pose_;
+  std::shared_ptr<Map> map_;
 
   //
   // Constructor
@@ -59,13 +62,13 @@ class OpenMapper {
   void getPose(std::shared_ptr<std::vector<double>> pos,
                std::shared_ptr<std::vector<double>> rot);
 
-  std::shared_ptr<ORB_SLAM2::System> getSlamEngine() { return slam_engine; }
+  std::shared_ptr<ORB_SLAM2::System> getSlamEngine() { return slam_engine_; }
 
  private:
   //
   // Main instance of the SLAM engine used.
   //
-  std::shared_ptr<ORB_SLAM2::System> slam_engine;
+  std::shared_ptr<ORB_SLAM2::System> slam_engine_;
 };
 
 }  // namespace openmapper

@@ -8,7 +8,8 @@ namespace openmapper_ros {
 WrapperROS::WrapperROS(int argc, char** argv, ros::NodeHandle& nodeHandle)
     : nodeHandle_(nodeHandle),
       flags_{argv[1], argv[2]},
-      openmapper_engine_(flags_) {
+      openmapper_engine_(flags_),
+      renderer_(new openmapper::Renderer) {
   initialize(argv);
 
   // ROS publisher for the position of the camera.
@@ -106,47 +107,45 @@ void WrapperROS::publishLandMarks() {
   if (openmapper_engine_.getSlamEngine()->GetTrackingState() == 2) {
     // The tracking state of the low level engine is 2 if tracking is okay.
 
-    // Get features collected by the low level engine.
-    std::vector<ORB_SLAM2::MapPoint*> map_points =
-        openmapper_engine_.getSlamEngine()->mpMap->GetAllMapPoints();
+    const std::vector<cv::Point3f>& all_map_points =
+        openmapper_engine_.map_->getFeaturesPosition();
 
-    LOG(INFO) << "Number of tracked map points: " << map_points.size();
+    LOG(INFO) << "Number of tracked map points: " << all_map_points.size();
 
-    visualization_msgs::MarkerArray markers;
-    for (size_t i = 0u; i < map_points.size(); ++i) {
-      CHECK_NOTNULL(map_points[i]);
-      cv::Mat pose = map_points[i]->GetWorldPos();
+    if (all_map_points.size() > 0) {
+      visualization_msgs::MarkerArray markers;
+      for (size_t i = 0u; i < all_map_points.size(); ++i) {
+        visualization_msgs::Marker marker;
+        marker.header.frame_id = world_frame;
+        marker.header.stamp = ros::Time::now();
+        marker.ns = "camera";
+        marker.id = i;
 
-      visualization_msgs::Marker marker;
-      marker.header.frame_id = world_frame;
-      marker.header.stamp = ros::Time::now();
-      marker.ns = "camera";
-      marker.id = i;
+        marker.type = visualization_msgs::Marker::SPHERE;
+        marker.action = visualization_msgs::Marker::ADD;
 
-      marker.type = visualization_msgs::Marker::SPHERE;
-      marker.action = visualization_msgs::Marker::ADD;
+        marker.pose.position.x = all_map_points[i].x;
+        marker.pose.position.y = all_map_points[i].y;
+        marker.pose.position.z = all_map_points[i].z;
+        marker.pose.orientation.x = 0.0;
+        marker.pose.orientation.y = 0.0;
+        marker.pose.orientation.z = 0.0;
+        marker.pose.orientation.w = 1.0;
 
-      marker.pose.position.x = pose.at<float>(0);
-      marker.pose.position.y = pose.at<float>(1);
-      marker.pose.position.z = pose.at<float>(2);
-      marker.pose.orientation.x = 0.0;
-      marker.pose.orientation.y = 0.0;
-      marker.pose.orientation.z = 0.0;
-      marker.pose.orientation.w = 1.0;
+        marker.scale.x = 0.01;
+        marker.scale.y = 0.01;
+        marker.scale.z = 0.01;
 
-      marker.scale.x = 0.01;
-      marker.scale.y = 0.01;
-      marker.scale.z = 0.01;
+        marker.color.r = 0.0f;
+        marker.color.g = 1.0f;
+        marker.color.b = 0.0f;
+        marker.color.a = 1.0f;
 
-      marker.color.r = 0.0f;
-      marker.color.g = 1.0f;
-      marker.color.b = 0.0f;
-      marker.color.a = 1.0f;
-
-      marker.lifetime = ros::Duration();
-      markers.markers.push_back(marker);
+        marker.lifetime = ros::Duration();
+        markers.markers.push_back(marker);
+      }
+      marker_pub_.publish(markers);
     }
-    marker_pub_.publish(markers);
   }
 }
 

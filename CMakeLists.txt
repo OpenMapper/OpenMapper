@@ -81,7 +81,7 @@ TARGET_LINK_LIBRARIES(${OPENMAPPER_LIB}
 # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
   Threads::Threads #TODO(gocarlos) check if this is needed.
   
-  debug miniglog optimized miniglog
+  debug ${MINI_GLOG} optimized ${MINI_GLOG}
   debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
   debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
   debug ${G2O_LIB} optimized ${G2O_LIB}

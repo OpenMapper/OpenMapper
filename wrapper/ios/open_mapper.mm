@@ -1,5 +1,9 @@
 // (c) 2017 OpenMapper
 
+// needs to be included before any apple header due to conflicts of macros
+#include "opencv2/stitching/detail/exposure_compensate.hpp"
+#include "opencv2/stitching/detail/blenders.hpp"
+
 #include "open_mapper.h"
 
 #include <fstream>
@@ -7,7 +11,7 @@
 #include <functional>
 
 #include "opencv2/imgcodecs/ios.h"
-#include "opencv2/objdetect/objdetect.hpp"
+//#include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
 #include "openmapper/openmapper.h"

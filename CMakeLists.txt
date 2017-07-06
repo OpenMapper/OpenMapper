@@ -54,8 +54,6 @@ FIND_PACKAGE(Threads REQUIRED)
 # SET(OpenCV_DEBUG_LIBRARIES ${OpenCV_LIBRARIES})
 
 INCLUDE_DIRECTORIES(
-  /usr/local/include # TODO: remove this, what's this for?
-
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/eigen
   ${EIGEN3_INCLUDE_DIR} # TODO: is this still needed?
 

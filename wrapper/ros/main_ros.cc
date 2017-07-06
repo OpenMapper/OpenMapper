@@ -4,9 +4,6 @@
 
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
-  FLAGS_alsologtostderr = 1;
-  FLAGS_colorlogtostderr = 1;
-  google::InstallFailureSignalHandler();
 
   if (argc < 5) {
     LOG(FATAL) << "Example usage: rosrun open_mapper_ros open_mapper_ros "

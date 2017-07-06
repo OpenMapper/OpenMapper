@@ -55,7 +55,6 @@ FIND_PACKAGE(Threads REQUIRED)
 
 INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/eigen
-  ${EIGEN3_INCLUDE_DIR} # TODO: is this still needed?
 
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/miniglog
   

@@ -57,7 +57,7 @@ INCLUDE_DIRECTORIES(
   /usr/local/include # TODO: remove this, what's this for?
 
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/eigen
-  ${EIGEN3_INCLUDE_DIR}
+  ${EIGEN3_INCLUDE_DIR} # TODO: is this still needed?
 
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/miniglog
   

@@ -57,7 +57,7 @@ matrix:
       before_script:
         # http://seeb0h.github.io/howto/howto-install-homebrew-python-opencv-osx-el-capitan/
         - brew update
-        - brew install python
+        # - brew install python
         - brew linkapps python
         - brew install gcc
         - sudo pip install -U numpy scipy matplotlib scikit-learn scikit-image

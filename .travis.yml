@@ -64,6 +64,8 @@ matrix:
         # Building iOS needs to download opencv2.framework as shared lib
         # - sh tools/ios/generate_om_fw.sh
       script:
-        - sh build.sh
-        - cd fw_build
+        - ./tools/build.sh
+        - ./test/test.sh
+
+        # - cd fw_build
         # - xcodebuild -target OpenMapper -sdk iphoneos ONLY_ACTIVE_ARCH=FALSE

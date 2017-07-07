@@ -20,6 +20,7 @@
 // OpenMapper
 #include "openmapper/input_source.h"
 #include "openmapper/openmapper.h"
+#include "openmapper/input_source.h"
 
 namespace openmapper_ros {
 
@@ -53,6 +54,7 @@ class WrapperROS {
  private:
   // ROS nodehandle.
   ros::NodeHandle& nodeHandle_;
+  std::shared_ptr<openmapper::InputSource> input_source_;
 
   //
   // The input source manages the input images. It gets the images over opencv
@@ -66,6 +68,7 @@ class WrapperROS {
   // opencv Mat.
   //
   cv_bridge::CvImageConstPtr cv_ptr_;
+  std::vector<std::string> flags_;
 
   //
   // Flags passed to the low level engine. Those are the Bag of words and camera

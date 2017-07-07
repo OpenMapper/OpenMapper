@@ -30,10 +30,7 @@ bool OpenMapper::trackImage(const cv::Mat& img, const double& time_stamp) {
         slam_engine->TrackMonocular(img, time_stamp);
 
     if (pose_.curr_cam_transformation.rows > 1) {
-      //      LOG(INFO) << "Camera transformation at time " <<
-      //      std::setprecision(20)
-      //                << time_stamp << "\n"
-      //                << pose_.curr_cam_transformation;
+
       pose_.cam_pose.camera_pos[0] =
           pose_.curr_cam_transformation.at<float>(0, 3);
       pose_.cam_pose.camera_pos[1] =

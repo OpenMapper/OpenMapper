@@ -16,6 +16,7 @@ WrapperROS::WrapperROS(int argc, char** argv, ros::NodeHandle& nodeHandle)
       "/visualization_marker", 1);
   position_pub_ =
       nodeHandle_.advertise<geometry_msgs::PoseStamped>("/camera_pose", 1);
+
   image_pub_ =
       nodeHandle_.advertise<sensor_msgs::Image>("/camera/image_raw", 1);
   signal(SIGINT, inthand);
@@ -43,7 +44,9 @@ void WrapperROS::grabROSImage(const sensor_msgs::ImageConstPtr& msg) {
 }
 
 void WrapperROS::initialize(char** argv) {
+
   CHECK_NOTNULL(argv);
+
   // Choose the input topic.
   const std::string input = argv[3];
   const std::string settings = argv[4];

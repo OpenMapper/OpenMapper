@@ -6,12 +6,12 @@
     pkg="open_mapper_ros"
     type="open_mapper_ros"
     args="
-    $(find open_mapper_ros)/thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBvoc.txt
-    $(find open_mapper_ros)/thirdparty/slam_engine/ORB_SLAM2/Vocabulary/iphone.yaml
+    $(find open_mapper_ros)/../../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBvoc.txt
+    $(find open_mapper_ros)/../../thirdparty/slam_engine/ORB_SLAM2/Vocabulary/iphone.yaml
     opencv_live
     0
     "/>
 
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find open_mapper_ros)/wrapper/ros/openmapper.rviz"/>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find open_mapper_ros)/../../wrapper/ros/openmapper.rviz"/>
 
 </launch>

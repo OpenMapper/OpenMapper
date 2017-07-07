@@ -10,6 +10,7 @@ namespace openmapper {
 class Map {
  public:
   Map();
+  void getFeatures();
 };
 
 }  // namespace openmapper

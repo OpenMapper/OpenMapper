@@ -3,13 +3,13 @@
   <name>open_mapper_ros</name>
   <version>0.0.1</version>
   <description>
-    description...
+    SLAM Library
   </description>
 
-  <author email="todo@todo.ch">todo todo</author>
-  <maintainer email="todo@todo.ch">todo todo</maintainer>
-  <url type="repository">todo</url>
-  <license>todo</license>
+  <author email="gocarlos@ethz.ch">Carlos Gomes</author>
+  <maintainer email="gocarlos@ethz.ch">Carlos Gomes</maintainer>
+  <url type="repository">https://github.com/OpenMapper/OpenMapper</url>
+  <license>Apache 2.0</license>
 
   <buildtool_depend>catkin</buildtool_depend>
 

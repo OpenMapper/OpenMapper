@@ -61,7 +61,9 @@ matrix:
         - brew tap homebrew/science
         - brew install opencv3
         - brew ln opencv3 --force
-        - sh tools/ios/generate_om_fw.sh
+        # Building iOS needs to download opencv2.framework as shared lib
+        # - sh tools/ios/generate_om_fw.sh
       script:
+        - sh build.sh
         - cd fw_build
-        - xcodebuild -target OpenMapper -sdk iphoneos ONLY_ACTIVE_ARCH=FALSE
+        # - xcodebuild -target OpenMapper -sdk iphoneos ONLY_ACTIVE_ARCH=FALSE

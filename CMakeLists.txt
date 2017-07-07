@@ -1,17 +1,14 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 3.1)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
 ################################
 # OpenMapper
 ################################
 
-IF(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
-  MESSAGE("This project: " ${PROJECT_NAME})
-ELSE()
- PROJECT(OpenMapper)
-ENDIF(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
-
-
 SET(OPENMAPPER_LIB "OpenMapper")
+
+IF(NOT PROJECT_NAME)
+  PROJECT(${OPENMAPPER_LIB})
+ENDIF(NOT PROJECT_NAME)
 
 # Request C++11 standard from compiler.
 SET(CMAKE_CXX_STANDARD 11)
@@ -52,28 +49,15 @@ INCLUDE_DIRECTORIES(PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include")
 FIND_PACKAGE(OpenCV 3.0.0 REQUIRED)
 FIND_PACKAGE(OpenGL REQUIRED)
 FIND_PACKAGE(Threads REQUIRED)
-FIND_PACKAGE(Glog REQUIRED)
-if(Glog_FOUND)
-  include_directories(${Glog_INCLUDE_PATH} ${GLOG_INCLUDE_DIRS})
-  MESSAGE("---------------------")
-  MESSAGE( "Glog  found: " ${Glog_INCLUDE_PATH} " "  ${GLOG_INCLUDE_DIRS})
-  MESSAGE("---------------------")
-endif(Glog_FOUND)
-
-if(NOT Glog_FOUND)
-  MESSAGE("---------------------")
-  MESSAGE("Glog not found!" )
-  MESSAGE("---------------------")
-endif(NOT Glog_FOUND)
 
 # FIND_LIBRARY(OpenGL_LIBRARIES OpenGL)
 # SET(OpenCV_DEBUG_LIBRARIES ${OpenCV_LIBRARIES})
-INCLUDE_DIRECTORIES("/usr/local/include")
-INCLUDE_DIRECTORIES("${CMAKE_CURRENT_LIST_DIR}/thirdparty/eigen")
-
-INCLUDE("${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/CMakeLists.txt")
 
 INCLUDE_DIRECTORIES(
+  ${CMAKE_CURRENT_LIST_DIR}/thirdparty/eigen
+
+  ${CMAKE_CURRENT_LIST_DIR}/thirdparty/miniglog
+  
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/include
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/DBoW2/DBoW2
@@ -81,8 +65,11 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/solvers
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/stuff
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/g2o/g2o/types
-  ${EIGEN3_INCLUDE_DIR}
 )
+
+INCLUDE("${CMAKE_CURRENT_LIST_DIR}/thirdparty/miniglog/CMakeLists.txt")
+INCLUDE("${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/CMakeLists.txt")
+
 
 ################################
 # Define OpenMapper Library
@@ -90,22 +77,11 @@ INCLUDE_DIRECTORIES(
 
 ADD_LIBRARY(${OPENMAPPER_LIB} STATIC ${OM_LIB_SOURCES})
 
-MESSAGE("---------------------")
-MESSAGE("---------------------")
-MESSAGE("---------------------")
-MESSAGE("GLOG_LIBRARY: " ${GLOG_LIBRARY})
-MESSAGE("GLOG_LIBRARIES: " ${GLOG_LIBRARIES})
-MESSAGE("GLOG_INCLUDE_DIRS: " ${GLOG_INCLUDE_DIRS})
-MESSAGE("GLOG_LIBRARYRARY_DIRS: " ${GLOG_LIBRARYRARY_DIRS})
-MESSAGE("---------------------")
-MESSAGE("---------------------")
-MESSAGE("---------------------")
-
 TARGET_LINK_LIBRARIES(${OPENMAPPER_LIB}
 # debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
   Threads::Threads #TODO(gocarlos) check if this is needed.
-
-  debug ${GLOG_LIBRARY} optimized ${GLOG_LIBRARY}
+  
+  debug ${MINI_GLOG} optimized ${MINI_GLOG}
   debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
   debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
   debug ${G2O_LIB} optimized ${G2O_LIB}

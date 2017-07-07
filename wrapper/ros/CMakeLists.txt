@@ -5,11 +5,8 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.1)
 ################################
 
 PROJECT("open_mapper_ros")
-# Catkin projects are recommended to have lower case names:
-# "WARNING: Catkin package name "OpenMapper" does not follow the naming conventions.
-# It should start with a lower case letter and only contain lower case letters, digits, and underscores.""
 
-SET(OPENMAPPER_ROS_NODE "OpenMapperROS")
+SET(OPENMAPPER_ROS_NODE "open_mapper_ros")
 
 # Request C++11 standard from compiler.
 SET(CMAKE_CXX_STANDARD 11)
@@ -27,8 +24,8 @@ ENDIF()
 # Define Sources and Headers
 ################################
 
-FILE(GLOB_RECURSE OPENMAPPER_ROS_NODE_HEADERS "${CMAKE_CURRENT_LIST_DIR}/../../wrapper/ros/*.h")
-FILE(GLOB_RECURSE OPENMAPPER_ROS_NODE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/../../wrapper/ros/*.cc")
+FILE(GLOB_RECURSE OPENMAPPER_ROS_NODE_HEADERS "${CMAKE_CURRENT_LIST_DIR}/*.h")
+FILE(GLOB_RECURSE OPENMAPPER_ROS_NODE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.cc")
 
 
 ################################
@@ -54,7 +51,6 @@ CATKIN_PACKAGE(CATKIN_DEPENDS
   image_transport
   pthread
 )
-FIND_PACKAGE(Glog REQUIRED)
 
 SET(THREADS_PREFER_PTHREAD_FLAG ON)
 INCLUDE_DIRECTORIES(${catkin_INCLUDE_DIRS})
@@ -68,23 +64,9 @@ ADD_EXECUTABLE(${OPENMAPPER_ROS_NODE}
   ${OPENMAPPER_ROS_NODE_SOURCES}
 )
 
-# MESSAGE("---------------------")
-# MESSAGE("---------------------")
-# MESSAGE("---------------------")
-# MESSAGE("---------------------")
-# # MESSAGE("catkin_LIBRARIES: " ${catkin_LIBRARIES})
-# MESSAGE("OPENMAPPER_LIB: " ${OPENMAPPER_LIB})
-# MESSAGE("GLOG_LIBRARY: " ${GLOG_LIBRARY})
-# MESSAGE("---------------------")
-# MESSAGE("---------------------")
-# MESSAGE("---------------------")
-# MESSAGE("---------------------")
-
-
 TARGET_LINK_LIBRARIES(${OPENMAPPER_ROS_NODE}
   debug ${catkin_LIBRARIES} optimized ${catkin_LIBRARIES} # ROS stuff
   debug ${OPENMAPPER_LIB} optimized ${OPENMAPPER_LIB}
-  debug ${GLOG_LIBRARY} optimized ${GLOG_LIBRARY}
 )
 
 # Uncomment to display all CMAKE variables:

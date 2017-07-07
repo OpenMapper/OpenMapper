@@ -57,14 +57,21 @@ matrix:
       before_script:
         # http://seeb0h.github.io/howto/howto-install-homebrew-python-opencv-osx-el-capitan/
         - brew update
-        # - brew install python
-        - brew linkapps python
-        - brew install gcc
-        - sudo pip install -U matplotlib scikit-learn scikit-image
-        - brew install tesseract
         - brew tap homebrew/science
-        - brew install opencv3
-        - ln -s /usr/local/opt/opencv3/lib/python2.7/site-packages/cv2.so /usr/local/lib/python2.7/site-packages/
+        - brew install opencv3 --without-python --with-python3
+        - echo /usr/local/opt/opencv3/lib/python3.6/site-packages >> /usr/local/lib/python3.6/site-packages/opencv3.pth
+
+
+        # - brew update
+        # - brew upgrade python
+        # - brew upgrade numpy
+        # - brew linkapps python
+        # - brew install gcc
+        # - sudo pip install -U matplotlib scikit-learn scikit-image
+        # - brew install tesseract
+        # - brew tap homebrew/science
+        # - brew install opencv3
+        # - ln -s /usr/local/opt/opencv3/lib/python2.7/site-packages/cv2.so /usr/local/lib/python2.7/site-packages/
         - sh tools/ios/generate_om_fw.sh
       script:
         - cd fw_build

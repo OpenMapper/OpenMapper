@@ -60,7 +60,7 @@ matrix:
         # - brew install python
         - brew linkapps python
         - brew install gcc
-        - sudo pip install -U numpy scipy matplotlib scikit-learn scikit-image
+        - sudo pip install -U matplotlib scikit-learn scikit-image
         - brew install tesseract
         - brew tap homebrew/science
         - brew install opencv3 --with-contrib

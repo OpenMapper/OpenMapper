@@ -60,6 +60,7 @@ matrix:
         - brew update
         - brew tap homebrew/science
         - brew install opencv3
+        - brew ln opencv3 --force
         - sh tools/ios/generate_om_fw.sh
       script:
         - cd fw_build

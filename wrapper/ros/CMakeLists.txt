@@ -65,10 +65,9 @@ ADD_EXECUTABLE(${OPENMAPPER_ROS_NODE}
 )
 
 TARGET_LINK_LIBRARIES(${OPENMAPPER_ROS_NODE}
-  debug ${OPENMAPPER_LIB} optimized ${OPENMAPPER_LIB}
   debug ${catkin_LIBRARIES} optimized ${catkin_LIBRARIES} # ROS stuff
+  debug ${OPENMAPPER_LIB} optimized ${OPENMAPPER_LIB}
 )
-
 
 # Uncomment to display all CMAKE variables:
 # GET_CMAKE_PROPERTY(VARIABLE_NAMES VARIABLES)

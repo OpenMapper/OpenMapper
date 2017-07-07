@@ -63,7 +63,7 @@ matrix:
         - sudo pip install -U matplotlib scikit-learn scikit-image
         - brew install tesseract
         - brew tap homebrew/science
-        - brew install opencv3 --with-contrib
+        - brew install opencv3
         - ln -s /usr/local/opt/opencv3/lib/python2.7/site-packages/cv2.so /usr/local/lib/python2.7/site-packages/
         - sh tools/ios/generate_om_fw.sh
       script:

@@ -57,8 +57,8 @@ void OpenMapper::stopSLAM() {
 
 void OpenMapper::getPose(std::shared_ptr<std::vector<double>> pos,
                          std::shared_ptr<std::vector<double>> rot) {
-  CHECK(pos);
-  CHECK(rot);
+  CHECK_NOTNULL(pos.get());
+  CHECK_NOTNULL(rot.get());
   *pos = pose_.cam_pose.camera_pos;
   *rot = pose_.cam_pose.camera_rot;
 }

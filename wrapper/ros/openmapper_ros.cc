@@ -86,10 +86,12 @@ void WrapperROS::publishPose() {
   std::shared_ptr<std::vector<double>> pos(new std::vector<double>);
   std::shared_ptr<std::vector<double>> rot(new std::vector<double>);
 
+  // Get pose of the camera in the fixed coordinate system.
   openmapper_engine_.getPose(pos, rot);
 
+  // Publish the pose of the camera.
   geometry_msgs::PoseStamped pose;
-  pose.header.frame_id = world_frame;
+  pose.header.frame_id = fixed_frame_;
   pose.header.stamp = ros::Time::now();
   pose.pose.position.x = (*pos)[0];
   pose.pose.position.y = (*pos)[1];
@@ -101,6 +103,16 @@ void WrapperROS::publishPose() {
   pose.pose.orientation.w = (*rot)[3];
 
   position_pub_.publish(pose);
+
+  // Publish a ROS transform.
+  static tf::TransformBroadcaster br;
+  tf::Transform transform;
+  transform.setOrigin(tf::Vector3((*pos)[0], (*pos)[1], (*pos)[2]));
+  tf::Quaternion q;
+  q.setValue((*rot)[0], (*rot)[1], (*rot)[2], (*rot)[3]);
+  transform.setRotation(q);
+  br.sendTransform(tf::StampedTransform(transform, ros::Time::now(),
+                                        fixed_frame_, camera_frame_));
 }
 
 void WrapperROS::publishLandMarks() {
@@ -116,9 +128,9 @@ void WrapperROS::publishLandMarks() {
       visualization_msgs::MarkerArray markers;
       for (size_t i = 0u; i < all_map_points.size(); ++i) {
         visualization_msgs::Marker marker;
-        marker.header.frame_id = world_frame;
+        marker.header.frame_id = fixed_frame_;
         marker.header.stamp = ros::Time::now();
-        marker.ns = "camera";
+        marker.ns = "map_features";
         marker.id = i;
 
         marker.type = visualization_msgs::Marker::SPHERE;
@@ -141,7 +153,9 @@ void WrapperROS::publishLandMarks() {
         marker.color.b = 0.0f;
         marker.color.a = 1.0f;
 
-        marker.lifetime = ros::Duration();
+        ros::Duration marker_durability;
+        marker_durability.sec = 1.0 / input_source_->fps_;
+        marker.lifetime = marker_durability;
         markers.markers.push_back(marker);
       }
       marker_pub_.publish(markers);

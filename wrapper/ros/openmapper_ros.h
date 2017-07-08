@@ -14,6 +14,7 @@
 #include <ros/ros.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/image_encodings.h>
+#include <tf/transform_broadcaster.h>
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
 
@@ -29,7 +30,7 @@ class WrapperROS {
   // Constructor
   WrapperROS(int argc, char** argv, ros::NodeHandle& nodeHandle);
 
-  // Is colled after the constructor: it sets the input source depending on the
+  // Is called after the constructor: it sets the input source depending on the
   // input parameters.
   void initialize(char** argv);
 
@@ -95,8 +96,8 @@ class WrapperROS {
   std::string camera_stream_movie_path_;
 
   // ROS frames.
-  std::string camera_frame = "/camera_frame";
-  std::string world_frame = "/world";
+  std::string camera_frame_ = "/camera_frame";
+  std::string fixed_frame_ = "/world";
 
   //  Instance of the openmapper engine.
   openmapper::OpenMapper openmapper_engine_;

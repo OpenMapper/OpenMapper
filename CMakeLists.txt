@@ -109,6 +109,17 @@ IF(BUILD_TESTS)
   INCLUDE("${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt")
 ENDIF(BUILD_TESTS)
 
+################################
+# OpenMapper Checks
+################################
+
+if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBVoc.txt")
+   MESSAGE("Vocabulary file exists.")
+else()
+   MESSAGE(FATAL_ERROR "Did not find the vocabulary file")
+endif()
+
+
 # Uncomment to display all CMAKE variables:
 # GET_CMAKE_PROPERTY(VARIABLE_NAMES VARIABLES)
 # FOREACH (VARIABLE_NAME ${VARIABLE_NAMES})

@@ -113,12 +113,34 @@ ENDIF(BUILD_TESTS)
 # OpenMapper Checks
 ################################
 
-if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Vocabulary/iphone.yaml")
+SET(path_to_settings 
+"${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Vocabulary")
+
+if(EXISTS "${path_to_settings}/iphone.yaml")
    MESSAGE("Vocabulary file exists.")
 else()
    MESSAGE(FATAL_ERROR "Did not find the vocabulary file")
 endif()
 
+file(WRITE ${CMAKE_CURRENT_LIST_DIR}/include/openmapper/settings.h 
+"//Generated headers include\n
+// (c) 2017 OpenMapper\n
+
+#ifndef TEST_CONFIG_H_\n
+#define TEST_CONFIG_H_\n
+
+#include <string>\n
+
+const std::string path_to_vocabulary =
+    '${path_to_settings}/ORBvoc.txt';
+const std::string path_to_settings =
+    '${path_to_settings}/iphone.yaml';
+
+const std::string static_video = '${path_to_settings}/test_data/static.mov';
+const std::string dynamic_video = '${path_to_settings}/test_data/dynamic.mov';\n
+
+#endif  // TEST_CONFIG_H_\n
+")
 
 # Uncomment to display all CMAKE variables:
 # GET_CMAKE_PROPERTY(VARIABLE_NAMES VARIABLES)

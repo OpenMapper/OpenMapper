@@ -4,9 +4,9 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.1)
 # OpenMapper
 ################################
 
-PROJECT("OpenMapper iOS Framework")
+PROJECT("OMKit")
 
-SET(OPENMAPPER_IOS_FW "OpenMapperLib")
+SET(OPENMAPPER_IOS_FW "OMKit")
 
 ################################
 # Define Sources and Headers

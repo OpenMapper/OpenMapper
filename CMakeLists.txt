@@ -113,7 +113,7 @@ ENDIF(BUILD_TESTS)
 # OpenMapper Checks
 ################################
 
-if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Vocabulary/ORBVoc.txt")
+if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Vocabulary/iphone.yaml")
    MESSAGE("Vocabulary file exists.")
 else()
    MESSAGE(FATAL_ERROR "Did not find the vocabulary file")

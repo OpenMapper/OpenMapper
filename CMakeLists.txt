@@ -123,23 +123,22 @@ else()
 endif()
 
 file(WRITE ${CMAKE_CURRENT_LIST_DIR}/include/openmapper/settings.h 
-"//Generated headers include\n
+"// Auto-generated headers file, do not edit, will be overwritten by cmake. 
 // (c) 2017 OpenMapper\n
+#ifndef INCLUDE_OPENMAPPER_CONFIG_H_
+#define INCLUDE_OPENMAPPER_CONFIG_H_
 
-#ifndef TEST_CONFIG_H_\n
-#define TEST_CONFIG_H_\n
-
-#include <string>\n
+#include <string>
 
 const std::string path_to_vocabulary =
-    '${path_to_settings}/ORBvoc.txt';
+    \"${path_to_settings}/ORBvoc.txt\";
 const std::string path_to_settings =
-    '${path_to_settings}/iphone.yaml';
+    \"${path_to_settings}/iphone.yaml\";
 
-const std::string static_video = '${path_to_settings}/test_data/static.mov';
-const std::string dynamic_video = '${path_to_settings}/test_data/dynamic.mov';\n
+const std::string static_video = \"${path_to_settings}/test_data/static.mov\";
+const std::string dynamic_video = \"${path_to_settings}/test_data/dynamic.mov\";\n
 
-#endif  // TEST_CONFIG_H_\n
+#endif  // INCLUDE_OPENMAPPER_CONFIG_H_\n
 ")
 
 # Uncomment to display all CMAKE variables:

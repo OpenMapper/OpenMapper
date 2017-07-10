@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "config.h"
 #include "openmapper/openmapper.h"
+#include "openmapper/settings.h"
 
 namespace openmapper {
 

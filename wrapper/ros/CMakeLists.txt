@@ -40,6 +40,7 @@ FIND_PACKAGE(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   cv_bridge
+  tf
 )
 
 CATKIN_PACKAGE(CATKIN_DEPENDS
@@ -50,6 +51,7 @@ CATKIN_PACKAGE(CATKIN_DEPENDS
   opencv
   image_transport
   pthread
+  tf
 )
 
 SET(THREADS_PREFER_PTHREAD_FLAG ON)

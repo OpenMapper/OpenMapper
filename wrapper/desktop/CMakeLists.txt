@@ -11,8 +11,10 @@ SET(OPENMAPPER_APP "OpenMapperDesktopApp")
 # Define Sources and Headers
 ################################
 
-FILE(GLOB_RECURSE OM_APP_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/*.cc"
-                                   "${CMAKE_CURRENT_LIST_DIR}/*.h")
+INCLUDE_DIRECTORIES(PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include")
+
+FILE(GLOB_RECURSE OM_APP_RESOURCES "${CMAKE_CURRENT_LIST_DIR}/src/*.cc"
+                                   "${CMAKE_CURRENT_LIST_DIR}/include/*.h")
 
 INCLUDE_DIRECTORIES(PUBLIC "${CMAKE_CURRENT_LIST_DIR}")
 

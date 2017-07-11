@@ -12,8 +12,7 @@ OpenMapper::OpenMapper(const std::vector<std::string>& flags)
                                          ORB_SLAM2::System::MONOCULAR, false)),
       path_to_vocabulary_(flags[0]),
       path_to_settings_(flags[1]),
-      pose_(),
-      map_(new Map) {
+      pose_() {
   initialize();
 }
 
@@ -22,6 +21,8 @@ void OpenMapper::initialize() {
             << "\n"
             << path_to_vocabulary_ << "\n"
             << path_to_settings_ << "\n\n";
+
+  map_.reset(new Map);
 
   // Pass the slam_engine to the map in order to access all the features
   // contained in the slam map.

@@ -7,6 +7,8 @@
 
 #include <opencv2/core/core.hpp>
 
+#include "openmapper/openmapper.h"
+
 namespace openmapper {
 
 class Renderer {
@@ -32,6 +34,11 @@ class Renderer {
   void projectPoints(
       const std::vector<cv::Point3f>& all_map_points,
       std::shared_ptr<std::vector<cv::Point2f>> projected_points);
+
+  //
+  void drawMapPoints();
+
+  std::shared_ptr<openmapper::OpenMapper> openmapper_engine_;
 };
 
 }  // namespace openmapper

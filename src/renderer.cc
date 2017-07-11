@@ -50,11 +50,48 @@ void Renderer::drawMapPoints() {
 void Renderer::drawCurrentImage() {
   CHECK_NOTNULL(openmapper_engine_.get());
 
-  cv::Mat &img= openmapper_engine_->cur_img_w_features_;
-  if(!img.empty()){
-    cv::imshow("ORB-SLAM2: Current Frame", img);
-    //        cv::waitKey(mT);
-  }
+  cv::Mat img2 = openmapper_engine_->cur_img_w_features_;
+  GLuint imageTexture;
+
+  glEnable(GL_TEXTURE_2D);
+
+  // Create Texture
+  glGenTextures(1, &imageTexture);
+  // 2d texture (x and y size)
+  glBindTexture(GL_TEXTURE_2D, imageTexture);
+  // scale linearly when image bigger than texture
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  // scale linearly when image smalled than texture
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+  // 2D texture, level of detail 0 (normal), 3 components (red, green, blue), x
+  // size from image, y size from image, border 0 (normal), rgb color data,
+  // unsigned byte data, and finally the data itself.
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, img2.cols, img2.rows, 0, GL_BGR,
+               GL_UNSIGNED_BYTE, img2.data);
+
+  // choose the texture to use.
+  glBindTexture(GL_TEXTURE_2D, imageTexture);
+
+  // Set global color to white, otherwise this color will be (somehow) added to
+  // the texture
+  glColor3f(1, 1, 1);
+
+  glBegin(GL_QUADS);
+
+  const float x = 1.0;
+  const float y = 1.0;
+
+  glTexCoord2f(0.0f, 0.0f);
+  glVertex3f(-x, -y, 0.0f);
+  glTexCoord2f(0.0f, 1.0f);
+  glVertex3f(x, -y, 0.0f);
+  glTexCoord2f(1.0f, 1.0f);
+  glVertex3f(x, y, 0.0f);
+  glTexCoord2f(1.0f, 0.0f);
+  glVertex3f(-x, y, 0.0f);
+
+  glEnd();
 }
 
 }  // namespace openmapper

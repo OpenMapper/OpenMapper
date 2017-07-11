@@ -3,6 +3,7 @@
 #include "openmapper/renderer.h"
 
 #include <GL/gl.h>
+
 #include <opencv2/opencv.hpp>
 
 namespace openmapper {

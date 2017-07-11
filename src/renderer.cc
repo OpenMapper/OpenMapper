@@ -10,14 +10,14 @@ namespace openmapper {
 
 Renderer::Renderer() {}
 
-void Renderer::displayImage(const cv::Mat& img) {}
+void Renderer::displayImage(const cv::Mat &img) {}
 
-void Renderer::displayFeatures(const std::vector<cv::Point3f>& all_map_points) {
+void Renderer::displayFeatures(const std::vector<cv::Point3f> &all_map_points) {
 
 }
 
 void Renderer::projectPoints(
-    const std::vector<cv::Point3f>& all_map_points,
+    const std::vector<cv::Point3f> &all_map_points,
     std::shared_ptr<std::vector<cv::Point2f>> projected_points) {
   cv::Mat pose;
   cv::Mat rot_vec;
@@ -31,7 +31,7 @@ void Renderer::projectPoints(
 
 void Renderer::drawMapPoints() {
   CHECK_NOTNULL(openmapper_engine_.get());
-  const std::vector<cv::Point3f>& vpMPs =
+  const std::vector<cv::Point3f> &vpMPs =
       openmapper_engine_->map_->getFeaturesPosition();
 
   const float point_size = 2.0f;
@@ -44,6 +44,16 @@ void Renderer::drawMapPoints() {
       glVertex3f(vpMPs[i].x, vpMPs[i].y, vpMPs[i].z);
     }
     glEnd();
+  }
+}
+
+void Renderer::drawCurrentImage() {
+  CHECK_NOTNULL(openmapper_engine_.get());
+
+  cv::Mat &img= openmapper_engine_->cur_img_w_features_;
+  if(!img.empty()){
+    cv::imshow("ORB-SLAM2: Current Frame", img);
+    //        cv::waitKey(mT);
   }
 }
 

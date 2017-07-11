@@ -39,7 +39,7 @@ class OpenMapper {
   // flags[0] = path_to_vocabulary
   // flags[1] = path_to_settings (camera dependent, *.yaml file)
   //
-  OpenMapper(const std::vector<std::string>& flags);
+  OpenMapper(const std::vector<std::string> &flags);
 
   void initialize();
 
@@ -47,7 +47,7 @@ class OpenMapper {
   // When called, starts the engine in order to track the camera.
   // @param img current image.
   //
-  bool trackImage(const cv::Mat& img, const double& time_stamp);
+  bool trackImage(const cv::Mat &img, const double &time_stamp);
 
   //
   // When called, stops the SLAM engine.
@@ -63,6 +63,9 @@ class OpenMapper {
                std::shared_ptr<std::vector<double>> rot);
 
   std::shared_ptr<ORB_SLAM2::System> getSlamEngine() { return slam_engine_; }
+
+  bool save_curr_img_w_features_;
+  cv::Mat cur_img_w_features_;
 
  private:
   //

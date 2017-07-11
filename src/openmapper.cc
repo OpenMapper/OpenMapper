@@ -7,13 +7,14 @@
 
 namespace openmapper {
 
-OpenMapper::OpenMapper(const std::vector<std::string>& flags)
+OpenMapper::OpenMapper(const std::vector<std::string> &flags)
     : slam_engine_(new ORB_SLAM2::System(flags[0], flags[1],
                                          ORB_SLAM2::System::MONOCULAR, false)),
       path_to_vocabulary_(flags[0]),
       path_to_settings_(flags[1]),
       pose_(),
-      map_(new Map) {
+      map_(new Map),
+      save_curr_img_w_features_(true) {
   initialize();
 }
 
@@ -23,12 +24,13 @@ void OpenMapper::initialize() {
             << path_to_vocabulary_ << "\n"
             << path_to_settings_ << "\n\n";
 
+  map_.reset(new Map);
   // Pass the slam_engine to the map in order to access all the features
   // contained in the slam map.
   map_->slam_engine_ = slam_engine_;
 }
 
-bool OpenMapper::trackImage(const cv::Mat& img, const double& time_stamp) {
+bool OpenMapper::trackImage(const cv::Mat &img, const double &time_stamp) {
   if (img.empty()) {
     LOG(INFO) << "Failed to load another image, assuming the video stream "
                  "has finished...";
@@ -64,6 +66,10 @@ bool OpenMapper::trackImage(const cv::Mat& img, const double& time_stamp) {
       std::cout << "\r"
                 << "Waiting for tracking: " << std::setprecision(20)
                 << time_stamp << " ";
+    }
+
+    if (save_curr_img_w_features_) {
+      cur_img_w_features_ = slam_engine_->mpFrameDrawer->DrawFrame();
     }
   }
   return true;

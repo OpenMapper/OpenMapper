@@ -3,7 +3,12 @@
 #include "openmapper/renderer.h"
 
 #ifdef __APPLE__
+// mac
 #include <OpenGL/gl.h>
+#endif
+
+#ifdef TARGET_OS_IPHONE
+// iphone
 #else
 #include <GL/gl.h>
 #endif

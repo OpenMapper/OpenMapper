@@ -64,7 +64,10 @@ class OpenMapper {
 
   std::shared_ptr<ORB_SLAM2::System> getSlamEngine() { return slam_engine_; }
 
+  // True if the current image should be stored, e.g. to display it to the user.
   bool save_curr_img_w_features_;
+
+  // Current image.
   cv::Mat cur_img_w_features_;
 
  private:

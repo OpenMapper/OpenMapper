@@ -3,7 +3,6 @@
 #include "openmapper/renderer.h"
 
 #ifdef __APPLE__
-// mac
 #include <OpenGL/gl.h>
 #else
 #include <GL/gl.h>

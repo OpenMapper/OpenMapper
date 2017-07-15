@@ -131,7 +131,7 @@ FILE(WRITE ${CMAKE_CURRENT_LIST_DIR}/include/openmapper/settings.h
 
 const std::string path_to_vocabulary =
     \"${PATH_TO_SETTINGS}/ORBvoc.txt\";
-const std::string PATH_TO_SETTINGS =
+const std::string path_to_settings =
     \"${PATH_TO_SETTINGS}/iphone.yaml\";
 
 const std::string static_video = \"${PATH_TO_SETTINGS}/test_data/static.mov\";

@@ -50,11 +50,10 @@ FIND_PACKAGE(OpenCV 3.0.0 REQUIRED)
 FIND_PACKAGE(OpenGL REQUIRED)
 FIND_PACKAGE(Threads REQUIRED)
 
-# FIND_LIBRARY(OpenGL_LIBRARIES OpenGL)
-# SET(OpenCV_DEBUG_LIBRARIES ${OpenCV_LIBRARIES})
-
 INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/eigen
+  
+  ${OPENGL_INCLUDE_DIR}
 
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/miniglog
   
@@ -113,16 +112,16 @@ ENDIF(BUILD_TESTS)
 # OpenMapper Checks
 ################################
 
-SET(path_to_settings 
+SET(PATH_TO_SETTINGS 
 "${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Vocabulary")
 
-if(EXISTS "${path_to_settings}/iphone.yaml")
+IF(EXISTS "${PATH_TO_SETTINGS}/iphone.yaml")
    MESSAGE("Vocabulary file exists.")
-else()
+ELSE()
    MESSAGE(FATAL_ERROR "Did not find the vocabulary file")
-endif()
+ENDIF()
 
-file(WRITE ${CMAKE_CURRENT_LIST_DIR}/include/openmapper/settings.h 
+FILE(WRITE ${CMAKE_CURRENT_LIST_DIR}/include/openmapper/settings.h 
 "// Auto-generated headers file, do not edit, will be overwritten by cmake. 
 // (c) 2017 OpenMapper\n
 #ifndef INCLUDE_OPENMAPPER_CONFIG_H_
@@ -131,12 +130,12 @@ file(WRITE ${CMAKE_CURRENT_LIST_DIR}/include/openmapper/settings.h
 #include <string>
 
 const std::string path_to_vocabulary =
-    \"${path_to_settings}/ORBvoc.txt\";
-const std::string path_to_settings =
-    \"${path_to_settings}/iphone.yaml\";
+    \"${PATH_TO_SETTINGS}/ORBvoc.txt\";
+const std::string PATH_TO_SETTINGS =
+    \"${PATH_TO_SETTINGS}/iphone.yaml\";
 
-const std::string static_video = \"${path_to_settings}/test_data/static.mov\";
-const std::string dynamic_video = \"${path_to_settings}/test_data/dynamic.mov\";\n
+const std::string static_video = \"${PATH_TO_SETTINGS}/test_data/static.mov\";
+const std::string dynamic_video = \"${PATH_TO_SETTINGS}/test_data/dynamic.mov\";\n
 
 #endif  // INCLUDE_OPENMAPPER_CONFIG_H_\n
 ")

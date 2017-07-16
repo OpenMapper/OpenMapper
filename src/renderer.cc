@@ -3,7 +3,6 @@
 #include "openmapper/renderer.h"
 
 #ifdef __APPLE__
-// mac
 #include <OpenGL/gl.h>
 #else
 #include <GL/gl.h>
@@ -43,7 +42,7 @@ void Renderer::drawMapPoints() {
   if (vpMPs.size() > 0) {
     glPointSize(point_size);
     glBegin(GL_POINTS);
-    glColor3f(1.0, 0.0, 0.0);
+    glColor4f(1.0, 0.0, 0.0,1);
 
     for (std::size_t i = 0u; i < vpMPs.size(); ++i) {
       glVertex3f(vpMPs[i].x, vpMPs[i].y, vpMPs[i].z);
@@ -80,23 +79,49 @@ void Renderer::drawCurrentImage() {
 
   // Set global color to white, otherwise this color will be (somehow) added to
   // the texture
-  glColor3f(1, 1, 1);
+  glColor4f(1, 1, 1,1);
+  
+   const float x = 1.0;
+   const float y = 1.0;
+  
+  // GLES
+  GLfloat vertex[] = {
+    -x, -y, 0,
+     x, -y, 0,
+     x,  y, 0,
+    -x,  y, 0
+  };
+  GLfloat texture[] = {
+    0,0,
+    1,0,
+    1,1,
+    0,1
+  };
+  
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  
+  glVertexPointer(3, GL_FLOAT, 0, vertex);
+  glTexCoordPointer(2, GL_FLOAT, 0, texture);
+  glDrawArrays(GL_TRIANGLE_FAN,0,4);
+  
+  glDisableClientState(GL_VERTEX_ARRAY);
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  
+  // GL
 
-  glBegin(GL_QUADS);
-
-  const float x = 1.0;
-  const float y = 1.0;
-
-  glTexCoord2f(0.0f, 0.0f);
-  glVertex3f(-x, -y, 0.0f);
-  glTexCoord2f(0.0f, 1.0f);
-  glVertex3f(x, -y, 0.0f);
-  glTexCoord2f(1.0f, 1.0f);
-  glVertex3f(x, y, 0.0f);
-  glTexCoord2f(1.0f, 0.0f);
-  glVertex3f(-x, y, 0.0f);
-
-  glEnd();
+//  glBegin(GL_QUADS);
+//
+//  glTexCoord2f(0.0f, 0.0f);
+//  glVertex3f(-x, -y, 0.0f);
+//  glTexCoord2f(0.0f, 1.0f);
+//  glVertex3f(x, -y, 0.0f);
+//  glTexCoord2f(1.0f, 1.0f);
+//  glVertex3f(x, y, 0.0f);
+//  glTexCoord2f(1.0f, 0.0f);
+//  glVertex3f(-x, y, 0.0f);
+//
+//  glEnd();
 }
 
 }  // namespace openmapper

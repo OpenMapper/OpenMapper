@@ -77,7 +77,6 @@ INCLUDE("${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/CMakeLists.t
 ADD_LIBRARY(${OPENMAPPER_LIB} STATIC ${OM_LIB_SOURCES})
 
 TARGET_LINK_LIBRARIES(${OPENMAPPER_LIB}
-# debug ${OpenGL_LIBRARIES} optimized ${OpenGL_LIBRARIES}
   Threads::Threads #TODO(gocarlos) check if this is needed.
   
   debug ${MINI_GLOG} optimized ${MINI_GLOG}

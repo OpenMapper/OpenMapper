@@ -15,11 +15,13 @@
 #include "opencv2/imgproc/imgproc.hpp"
 
 #include "openmapper/openmapper.h"
-
+#include "openmapper/renderer.h"
 
 struct OpenMapperOpaqueMembers {
   OpenMapperOpaqueMembers(const std::vector<std::string>& flags) : open_mapper(flags) {}
   openmapper::OpenMapper open_mapper;
+  openmapper::Renderer renderer;
+  cv::Mat current_image;
 };
 
 @implementation OpenMapper
@@ -53,13 +55,19 @@ int counter = 0;
 }
 
 -(void) processUIImage:(UIImage *) camera_image {
-  cv::Mat image;
-  UIImageToMat(camera_image, image, false);
-    
+  UIImageToMat(camera_image, openmapper_members_->current_image, false);
+  openmapper_members_->open_mapper.trackImage(openmapper_members_->current_image, [[NSDate date] timeIntervalSince1970] * 1000);
+  
+  std::shared_ptr<std::vector<double>> pos(new std::vector<double>);
+  std::shared_ptr<std::vector<double>> rot(new std::vector<double>);
+  openmapper_members_->open_mapper.getPose(pos, rot);
+  std::cout << (*pos)[0] << (*pos)[1] << (*pos)[2];
+  std::cout << (*rot)[0] << (*rot)[1] << (*rot)[2];
 }
 
 -(void) draw {
-  // draw opengl stuff
+//  openmapper_members_->renderer.displayImage(openmapper_members_->current_image);
+  openmapper_members_->renderer.drawCurrentImage();
 }
 
 @end

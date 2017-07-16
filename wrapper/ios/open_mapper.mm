@@ -66,7 +66,8 @@ int counter = 0;
 }
 
 -(void) draw {
-  openmapper_members_->renderer.displayImage(openmapper_members_->current_image);
+//  openmapper_members_->renderer.displayImage(openmapper_members_->current_image);
+  openmapper_members_->renderer.drawCurrentImage();
 }
 
 @end

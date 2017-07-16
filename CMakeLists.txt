@@ -46,17 +46,17 @@ INCLUDE_DIRECTORIES(PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include")
 # Define Dependencies
 ################################
 
-FIND_PACKAGE(OpenCV 3.0.0 REQUIRED)
+FIND_PACKAGE(OpenCV REQUIRED) # TODO(gocarlos): change this back to version 3.0.0, currently trying to build a ubuntu snap, there opencv3 is still not available as deb, We do not need to use 3.0 at the moment, 2.4 works as well.  
 FIND_PACKAGE(OpenGL REQUIRED)
 FIND_PACKAGE(Threads REQUIRED)
 
 INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/eigen
-  
+
   ${OPENGL_INCLUDE_DIR}
 
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/miniglog
-  
+
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/include
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/
   ${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Thirdparty/DBoW2/DBoW2
@@ -78,7 +78,7 @@ ADD_LIBRARY(${OPENMAPPER_LIB} STATIC ${OM_LIB_SOURCES})
 
 TARGET_LINK_LIBRARIES(${OPENMAPPER_LIB}
   Threads::Threads #TODO(gocarlos) check if this is needed.
-  
+
   debug ${MINI_GLOG} optimized ${MINI_GLOG}
   debug ${OpenCV_LIBRARIES} optimized ${OpenCV_LIBRARIES}
   debug ${DBOW2_LIB} optimized ${DBOW2_LIB}
@@ -111,7 +111,7 @@ ENDIF(BUILD_TESTS)
 # OpenMapper Checks
 ################################
 
-SET(PATH_TO_SETTINGS 
+SET(PATH_TO_SETTINGS
 "${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Vocabulary")
 
 IF(EXISTS "${PATH_TO_SETTINGS}/iphone.yaml")
@@ -120,8 +120,8 @@ ELSE()
    MESSAGE(FATAL_ERROR "Did not find the vocabulary file")
 ENDIF()
 
-FILE(WRITE ${CMAKE_CURRENT_LIST_DIR}/include/openmapper/settings.h 
-"// Auto-generated headers file, do not edit, will be overwritten by cmake. 
+FILE(WRITE ${CMAKE_CURRENT_LIST_DIR}/include/openmapper/settings.h
+"// Auto-generated headers file, do not edit, will be overwritten by cmake.
 // (c) 2017 OpenMapper\n
 #ifndef INCLUDE_OPENMAPPER_CONFIG_H_
 #define INCLUDE_OPENMAPPER_CONFIG_H_

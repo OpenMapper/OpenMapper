@@ -16,38 +16,39 @@ ENDIF(NOT PROJECT_NAME)
 SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Suppress warnings from the compiler.
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -w")
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
-
-IF(NOT CMAKE_BUILD_TYPE)
-  SET(CMAKE_BUILD_TYPE Release)
-ENDIF()
-
-# Optimize the code with the compiler if the target device has a x86 processor.
-IF(CMAKE_SYSTEM_PROCESSOR MATCHES "amd64.*|x86_64.*|AMD64.*|i686.*|i386.*|x86.*")
-  MESSAGE("Current System is x86.")
-  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=native")
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-ENDIF()
-
-SET(BUILD_TESTS FALSE CACHE BOOL "Build OpenMapper tests.")
-
-# LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake_modules)
 SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake_modules)
 INCLUDE(FindEigen3)
 INCLUDE(ios_10_3_config)
 INCLUDE(xcode_framework_config)
 
+# Suppress warnings from the compiler.
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -w")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
+
 IF(DO_COVERAGE_TEST)
-  MESSAGE("\n\n\nGoing to build the coverage tests \n\n\n")
+  MESSAGE("\nGoing to build the coverage tests.\n\n\n")
   INCLUDE(CodeCoverage)
-  setup_target_for_coverage(${PROJECT_NAME}_coverage tests coverage)
-  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+  SETUP_TARGET_FOR_COVERAGE(${PROJECT_NAME}_coverage tests coverage)
+  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
 ELSE()
-  MESSAGE("\n\n\nNot building the coverage tests \n\n\n")
+  MESSAGE("\nNot building the coverage tests. \n\n\n")
+
+  # Optimize the code with the compiler if the target device has a x86 processor and not doing code coverage tests.
+  IF(CMAKE_SYSTEM_PROCESSOR MATCHES "amd64.*|x86_64.*|AMD64.*|i686.*|i386.*|x86.*")
+    MESSAGE("Current System is x86.")
+    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=native")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+  ENDIF()
+
+  IF(NOT CMAKE_BUILD_TYPE)
+    SET(CMAKE_BUILD_TYPE Release)
+  ENDIF()
+
 ENDIF()
+
+SET(BUILD_TESTS FALSE CACHE BOOL "Build OpenMapper tests.")
+
 
 ################################
 # Define Sources and Headers
@@ -62,7 +63,7 @@ INCLUDE_DIRECTORIES(PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include")
 # Define Dependencies
 ################################
 
-FIND_PACKAGE(OpenCV REQUIRED) # TODO(gocarlos): change this back to version 3.0.0, currently trying to build a ubuntu snap, there opencv3 is still not available as deb, We do not need to use 3.0 at the moment, 2.4 works as well.
+FIND_PACKAGE(OpenCV REQUIRED)
 FIND_PACKAGE(OpenGL REQUIRED)
 FIND_PACKAGE(Threads REQUIRED)
 
@@ -114,7 +115,6 @@ SET_TARGET_PROPERTIES(${OPENMAPPER_LIB} PROPERTIES
   ARCHIVE_OUTPUT_DIRECTORY_RELEASE ../lib/
 )
 
-
 ################################
 # OpenMapper Unit Tests
 ################################
@@ -127,33 +127,7 @@ ENDIF(BUILD_TESTS)
 # OpenMapper Checks
 ################################
 
-SET(PATH_TO_SETTINGS
-"${CMAKE_CURRENT_LIST_DIR}/thirdparty/slam_engine/ORB_SLAM2/Vocabulary")
-
-IF(EXISTS "${PATH_TO_SETTINGS}/iphone.yaml")
-   MESSAGE("Vocabulary file exists.")
-ELSE()
-   MESSAGE(FATAL_ERROR "Did not find the vocabulary file")
-ENDIF()
-
-FILE(WRITE ${CMAKE_CURRENT_LIST_DIR}/include/openmapper/settings.h
-"// Auto-generated headers file, do not edit, will be overwritten by cmake.
-// (c) 2017 OpenMapper\n
-#ifndef INCLUDE_OPENMAPPER_CONFIG_H_
-#define INCLUDE_OPENMAPPER_CONFIG_H_
-
-#include <string>
-
-const std::string path_to_vocabulary =
-    \"${PATH_TO_SETTINGS}/orbVoc.bin\";
-const std::string path_to_settings =
-    \"${PATH_TO_SETTINGS}/iphone.yaml\";
-
-const std::string static_video = \"${PATH_TO_SETTINGS}/test_data/static.mov\";
-const std::string dynamic_video = \"${PATH_TO_SETTINGS}/test_data/dynamic.mov\";\n
-
-#endif  // INCLUDE_OPENMAPPER_CONFIG_H_\n
-")
+INCLUDE(Settings)
 
 # Uncomment to display all CMAKE variables:
 # GET_CMAKE_PROPERTY(VARIABLE_NAMES VARIABLES)

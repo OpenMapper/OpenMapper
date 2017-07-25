@@ -1,4 +1,4 @@
-# NOTE:               The build lifecycle on Travis.ci is something like this:
+# NOTE:                       The build lifecycle on Travis.ci is something like this:
 #    before_install
 #    install
 #    before_script
@@ -10,14 +10,12 @@
 #    OPTIONAL after_deploy
 
 matrix:
-  allow_failures:
-    - os:             osx
   include:
-    - os:             linux
-      dist:           trusty # 14.04
-      sudo:           required
-      language:       c++
-      before_install: sudo apt-get update
+    - os:                     linux
+      dist:                   trusty # 14.04
+      sudo:                   required
+      language:               c++
+      before_install:         sudo apt-get update
       addons:
         apt:
           sources:
@@ -30,7 +28,7 @@ matrix:
             - python-numpy
             - libeigen3-dev
             - freeglut3-dev # OpenGL
-            - lcov # https://codecov.io/
+            - lcov # Code coverage: https://codecov.io/
       before_script:
             - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
             - sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
@@ -42,37 +40,39 @@ matrix:
             - sudo apt-get install ros-indigo-opencv3 ros-indigo-eigen-conversions
 
       script:
-        # Export CC and CXX to tell cmake which compiler to use
+        # Export CC and CXX to tell cmake which compiler to use.
         - export CC=/usr/bin/gcc-7
         - export CXX=/usr/bin/g++-7
-        # Check versions of gcc, g++ and cmake
+
+        # Check versions of gcc, g++ and cmake.
         - gcc -v && g++ -v && cmake --version
         - $CC --version
         - $CXX --version
-        # Run your build commands next
+
+        # Run your build commands next.
         - ./tools/travis_ci_build.sh
         - ./test/test.sh
+
       after_success:
+        # Get code converage.
         - cd ${TRAVIS_BUILD_DIR}
         - lcov --directory . --capture --output-file coverage.info # capture coverage info
         - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
         - lcov --list coverage.info #debug info
-        # Uploading report to CodeCov
-        - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+        - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports" # Uploading report to CodeCov
 
-
-    - os:             osx
-      osx_image:      xcode7.3
-      sudo:           required
-      language:       objective-c
+    - os:                     osx
+      osx_image:              xcode7.3
+      sudo:                   required
+      language:               objective-c
       before_script:
-        # https://github.com/benlaug/labgen-p/blob/master/.travis.yml
+        # https://github.com/benlaug/labgen-p/blob/master/.travis.yml, uninstall numpy first as it makes trouble when installing opencv3
         - /usr/bin/yes | pip uninstall numpy
         - brew update
         - brew tap homebrew/science
         - brew install opencv3
         - brew ln opencv3 --force
-        # Building iOS needs to download opencv2.framework as shared lib
+        # TODO(nidegen) Building iOS needs to download opencv2.framework as shared lib
         # - sh tools/ios/generate_om_fw.sh
       script:
         - ./tools/build.sh

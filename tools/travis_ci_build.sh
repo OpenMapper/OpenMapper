@@ -5,8 +5,8 @@ set -ev
 # The -v flag makes the shell print all lines in the script before executing them, which helps identify which steps failed.
 
 rm -rf build/
-# rm -rf bin/
-# rm -rf lib/
+rm -rf bin/
+rm -rf lib/
 
 # Build OpenMapper Static Lib only
 mkdir -p build

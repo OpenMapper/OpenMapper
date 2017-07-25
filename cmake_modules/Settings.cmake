@@ -7,7 +7,7 @@ IF(CREATE_SNAP_APP)
     MESSAGE(FATAL_ERROR "Did not find the vocabulary file")
   ENDIF()
 
-  FILE(WRITE ${CMAKE_CURRENT_LIST_DIR}/include/openmapper/settings.h
+  FILE(WRITE ${CMAKE_CURRENT_LIST_DIR}/../include/openmapper/settings.h
     "// Auto-generated headers file, do not edit, will be overwritten by cmake.
     // (c) 2017 OpenMapper\n
     #ifndef INCLUDE_OPENMAPPER_CONFIG_H_

@@ -6,8 +6,8 @@
 #include <glog/logging.h>
 #include <iostream>
 #include <thread>
-#include <filesystem>
-//#include <experimental/filesystem>
+//#include <filesystem>
+#include <experimental/filesystem>
 
 // ORB_SLAM2
 #include <System.h>
@@ -61,7 +61,7 @@ class InputSource {
         CHECK(path_to_file_ != "");
         LOG(INFO) << "Path to file is: " << path_to_file_;
 
-        CHECK(std::filesystem::exists(path_to_file_));
+        CHECK(std::experimental::filesystem::exists(path_to_file_));
 
         cap.open(path_to_file_);
         break;

@@ -50,7 +50,7 @@ matrix:
         - $CC --version
         - $CXX --version
         # Run your build commands next
-        - ./tools/build.sh
+        - ./tools/travis_ci_build.sh
         - ./test/test.sh
       after_success:
         - cd ${TRAVIS_BUILD_DIR}

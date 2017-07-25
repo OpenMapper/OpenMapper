@@ -4,9 +4,10 @@ IF(CREATE_SNAP_APP)
   IF(EXISTS "/usr/local/openmapper/Vocabulary/iphone.yaml")
     MESSAGE("Vocabulary file exists.")
   ELSE()
-    MESSAGE(FATAL_ERROR "Did not find the vocabulary file")
+    # MESSAGE(FATAL_ERROR "Did not find the vocabulary file")
   ENDIF()
 
+  MESSAGE("Going to move the settings files to ${CMAKE_INSTALL_PREFIX}/openmapper/Vocabulary/")
   FILE(WRITE ${CMAKE_CURRENT_LIST_DIR}/../include/openmapper/settings.h
     "// Auto-generated headers file, do not edit, will be overwritten by cmake.
     // (c) 2017 OpenMapper\n
@@ -16,12 +17,12 @@ IF(CREATE_SNAP_APP)
     #include <string>
 
     const std::string path_to_vocabulary =
-    \"/usr/local/openmapper/Vocabulary/orbVoc.bin\";
+    \"${CMAKE_INSTALL_PREFIX}/openmapper/Vocabulary/orbVoc.bin\";
     const std::string path_to_settings =
-    \"/usr/local/openmapper/Vocabulary/iphone.yaml\";
+    \"${CMAKE_INSTALL_PREFIX}/openmapper/Vocabulary/iphone.yaml\";
 
-    const std::string static_video = \"/usr/local/openmapper/Vocabulary/test_data/static.mov\";
-    const std::string dynamic_video = \"/usr/local/openmapper/Vocabulary/test_data/dynamic.mov\";\n
+    const std::string static_video = \"${CMAKE_INSTALL_PREFIX}/openmapper/Vocabulary/test_data/static.mov\";
+    const std::string dynamic_video = \"${CMAKE_INSTALL_PREFIX}/openmapper/Vocabulary/test_data/dynamic.mov\";\n
 
   #endif  // INCLUDE_OPENMAPPER_CONFIG_H_\n
 ")

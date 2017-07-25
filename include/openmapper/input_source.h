@@ -6,6 +6,8 @@
 #include <glog/logging.h>
 #include <iostream>
 #include <thread>
+//#include <filesystem>
+#include <experimental/filesystem>
 
 // ORB_SLAM2
 #include <System.h>
@@ -28,7 +30,6 @@ class InputSource {
                   // ROS, native mobile framework...
   };
   InputSource();
-  // virtual ~InputSource();
 
   cv::Mat getCurrentImage() { return current_image_; }
   void setCurrentImage(cv::Mat currentImage) { current_image_ = currentImage; }
@@ -50,14 +51,20 @@ class InputSource {
     switch (source_) {
       case kCamera: {
         camera_device_number_ = device;
-        assert(camera_device_number_ != "");
+        CHECK(camera_device_number_ != "");
+
         cap.open(std::stoi(camera_device_number_));
         break;
       }
       case kFile: {
         path_to_file_ = device;
-        assert(path_to_file_ != "" && "Path to movie file must not be empty!");
-        std::cout << "Path to file is: " << path_to_file_ << std::endl;
+        CHECK(path_to_file_ != "");
+        LOG(INFO) << "Path to file is: " << path_to_file_;
+
+        // CHECK(std::experimental::filesystem::exists(path_to_file_));
+        ifstream f(path_to_file_.c_str());
+        CHECK(f.good());
+
         cap.open(path_to_file_);
         break;
       }
@@ -65,7 +72,7 @@ class InputSource {
         break;
       }
       default: {
-        std::cerr << "ERROR: No Input set!" << std::endl;
+        LOG(FATAL) << "No Input set!";
         exit(1);
       }
     }
@@ -73,11 +80,11 @@ class InputSource {
   InputSource::VideoSource getInput() { return source_; }
 
   void grabImage() {
-    assert(is_input_mode_set_ && "Input mode must be set!");
+    CHECK(is_input_mode_set_);
 
     if (!cap.isOpened()) {
       // Check if we succeeded.
-      std::cerr << "ERROR: Camera input is broken!" << std::endl;
+      LOG(FATAL) << "Camera input is broken!";
       return;
     }
 

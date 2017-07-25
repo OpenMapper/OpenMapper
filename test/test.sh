@@ -9,10 +9,9 @@ address_test_data="https://www.dropbox.com/s/tdogcjoo1cgvt38/test_data.tar.gz?ra
 
 # Unpack the Vocabulary file.
 cd $root_dir/thirdparty/slam_engine/ORB_SLAM2/Vocabulary/
-tar -xf ORBvoc.txt.tar.gz
-cd $root_dir
+# tar -xf ORBvoc.txt.tar.gz
 
-if [ -d "$root_dir/test/test_data" ]; then
+if [ -d "test_data" ]; then
   echo "test_data folder exists already, not downloading again the test_files"
 else
   echo "Download the test data from the web"
@@ -22,7 +21,7 @@ else
 fi
 
 # Run the tests, if running with debug settings, then take the *_d executable.
-cd bin
+cd $root_dir/bin
 FILE="OpenMapperTests"
 if [ -f $FILE ]; then
    echo "File $FILE exists."

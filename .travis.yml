@@ -18,7 +18,7 @@ matrix:
       sudo:           required
       language:       c++
       before_install: sudo apt-get update
-      updateaddons:
+      addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test

@@ -11,6 +11,10 @@ C++ library wrapping different SLAM engines and rendering the output
 | Android   | TODO |
 | Windows   | TODO |
 
+
+[![codecov](https://codecov.io/gh/OpenMapper/OpenMapper/branch/master/graph/badge.svg)](https://codecov.io/gh/OpenMapper/OpenMapper)
+
+
 ## Licence
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)

@@ -6,6 +6,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
 SET(OPENMAPPER_LIB "OpenMapper")
 
+OPTION(DO_COVERAGE_TEST "Test the coverage of the unit tests using CodeCov" OFF)
+
 IF(NOT PROJECT_NAME)
   PROJECT(${OPENMAPPER_LIB})
 ENDIF(NOT PROJECT_NAME)
@@ -31,7 +33,21 @@ ENDIF()
 
 SET(BUILD_TESTS FALSE CACHE BOOL "Build OpenMapper tests.")
 
-LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake_modules)
+# LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake_modules)
+SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
+INCLUDE(FindEigen3)
+INCLUDE(ios_10_3_config)
+INCLUDE(xcode_framework_config)
+
+IF(DO_COVERAGE_TEST)
+  MESSAGE("\n\n\nGoing to build the coverage tests \n\n\n")
+  INCLUDE(CodeCoverage)
+  setup_target_for_coverage(${PROJECT_NAME}_coverage tests coverage)
+  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+ELSE()
+  MESSAGE("\n\n\nNot building the coverage tests \n\n\n")
+ENDIF()
 
 ################################
 # Define Sources and Headers
@@ -46,7 +62,7 @@ INCLUDE_DIRECTORIES(PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include")
 # Define Dependencies
 ################################
 
-FIND_PACKAGE(OpenCV REQUIRED) # TODO(gocarlos): change this back to version 3.0.0, currently trying to build a ubuntu snap, there opencv3 is still not available as deb, We do not need to use 3.0 at the moment, 2.4 works as well.  
+FIND_PACKAGE(OpenCV REQUIRED) # TODO(gocarlos): change this back to version 3.0.0, currently trying to build a ubuntu snap, there opencv3 is still not available as deb, We do not need to use 3.0 at the moment, 2.4 works as well.
 FIND_PACKAGE(OpenGL REQUIRED)
 FIND_PACKAGE(Threads REQUIRED)
 

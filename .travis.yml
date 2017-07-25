@@ -11,25 +11,26 @@
 
 matrix:
   allow_failures:
-    - os: osx
+    - os:             osx
   include:
-    - os: linux
-      dist: trusty # 14.04
-      sudo: required
-      language: c++
+    - os:             linux
+      dist:           trusty # 14.04
+      sudo:           required
+      language:       c++
       before_install: sudo apt-get update
       updateaddons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - gcc-6
-            - g++-6
+            - gcc-7
+            - g++-7
             - cmake
             - python-dev
             - python-numpy
             - libeigen3-dev
             - freeglut3-dev # OpenGL
+            - lcov # https://codecov.io/
       before_script:
             - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
             - sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
@@ -42,18 +43,28 @@ matrix:
 
       script:
         # Export CC and CXX to tell cmake which compiler to use
-        # - export CC=/usr/bin/gcc-6
-        # - export CXX=/usr/bin/g++-6
+        - export CC=/usr/bin/gcc-7
+        - export CXX=/usr/bin/g++-7
         # Check versions of gcc, g++ and cmake
         - gcc -v && g++ -v && cmake --version
+        - $CC --version
+        - $CXX --version
         # Run your build commands next
         - ./tools/build.sh
         - ./test/test.sh
+      after_success:
+        - cd ${TRAVIS_BUILD_DIR}
+        - lcov --directory . --capture --output-file coverage.info # capture coverage info
+        - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
+        - lcov --list coverage.info #debug info
+        # Uploading report to CodeCov
+        - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports
 
-    - os: osx
-      osx_image: xcode7.3
-      sudo: required
-      language: objective-c
+
+    - os:             osx
+      osx_image:      xcode7.3
+      sudo:           required
+      language:       objective-c
       before_script:
         # https://github.com/benlaug/labgen-p/blob/master/.travis.yml
         - /usr/bin/yes | pip uninstall numpy

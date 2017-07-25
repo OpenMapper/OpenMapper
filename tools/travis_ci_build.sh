@@ -11,5 +11,5 @@ rm -rf build/
 # Build OpenMapper Static Lib only
 mkdir -p build
 cd build
-cmake ..  -DBUILD_TESTS=TRUE -DDO_COVERAGE_TEST=OFF
+cmake ..  -DBUILD_TESTS=TRUE -DCMAKE_BUILD_TYPE=Debug -DDO_COVERAGE_TEST=ON
 make -j8

@@ -66,6 +66,7 @@ class InputSource {
         break;
       }
       case kImage: {
+        LOG(FATAL)<< "Not implemented yet!";
         break;
       }
       default: {
@@ -73,6 +74,14 @@ class InputSource {
         exit(1);
       }
     }
+
+    fps_ = cap.get(CV_CAP_PROP_FPS);
+    if(fps_<1.0){
+      LOG(ERROR) << "fps_ is lower than 1.0, setting it to 30 fps";
+      fps_ = 30;
+      // FIXME https://github.com/opencv/opencv/issues/4355
+    }
+
   }
   InputSource::VideoSource getInput() { return source_; }
 
@@ -83,12 +92,6 @@ class InputSource {
       // Check if we succeeded.
       LOG(FATAL) << "Camera input is broken!";
       return;
-    }
-
-    fps_ = cap.get(CV_CAP_PROP_FPS);
-    if(fps_<1.0){
-      LOG(ERROR) << "fps_ is lower than 1.0, setting it to 30 fps";
-      // FIXME https://github.com/opencv/opencv/issues/4355
     }
 
     cap >> current_image_;

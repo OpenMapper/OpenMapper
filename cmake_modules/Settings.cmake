@@ -6,7 +6,7 @@ IF(CREATE_SNAP_APP)
   ELSE()
     # MESSAGE(FATAL_ERROR "Did not find the vocabulary file")
   ENDIF()
-  SET(INSTALL_DIRECTORE_SETTINGS "/snap/openmapper-desktop2/current/openmapper/Vocabulary")
+  SET(INSTALL_DIRECTORE_SETTINGS "/snap/openmapper-desktop/current/openmapper/Vocabulary")
   MESSAGE("Going to move the settings files to ${CMAKE_INSTALL_PREFIX}/openmapper/Vocabulary/")
   FILE(WRITE ${CMAKE_CURRENT_LIST_DIR}/../include/openmapper/settings.h
     "// Auto-generated headers file, do not edit, will be overwritten by cmake.

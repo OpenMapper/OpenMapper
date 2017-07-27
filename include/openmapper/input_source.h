@@ -86,7 +86,10 @@ class InputSource {
     }
 
     fps_ = cap.get(CV_CAP_PROP_FPS);
-    CHECK_GT(fps_, 1.0);
+    if(fps_<1.0){
+      LOG(ERROR) << "fps_ is lower than 1.0, setting it to 30 fps";
+      // FIXME https://github.com/opencv/opencv/issues/4355
+    }
 
     cap >> current_image_;
     // FIXME: there is a problem with openCV returning 0 instead of the right
